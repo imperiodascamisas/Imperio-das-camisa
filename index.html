@@ -1,527 +1,2163 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Império das Camisas</title>
-  <meta name="description" content="Império das Camisas — Vista sua paixão. Vista seu time.">
-  <style>
-    :root{
-      --bg:#080808;
-      --card:#111111;
-      --gold:#d4af37;
-      --gold2:#f0cf55;
-      --white:#f5f5f5;
-      --muted:#bdbdbd;
-      --line:#262626;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{
-      font-family:Arial,Helvetica,sans-serif;
-      background:var(--bg);
-      color:var(--white);
-      line-height:1.5;
-    }
-    button,input,select{font:inherit}
-    button{cursor:pointer}
-    header{
-      position:sticky;top:0;z-index:50;
-      background:rgba(8,8,8,.95);
-      backdrop-filter:blur(10px);
-      border-bottom:1px solid var(--line);
-    }
-    .nav{
-      max-width:1180px;margin:auto;padding:18px 20px;
-      display:flex;align-items:center;justify-content:space-between;gap:20px;
-    }
-    .logo{font-weight:900;letter-spacing:2px;color:var(--gold);font-size:20px}
-    .nav-links{display:flex;gap:22px}
-    .nav-links a{color:#ddd;text-decoration:none;font-size:14px}
-    .nav-links a:hover{color:var(--gold)}
-    .cart-btn{
-      border:1px solid var(--gold);background:transparent;color:var(--gold);
-      padding:10px 15px;border-radius:10px;font-weight:700;
-    }
-    .hero{
-      min-height:58vh;display:flex;align-items:center;justify-content:center;
-      text-align:center;padding:80px 20px;
-      background:radial-gradient(circle at center,#1b1607 0,#080808 55%);
-    }
-    .hero h1{font-size:clamp(42px,8vw,88px);line-height:1.05;letter-spacing:4px;color:var(--gold)}
-    .hero p{margin-top:20px;font-size:clamp(18px,3vw,28px);color:#ddd}
-    .hero .cta{
-      display:inline-block;margin-top:30px;padding:14px 25px;border-radius:10px;
-      background:var(--gold);color:#080808;text-decoration:none;font-weight:800;
-    }
-    section{max-width:1180px;margin:auto;padding:70px 20px}
-    .section-title{text-align:center;margin-bottom:35px}
-    .section-title h2{font-size:34px}
-    .section-title p{color:var(--muted);margin-top:8px}
-    .products{
-      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:25px;
-    }
-    .product{
-      background:var(--card);border:1px solid var(--line);border-radius:18px;
-      overflow:hidden;box-shadow:0 12px 35px rgba(0,0,0,.25);
-    }
-    .product-img{
-      width:100%;height:520px;background:#181818;display:flex;align-items:center;justify-content:center;
-      overflow:hidden;
-    }
-    .product-img img{width:100%;height:100%;object-fit:cover;display:block}
-    .product-info{padding:22px}
-    .product-info h3{font-size:24px}
-    .product-info .desc{color:var(--muted);margin:7px 0 14px}
-    .price{font-size:25px;color:var(--gold);font-weight:900}
-    .cash{font-size:13px;color:#aaa;margin-top:3px}
-    .sizes{display:flex;gap:8px;margin:18px 0}
-    .size{
-      border:1px solid #444;background:#171717;color:#fff;border-radius:8px;
-      min-width:45px;padding:9px 11px;
-    }
-    .size.active{background:var(--gold);border-color:var(--gold);color:#080808;font-weight:800}
-    .buy-row{display:flex;gap:10px}
-    .qty{
-      display:flex;align-items:center;border:1px solid #444;border-radius:9px;overflow:hidden;
-    }
-    .qty button{background:#171717;color:white;border:0;width:38px;height:46px}
-    .qty span{min-width:35px;text-align:center}
-    .add{
-      flex:1;border:0;border-radius:9px;background:var(--gold);color:#080808;font-weight:900;
-    }
-    .offer{
-      margin-top:35px;padding:25px;border:1px solid #3b3217;border-radius:15px;
-      text-align:center;background:linear-gradient(135deg,#14110a,#0d0d0d);
-    }
-    .offer strong{color:var(--gold);font-size:25px}
-    .checkout{
-      background:#0f0f0f;border-top:1px solid var(--line);
-    }
-    .checkout-box{
-      max-width:760px;margin:auto;background:#151515;border:1px solid var(--line);
-      border-radius:18px;padding:25px;
-    }
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .field{display:flex;flex-direction:column;gap:6px}
-    .field.full{grid-column:1/-1}
-    .field label{font-size:13px;color:#bbb}
-    .field input,.field select{
-      background:#0b0b0b;color:#fff;border:1px solid #333;border-radius:8px;padding:12px;outline:none;
-    }
-    .field input:focus,.field select:focus{border-color:var(--gold)}
-    .summary{margin:22px 0;padding:17px;border-radius:10px;background:#0b0b0b;border:1px solid #2a2a2a}
-    .summary-line{display:flex;justify-content:space-between;margin:6px 0}
-    .total{color:var(--gold);font-weight:900;font-size:20px}
-    .finish{
-      width:100%;padding:15px;border:0;border-radius:10px;background:var(--gold);
-      color:#080808;font-weight:900;font-size:16px;
-    }
-    footer{border-top:1px solid var(--line);text-align:center;padding:35px 20px;color:#888}
-    .notice{
-      display:none;margin-top:15px;padding:13px;border-radius:9px;background:#102b18;
-      color:#bdf4c9;border:1px solid #235d32;
-    }
-    .cart-panel{
-      position:fixed;right:0;top:0;height:100%;width:min(420px,100%);
-      background:#111;z-index:100;border-left:1px solid #333;
-      transform:translateX(100%);transition:.25s;padding:25px;overflow:auto;
-    }
-    .cart-panel.open{transform:translateX(0)}
-    .cart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-    .close{background:none;border:0;color:white;font-size:28px}
-    .cart-item{padding:15px 0;border-bottom:1px solid #292929}
-    .cart-item-top{display:flex;justify-content:space-between;gap:10px}
-    .remove{color:#e88;background:none;border:0;font-size:12px}
-    .cart-total{font-size:22px;color:var(--gold);font-weight:900;margin:20px 0}
-    .go-checkout{width:100%;padding:13px;border:0;border-radius:9px;background:var(--gold);font-weight:900}
-    @media(max-width:760px){
-      .nav-links{display:none}
-      .products{grid-template-columns:1fr}
-      .product-img{height:430px}
-      .form-grid{grid-template-columns:1fr}
-      .field.full{grid-column:auto}
-      .hero{min-height:52vh}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Império das Camisas</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: #080808;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    height: 75px;
+    background: #050505;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    border-bottom: 1px solid #292929;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    color: #d4af37;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    display: block;
+    color: white;
+    font-size: 8px;
+    letter-spacing: 4px;
+    margin-top: 3px;
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: .2s;
+}
+
+nav a:hover {
+    color: #d4af37;
+}
+
+.cart {
+    background: transparent;
+    border: 1px solid #d4af37;
+    color: #d4af37;
+    padding: 10px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    font-size: 17px;
+}
+
+#contador {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    background: #d4af37;
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 520px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    background:
+        radial-gradient(circle at center, #191919 0%, #080808 65%);
+}
+
+.hero h1 {
+    color: #d4af37;
+    font-size: clamp(35px, 6vw, 58px);
+    letter-spacing: 3px;
+    line-height: 1.15;
+}
+
+.hero p {
+    color: #ccc;
+    font-size: 17px;
+    margin: 25px 0 32px;
+}
+
+.button {
+    display: inline-block;
+    background: #d4af37;
+    color: #000;
+    padding: 15px 32px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* =========================
+   CATEGORIAS
+========================= */
+
+.categorias {
+    padding: 70px 20px;
+    text-align: center;
+}
+
+.categorias h2 {
+    color: #d4af37;
+    letter-spacing: 2px;
+}
+
+.categorias-grid {
+    max-width: 950px;
+    margin: 35px auto 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.categoria {
+    background: #111;
+    border: 1px solid #292929;
+    padding: 30px 10px;
+    border-radius: 6px;
+    transition: .2s;
+}
+
+.categoria:hover {
+    border-color: #d4af37;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   PRODUTOS
+========================= */
+
+.produtos {
+    padding: 75px 20px;
+}
+
+.titulo {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.titulo p {
+    color: #d4af37;
+    font-size: 12px;
+    letter-spacing: 4px;
+}
+
+.titulo h2 {
+    font-size: 32px;
+    margin: 10px 0;
+}
+
+.produtos-grid {
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.produto {
+    background: #111;
+    border: 1px solid #292929;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: .25s;
+}
+
+.produto:hover {
+    border-color: #d4af37;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   IMAGEM
+========================= */
+
+.foto-produto {
+    width: 100%;
+    height: 470px;
+    background: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.foto-produto img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+}
+
+/* =========================
+   INFORMAÇÕES
+========================= */
+
+.produto-info {
+    padding: 23px;
+}
+
+.produto-info h3 {
+    margin: 0 0 8px;
+    font-size: 19px;
+}
+
+.produto-info p {
+    color: #999;
+    min-height: 40px;
+}
+
+.preco {
+    color: #d4af37;
+    display: block;
+    font-size: 25px;
+    margin: 17px 0;
+}
+
+/* =========================
+   TAMANHOS
+========================= */
+
+.tamanho-titulo {
+    color: #ddd;
+    font-size: 14px;
+    margin-bottom: 9px;
+}
+
+.tamanhos {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.tamanho {
+    width: 45px;
+    height: 40px;
+    background: #080808;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.tamanho:hover {
+    border-color: #d4af37;
+}
+
+.tamanho.selecionado {
+    background: #d4af37;
+    color: #000;
+    border-color: #d4af37;
+    font-weight: bold;
+}
+
+/* =========================
+   QUANTIDADE
+========================= */
+
+.quantidade-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.quantidade-area button {
+    width: 36px;
+    height: 36px;
+    background: #080808;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.quantidade {
+    min-width: 25px;
+    text-align: center;
+}
+
+/* =========================
+   COMPRAR
+========================= */
+
+.comprar {
+    width: 100%;
+    padding: 15px;
+    background: #d4af37;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.comprar:hover {
+    opacity: .85;
+}
+
+/* =========================
+   OFERTA
+========================= */
+
+.oferta {
+    margin: 50px 20px;
+    padding: 55px 20px;
+    text-align: center;
+    background: #111;
+    border: 1px solid #292929;
+}
+
+.oferta h2 {
+    color: #d4af37;
+}
+
+.oferta strong {
+    display: block;
+    font-size: 30px;
+    margin: 15px 0;
+}
+
+/* =========================
+   CARRINHO
+========================= */
+
+.carrinho {
+    position: fixed;
+    top: 0;
+    right: -420px;
+    width: 400px;
+    max-width: 92%;
+    height: 100vh;
+    background: #111;
+    z-index: 2000;
+    padding: 25px;
+    transition: .4s;
+    overflow-y: auto;
+    box-shadow: -10px 0 30px rgba(0,0,0,.5);
+}
+
+.carrinho.aberto {
+    right: 0;
+}
+
+.carrinho-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #333;
+    padding-bottom: 15px;
+}
+
+.carrinho-topo h2 {
+    color: #d4af37;
+}
+
+.fechar {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.item {
+    padding: 18px 0;
+    border-bottom: 1px solid #292929;
+}
+
+.item strong {
+    display: block;
+    margin-bottom: 7px;
+}
+
+.item small {
+    color: #999;
+    line-height: 1.6;
+}
+
+.preco-item {
+    display: block;
+    color: #d4af37;
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+.item button {
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid #555;
+    color: white;
+    padding: 7px 10px;
+    cursor: pointer;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+.total strong {
+    color: #d4af37;
+}
+
+.finalizar {
+    width: 100%;
+    margin-top: 25px;
+    padding: 16px;
+    background: #d4af37;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* =========================
+   FUNDO
+========================= */
+
+.fundo {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.75);
+    z-index: 1500;
+    display: none;
+}
+
+.fundo.ativo {
+    display: block;
+}
+
+/* =========================
+   CHECKOUT
+========================= */
+
+.checkout {
+    display: none;
+    padding: 70px 20px;
+    max-width: 720px;
+    margin: auto;
+}
+
+.checkout.ativo {
+    display: block;
+}
+
+.checkout h2 {
+    text-align: center;
+    color: #d4af37;
+}
+
+.checkout-subtitulo {
+    text-align: center;
+    color: #999;
+    margin-bottom: 35px;
+}
+
+.formulario {
+    background: #111;
+    border: 1px solid #292929;
+    padding: 25px;
+    border-radius: 7px;
+}
+
+.formulario h3 {
+    color: #d4af37;
+    margin-top: 28px;
+    border-bottom: 1px solid #292929;
+    padding-bottom: 12px;
+}
+
+.formulario h3:first-child {
+    margin-top: 0;
+}
+
+.campo {
+    margin-bottom: 18px;
+}
+
+.campo label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+}
+
+.campo input,
+.campo select {
+    width: 100%;
+    padding: 13px;
+    background: #080808;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: white;
+    font-size: 15px;
+}
+
+.linha {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.pagamento {
+    display: grid;
+    gap: 10px;
+}
+
+.pagamento label {
+    background: #080808;
+    border: 1px solid #444;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pagamento input {
+    margin-right: 8px;
+}
+
+.resumo-checkout {
+    margin-top: 25px;
+    padding: 20px;
+    background: #080808;
+    border: 1px solid #292929;
+}
+
+.resumo-checkout div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.total-final {
+    border-top: 1px solid #333;
+    padding-top: 15px;
+    font-size: 21px;
+    color: #d4af37;
+}
+
+.confirmar {
+    width: 100%;
+    margin-top: 25px;
+    padding: 17px;
+    background: #d4af37;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.voltar {
+    width: 100%;
+    margin-top: 10px;
+    padding: 13px;
+    background: transparent;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* =========================
+   SUCESSO
+========================= */
+
+.sucesso {
+    display: none;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.sucesso.ativo {
+    display: block;
+}
+
+.sucesso-icon {
+    font-size: 60px;
+}
+
+.sucesso h2 {
+    color: #d4af37;
+}
+
+/* =========================
+   RODAPÉ
+========================= */
+
+footer {
+    text-align: center;
+    padding: 50px 20px;
+    border-top: 1px solid #292929;
+}
+
+footer strong {
+    color: #d4af37;
+}
+
+footer p {
+    color: #888;
+}
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 700px) {
+
+    header {
+        padding: 0 15px;
     }
 
-    /* ===== CARDS PREMIUM ===== */
-    .product {
-      position:relative;
-      background:linear-gradient(145deg,#151515,#0c0c0c);
-      border:1px solid rgba(212,175,55,.25);
-      border-radius:20px;
-      overflow:hidden;
-      transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease;
-    }
-    .product:hover {
-      transform:translateY(-6px);
-      border-color:rgba(212,175,55,.7);
-      box-shadow:0 18px 45px rgba(0,0,0,.55);
-    }
-    .product-img {
-      position:relative;
-      height:540px;
-      background:#f5f5f5;
-      overflow:hidden;
-    }
-    .product-img::after {
-      content:"IMPÉRIO DAS CAMISAS";
-      position:absolute;
-      bottom:12px;
-      left:50%;
-      transform:translateX(-50%);
-      font-size:10px;
-      letter-spacing:2px;
-      color:#777;
-      opacity:.7;
-      white-space:nowrap;
-    }
-    .product-img img {
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      display:block;
-      padding:12px;
-      transition:transform .4s ease;
-    }
-    .product:hover .product-img img { transform:scale(1.04); }
-    .product-info {
-      padding:24px;
-      background:linear-gradient(to bottom,#151515,#0d0d0d);
-    }
-    .product-info h3 { font-size:22px;letter-spacing:.3px; }
-    .product-info .desc { color:#999;font-size:14px; }
-    .price { font-size:27px;margin-top:12px;color:#d4af37; }
-    .sizes { margin:20px 0; }
-    .size {
-      min-width:46px;height:42px;border-radius:8px;
-      transition:.2s ease;
-    }
-    .size:hover { border-color:#d4af37;color:#d4af37; }
-    .size.active {
-      background:#d4af37;border-color:#d4af37;color:#080808;
-      box-shadow:0 4px 12px rgba(212,175,55,.2);
-    }
-    .add {
-      min-height:46px;letter-spacing:.3px;transition:.2s ease;
-    }
-    .add:hover { background:#f0cf55;transform:translateY(-1px); }
-    .product::before {
-      content:"COLEÇÃO 2026";
-      position:absolute;top:16px;left:16px;z-index:5;
-      background:#d4af37;color:#080808;padding:7px 10px;
-      border-radius:6px;font-size:10px;font-weight:900;letter-spacing:1px;
-    }
-    @media (max-width:760px) {
-      .product-img { height:420px; }
-      .product-info { padding:20px; }
-      .product-info h3 { font-size:20px; }
+    nav {
+        display: none;
     }
 
-  </style>
+    .hero {
+        min-height: 450px;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .categorias-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .produtos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .foto-produto {
+        height: 430px;
+    }
+
+    .linha {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
 </head>
+
+
 <body>
 
+
+<!-- =========================
+     HEADER
+========================= -->
+
 <header>
-  <nav class="nav">
-    <div class="logo">IMPÉRIO DAS CAMISAS</div>
-    <div class="nav-links">
-      <a href="#inicio">Início</a>
-      <a href="#colecao">Coleção</a>
-      <a href="#checkout">Finalizar compra</a>
-    </div>
-    <button class="cart-btn" onclick="openCart()">🛒 Carrinho (<span id="cartCount">0</span>)</button>
-  </nav>
+
+<div class="logo">
+IMPÉRIO
+<span>DAS CAMISAS</span>
+</div>
+
+<nav>
+<a href="#inicio">Início</a>
+<a href="#produtos">Camisas</a>
+<a href="#ofertas">Ofertas</a>
+<a href="#contato">Contato</a>
+</nav>
+
+<button class="cart" onclick="abrirCarrinho()">
+🛒
+<span id="contador">0</span>
+</button>
+
 </header>
 
-<main>
-  <section class="hero" id="inicio">
-    <div>
-      <h1>IMPÉRIO DAS<br>CAMISAS</h1>
-      <p>Vista sua paixão. Vista seu time.</p>
-      <a class="cta" href="#colecao">VER CAMISAS</a>
-    </div>
-  </section>
 
-  <section id="colecao">
-    <div class="section-title">
-      <h2>COLEÇÃO 2026</h2>
-      <p>Camisas do Flamengo</p>
-    </div>
+<!-- =========================
+     HERO
+========================= -->
 
-    <div class="products">
+<section class="hero" id="inicio">
 
-      <article class="product">
-        <div class="product-img">
-          <img src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-flamengo%202.jpeg"
-               alt="Camisa do Flamengo modelo 1">
-        </div>
-        <div class="product-info">
-          <h3>Flamengo — Modelo 1</h3>
-          <p class="desc">Camisa masculina</p>
-          <div class="price">R$ 120,00</div>
-          <div class="cash">À vista • R$ 130,00 a prazo • até 2x no cartão</div>
-          <div class="sizes" id="sizes1">
-            <button class="size active" onclick="selectSize(1,'P',this)">P</button>
-            <button class="size" onclick="selectSize(1,'M',this)">M</button>
-            <button class="size" onclick="selectSize(1,'G',this)">G</button>
-            <button class="size" onclick="selectSize(1,'GG',this)">GG</button>
-          </div>
-          <div class="buy-row">
-            <div class="qty">
-              <button onclick="changeQty(1,-1)">−</button>
-              <span id="qty1">1</span>
-              <button onclick="changeQty(1,1)">+</button>
-            </div>
-            <button class="add" onclick="addToCart(1)">ADICIONAR AO CARRINHO</button>
-          </div>
-        </div>
-      </article>
+<div>
 
-      <article class="product">
-        <div class="product-img">
-          <img src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-flamengo1.jpeg"
-               alt="Camisa do Flamengo modelo 2">
-        </div>
-        <div class="product-info">
-          <h3>Flamengo — Modelo 2</h3>
-          <p class="desc">Camisa masculina</p>
-          <div class="price">R$ 120,00</div>
-          <div class="cash">À vista • R$ 130,00 a prazo • até 2x no cartão</div>
-          <div class="sizes" id="sizes2">
-            <button class="size active" onclick="selectSize(2,'P',this)">P</button>
-            <button class="size" onclick="selectSize(2,'M',this)">M</button>
-            <button class="size" onclick="selectSize(2,'G',this)">G</button>
-            <button class="size" onclick="selectSize(2,'GG',this)">GG</button>
-          </div>
-          <div class="buy-row">
-            <div class="qty">
-              <button onclick="changeQty(2,-1)">−</button>
-              <span id="qty2">1</span>
-              <button onclick="changeQty(2,1)">+</button>
-            </div>
-            <button class="add" onclick="addToCart(2)">ADICIONAR AO CARRINHO</button>
-          </div>
-        </div>
-      </article>
+<h1>
+VISTA SUA PAIXÃO.
+<br>
+VISTA SEU TIME.
+</h1>
 
-    </div>
+<p>
+Camisas dos maiores clubes
+do Brasil e do mundo.
+</p>
 
-    <div class="offer">
-      <strong>R$ 120,00 à vista</strong><br>
-      R$ 130,00 a prazo • Até 2x no cartão
-    </div>
-  </section>
+<a href="#produtos" class="button">
+VER CAMISAS
+</a>
 
-  <section class="checkout" id="checkout">
-    <div class="section-title">
-      <h2>FINALIZAR COMPRA</h2>
-      <p>Preencha seus dados para enviar o pedido.</p>
-    </div>
+</div>
 
-    <div class="checkout-box">
-      <div id="checkoutItems" class="summary">Seu carrinho está vazio.</div>
+</section>
 
-      <div class="form-grid">
-        <div class="field">
-          <label>Nome completo</label>
-          <input id="nome" type="text" placeholder="Seu nome">
-        </div>
-        <div class="field">
-          <label>Telefone</label>
-          <input id="telefone" type="tel" placeholder="(00) 00000-0000">
-        </div>
-        <div class="field">
-          <label>CEP</label>
-          <input id="cep" type="text" placeholder="00000-000">
-        </div>
-        <div class="field">
-          <label>Estado</label>
-          <select id="estado">
-            <option value="">Selecione</option>
-            <option>ES</option><option>RJ</option><option>SP</option><option>MG</option>
-            <option>BA</option><option>PR</option><option>SC</option><option>RS</option>
-            <option>GO</option><option>DF</option><option>PE</option><option>CE</option>
-            <option>Outro</option>
-          </select>
-        </div>
-        <div class="field full">
-          <label>Rua</label>
-          <input id="rua" type="text" placeholder="Rua / Avenida">
-        </div>
-        <div class="field">
-          <label>Número</label>
-          <input id="numero" type="text" placeholder="Número">
-        </div>
-        <div class="field">
-          <label>Complemento</label>
-          <input id="complemento" type="text" placeholder="Apartamento, casa...">
-        </div>
-        <div class="field">
-          <label>Bairro</label>
-          <input id="bairro" type="text" placeholder="Bairro">
-        </div>
-        <div class="field">
-          <label>Cidade</label>
-          <input id="cidade" type="text" placeholder="Cidade">
-        </div>
-        <div class="field full">
-          <label>Forma de pagamento</label>
-          <select id="pagamento">
-            <option value="">Selecione</option>
-            <option>PIX</option>
-            <option>Cartão de crédito</option>
-          </select>
-        </div>
-      </div>
 
-      <div class="summary">
-        <div class="summary-line"><span>Produtos</span><span id="summaryProducts">R$ 0,00</span></div>
-        <div class="summary-line"><span>Frete</span><span>A calcular</span></div>
-        <div class="summary-line total"><span>Total dos produtos</span><span id="summaryTotal">R$ 0,00</span></div>
-      </div>
+<!-- =========================
+     CATEGORIAS
+========================= -->
 
-      <button class="finish" onclick="finishOrder()">FINALIZAR PEDIDO</button>
-      <div class="notice" id="notice"></div>
-    </div>
-  </section>
-</main>
+<section class="categorias">
 
-<footer>
-  © 2026 Império das Camisas — Vista sua paixão. Vista seu time.
+<h2>ENCONTRE SEU TIME</h2>
+
+<div class="categorias-grid">
+
+<div class="categoria">
+🇧🇷
+<br><br>
+<strong>BRASILEIROS</strong>
+</div>
+
+<div class="categoria">
+🌎
+<br><br>
+<strong>EUROPEUS</strong>
+</div>
+
+<div class="categoria">
+👕
+<br><br>
+<strong>MASCULINAS</strong>
+</div>
+
+<div class="categoria">
+🧒
+<br><br>
+<strong>INFANTIS</strong>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     PRODUTOS
+========================= -->
+
+<section class="produtos" id="produtos">
+
+<div class="titulo">
+
+<p>COLEÇÃO 2026</p>
+
+<h2>CAMISAS</h2>
+
+</div>
+
+
+<div class="produtos-grid">
+
+
+<!-- 1 FLAMENGO -->
+
+<div class="produto">
+
+<div class="foto-produto">
+
+<img
+src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-flamengo1.jpeg"
+alt="Camisa do Flamengo Modelo 1">
+
+</div>
+
+<div class="produto-info">
+
+<h3>Flamengo — Modelo 1</h3>
+
+<p>
+Camisa branca com detalhes vermelhos e pretos.
+</p>
+
+<strong class="preco">
+R$ 120,00
+</strong>
+
+<div class="tamanho-titulo">
+Tamanho:
+</div>
+
+<div class="tamanhos">
+
+<button class="tamanho" onclick="selecionarTamanho(1,'P',this)">P</button>
+<button class="tamanho" onclick="selecionarTamanho(1,'M',this)">M</button>
+<button class="tamanho" onclick="selecionarTamanho(1,'G',this)">G</button>
+<button class="tamanho" onclick="selecionarTamanho(1,'GG',this)">GG</button>
+
+</div>
+
+<div class="tamanho-titulo">
+Quantidade:
+</div>
+
+<div class="quantidade-area">
+
+<button onclick="alterarQuantidade(1,-1)">−</button>
+
+<span id="quantidade1" class="quantidade">1</span>
+
+<button onclick="alterarQuantidade(1,1)">+</button>
+
+</div>
+
+<button class="comprar"
+onclick="adicionarProduto(1,'Flamengo — Modelo 1',120)">
+
+ADICIONAR AO CARRINHO
+
+</button>
+
+</div>
+</div>
+
+
+<!-- 2 FLAMENGO -->
+
+<div class="produto">
+
+<div class="foto-produto">
+
+<img
+src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-flamengo%202.jpeg"
+alt="Camisa do Flamengo Modelo 2">
+
+</div>
+
+<div class="produto-info">
+
+<h3>Flamengo — Modelo 2</h3>
+
+<p>
+Camisa branca com detalhes dourados.
+</p>
+
+<strong class="preco">
+R$ 120,00
+</strong>
+
+<div class="tamanho-titulo">
+Tamanho:
+</div>
+
+<div class="tamanhos">
+
+<button class="tamanho" onclick="selecionarTamanho(2,'P',this)">P</button>
+<button class="tamanho" onclick="selecionarTamanho(2,'M',this)">M</button>
+<button class="tamanho" onclick="selecionarTamanho(2,'G',this)">G</button>
+<button class="tamanho" onclick="selecionarTamanho(2,'GG',this)">GG</button>
+
+</div>
+
+<div class="tamanho-titulo">
+Quantidade:
+</div>
+
+<div class="quantidade-area">
+
+<button onclick="alterarQuantidade(2,-1)">−</button>
+
+<span id="quantidade2" class="quantidade">1</span>
+
+<button onclick="alterarQuantidade(2,1)">+</button>
+
+</div>
+
+<button class="comprar"
+onclick="adicionarProduto(2,'Flamengo — Modelo 2',120)">
+
+ADICIONAR AO CARRINHO
+
+</button>
+
+</div>
+</div>
+
+
+<!-- 3 VASCO -->
+
+<div class="produto">
+
+<div class="foto-produto">
+
+<img
+src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/vasco-da-gama%201.jpeg"
+alt="Camisa do Vasco da Gama Modelo 1">
+
+</div>
+
+<div class="produto-info">
+
+<h3>Vasco da Gama — Modelo 1</h3>
+
+<p>
+Camisa oficial de torcida.
+</p>
+
+<strong class="preco">
+R$ 120,00
+</strong>
+
+<div class="tamanho-titulo">
+Tamanho:
+</div>
+
+<div class="tamanhos">
+
+<button class="tamanho" onclick="selecionarTamanho(3,'P',this)">P</button>
+<button class="tamanho" onclick="selecionarTamanho(3,'M',this)">M</button>
+<button class="tamanho" onclick="selecionarTamanho(3,'G',this)">G</button>
+<button class="tamanho" onclick="selecionarTamanho(3,'GG',this)">GG</button>
+
+</div>
+
+<div class="tamanho-titulo">
+Quantidade:
+</div>
+
+<div class="quantidade-area">
+
+<button onclick="alterarQuantidade(3,-1)">−</button>
+
+<span id="quantidade3" class="quantidade">1</span>
+
+<button onclick="alterarQuantidade(3,1)">+</button>
+
+</div>
+
+<button class="comprar"
+onclick="adicionarProduto(3,'Vasco da Gama — Modelo 1',120)">
+
+ADICIONAR AO CARRINHO
+
+</button>
+
+</div>
+</div>
+
+
+<!-- 4 VASCO -->
+
+<div class="produto">
+
+<div class="foto-produto">
+
+<img
+src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/vasco-da-gama%202.jpeg"
+alt="Camisa do Vasco da Gama Modelo 2">
+
+</div>
+
+<div class="produto-info">
+
+<h3>Vasco da Gama — Modelo 2</h3>
+
+<p>
+Camisa do Vasco da Gama.
+</p>
+
+<strong class="preco">
+R$ 120,00
+</strong>
+
+<div class="tamanho-titulo">
+Tamanho:
+</div>
+
+<div class="tamanhos">
+
+<button class="tamanho" onclick="selecionarTamanho(4,'P',this)">P</button>
+<button class="tamanho" onclick="selecionarTamanho(4,'M',this)">M</button>
+<button class="tamanho" onclick="selecionarTamanho(4,'G',this)">G</button>
+<button class="tamanho" onclick="selecionarTamanho(4,'GG',this)">GG</button>
+
+</div>
+
+<div class="tamanho-titulo">
+Quantidade:
+</div>
+
+<div class="quantidade-area">
+
+<button onclick="alterarQuantidade(4,-1)">−</button>
+
+<span id="quantidade4" class="quantidade">1</span>
+
+<button onclick="alterarQuantidade(4,1)">+</button>
+
+</div>
+
+<button class="comprar"
+onclick="adicionarProduto(4,'Vasco da Gama — Modelo 2',120)">
+
+ADICIONAR AO CARRINHO
+
+</button>
+
+</div>
+</div>
+
+
+<!-- 5 CORINTHIANS -->
+
+<div class="produto">
+
+<div class="foto-produto">
+
+<img
+src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/corinthians%20preta.jpeg"
+alt="Camisa preta do Corinthians">
+
+</div>
+
+<div class="produto-info">
+
+<h3>Corinthians — Modelo 1</h3>
+
+<p>
+Camisa preta do Corinthians.
+</p>
+
+<strong class="preco">
+R$ 120,00
+</strong>
+
+<div class="tamanho-titulo">
+Tamanho:
+</div>
+
+<div class="tamanhos">
+
+<button class="tamanho" onclick="selecionarTamanho(5,'P',this)">P</button>
+<button class="tamanho" onclick="selecionarTamanho(5,'M',this)">M</button>
+<button class="tamanho" onclick="selecionarTamanho(5,'G',this)">G</button>
+<button class="tamanho" onclick="selecionarTamanho(5,'GG',this)">GG</button>
+
+</div>
+
+<div class="tamanho-titulo">
+Quantidade:
+</div>
+
+<div class="quantidade-area">
+
+<button onclick="alterarQuantidade(5,-1)">−</button>
+
+<span id="quantidade5" class="quantidade">1</span>
+
+<button onclick="alterarQuantidade(5,1)">+</button>
+
+</div>
+
+<button class="comprar"
+onclick="adicionarProduto(5,'Corinthians — Modelo 1',120)">
+
+ADICIONAR AO CARRINHO
+
+</button>
+
+</div>
+</div>
+
+
+<!-- 6 CORINTHIANS -->
+
+<div class="produto">
+
+<div class="foto-produto">
+
+<img
+src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-corinthians1jpeg"
+alt="Camisa do Corinthians Modelo 2">
+
+</div>
+
+<div class="produto-info">
+
+<h3>Corinthians — Modelo 2</h3>
+
+<p>
+Camisa do Corinthians.
+</p>
+
+<strong class="preco">
+R$ 120,00
+</strong>
+
+<div class="tamanho-titulo">
+Tamanho:
+</div>
+
+<div class="tamanhos">
+
+<button class="tamanho" onclick="selecionarTamanho(6,'P',this)">P</button>
+<button class="tamanho" onclick="selecionarTamanho(6,'M',this)">M</button>
+<button class="tamanho" onclick="selecionarTamanho(6,'G',this)">G</button>
+<button class="tamanho" onclick="selecionarTamanho(6,'GG',this)">GG</button>
+
+</div>
+
+<div class="tamanho-titulo">
+Quantidade:
+</div>
+
+<div class="quantidade-area">
+
+<button onclick="alterarQuantidade(6,-1)">−</button>
+
+<span id="quantidade6" class="quantidade">1</span>
+
+<button onclick="alterarQuantidade(6,1)">+</button>
+
+</div>
+
+<button class="comprar"
+onclick="adicionarProduto(6,'Corinthians — Modelo 2',120)">
+
+ADICIONAR AO CARRINHO
+
+</button>
+
+</div>
+</div>
+
+
+<!-- 7 CORINTHIANS -->
+
+<div class="produto">
+
+<div class="foto-produto">
+
+<img
+src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-corinthians2.jpeg"
+alt="Camisa do Corinthians Modelo 3">
+
+</div>
+
+<div class="produto-info">
+
+<h3>Corinthians — Modelo 3</h3>
+
+<p>
+Camisa do Corinthians.
+</p>
+
+<strong class="preco">
+R$ 120,00
+</strong>
+
+<div class="tamanho-titulo">
+Tamanho:
+</div>
+
+<div class="tamanhos">
+
+<button class="tamanho" onclick="selecionarTamanho(7,'P',this)">P</button>
+<button class="tamanho" onclick="selecionarTamanho(7,'M',this)">M</button>
+<button class="tamanho" onclick="selecionarTamanho(7,'G',this)">G</button>
+<button class="tamanho" onclick="selecionarTamanho(7,'GG',this)">GG</button>
+
+</div>
+
+<div class="tamanho-titulo">
+Quantidade:
+</div>
+
+<div class="quantidade-area">
+
+<button onclick="alterarQuantidade(7,-1)">−</button>
+
+<span id="quantidade7" class="quantidade">1</span>
+
+<button onclick="alterarQuantidade(7,1)">+</button>
+
+</div>
+
+<button class="comprar"
+onclick="adicionarProduto(7,'Corinthians — Modelo 3',120)">
+
+ADICIONAR AO CARRINHO
+
+</button>
+
+</div>
+</div>
+
+
+<!-- 8 ARSENAL -->
+
+<div class="produto">
+
+<div class="foto-produto">
+
+<img
+src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-arsenal%201.jpeg"
+alt="Camisa do Arsenal">
+
+</div>
+
+<div class="produto-info">
+
+<h3>Arsenal — Modelo 1</h3>
+
+<p>
+Camisa do Arsenal.
+</p>
+
+<strong class="preco">
+R$ 120,00
+</strong>
+
+<div class="tamanho-titulo">
+Tamanho:
+</div>
+
+<div class="tamanhos">
+
+<button class="tamanho" onclick="selecionarTamanho(8,'P',this)">P</button>
+<button class="tamanho" onclick="selecionarTamanho(8,'M',this)">M</button>
+<button class="tamanho" onclick="selecionarTamanho(8,'G',this)">G</button>
+<button class="tamanho" onclick="selecionarTamanho(8,'GG',this)">GG</button>
+
+</div>
+
+<div class="tamanho-titulo">
+Quantidade:
+</div>
+
+<div class="quantidade-area">
+
+<button onclick="alterarQuantidade(8,-1)">−</button>
+
+<span id="quantidade8" class="quantidade">1</span>
+
+<button onclick="alterarQuantidade(8,1)">+</button>
+
+</div>
+
+<button class="comprar"
+onclick="adicionarProduto(8,'Arsenal — Modelo 1',120)">
+
+ADICIONAR AO CARRINHO
+
+</button>
+
+</div>
+</div>
+
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     OFERTA
+========================= -->
+
+<section class="oferta" id="ofertas">
+
+<h2>OFERTA ESPECIAL</h2>
+
+<p>
+Camisas de qualidade pelo melhor preço.
+</p>
+
+<strong>
+R$ 120,00 à vista
+</strong>
+
+<p>
+R$ 130,00 a prazo • Até 2x no cartão
+</p>
+
+</section>
+
+
+<!-- =========================
+     CHECKOUT
+========================= -->
+
+<section id="checkout" class="checkout">
+
+<h2>FINALIZAR COMPRA</h2>
+
+<p class="checkout-subtitulo">
+Preencha seus dados para continuar.
+</p>
+
+<div class="formulario">
+
+<h3>👤 Seus dados</h3>
+
+<div class="campo">
+
+<label>Nome completo</label>
+
+<input
+type="text"
+id="nome"
+placeholder="Digite seu nome">
+
+</div>
+
+
+<div class="campo">
+
+<label>Telefone</label>
+
+<input
+type="tel"
+id="telefone"
+placeholder="(00) 00000-0000">
+
+</div>
+
+
+<h3>📍 Endereço de entrega</h3>
+
+
+<div class="campo">
+
+<label>CEP</label>
+
+<input
+type="text"
+id="cep"
+placeholder="00000-000">
+
+</div>
+
+
+<div class="campo">
+
+<label>Rua</label>
+
+<input
+type="text"
+id="rua"
+placeholder="Nome da rua">
+
+</div>
+
+
+<div class="linha">
+
+<div class="campo">
+
+<label>Número</label>
+
+<input
+type="text"
+id="numero"
+placeholder="123">
+
+</div>
+
+
+<div class="campo">
+
+<label>Complemento</label>
+
+<input
+type="text"
+id="complemento"
+placeholder="Opcional">
+
+</div>
+
+</div>
+
+
+<div class="campo">
+
+<label>Bairro</label>
+
+<input
+type="text"
+id="bairro"
+placeholder="Seu bairro">
+
+</div>
+
+
+<div class="linha">
+
+<div class="campo">
+
+<label>Cidade</label>
+
+<input
+type="text"
+id="cidade"
+placeholder="Sua cidade">
+
+</div>
+
+
+<div class="campo">
+
+<label>Estado</label>
+
+<select id="estado">
+
+<option value="">
+Selecione
+</option>
+
+<option>ES</option>
+<option>RJ</option>
+<option>SP</option>
+<option>MG</option>
+<option>BA</option>
+<option>PR</option>
+<option>SC</option>
+<option>RS</option>
+<option>GO</option>
+<option>DF</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<h3>📦 Entrega</h3>
+
+<div class="pagamento">
+
+<label>
+<input type="radio" name="entrega" value="normal" checked>
+Entrega normal
+</label>
+
+<label>
+<input type="radio" name="entrega" value="expressa">
+Entrega expressa
+</label>
+
+</div>
+
+
+<h3>💳 Forma de pagamento</h3>
+
+<div class="pagamento">
+
+<label>
+<input type="radio" name="pagamento" value="pix" checked>
+PIX
+</label>
+
+<label>
+<input type="radio" name="pagamento" value="cartao">
+Cartão de crédito/débito
+</label>
+
+</div>
+
+
+<div class="resumo-checkout">
+
+<div>
+
+<span>
+Produtos
+</span>
+
+<strong id="resumoProdutos">
+R$ 0,00
+</strong>
+
+</div>
+
+
+<div>
+
+<span>
+Frete
+</span>
+
+<strong>
+A calcular
+</strong>
+
+</div>
+
+
+<div class="total-final">
+
+<span>
+Total
+</span>
+
+<strong id="totalCheckout">
+R$ 0,00
+</strong>
+
+</div>
+
+</div>
+
+
+<button
+class="confirmar"
+onclick="confirmarPedido()">
+
+CONFIRMAR PEDIDO
+
+</button>
+
+
+<button
+class="voltar"
+onclick="voltarParaCarrinho()">
+
+VOLTAR AO CARRINHO
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     SUCESSO
+========================= -->
+
+<section id="sucesso" class="sucesso">
+
+<div class="sucesso-icon">
+✅
+</div>
+
+<h2>
+PEDIDO RECEBIDO!
+</h2>
+
+<p>
+Seu pedido foi registrado com sucesso.
+</p>
+
+<p id="numeroPedido"></p>
+
+</section>
+
+
+<!-- =========================
+     RODAPÉ
+========================= -->
+
+<footer id="contato">
+
+<strong>
+IMPÉRIO DAS CAMISAS
+</strong>
+
+<p>
+Vista sua paixão. Vista seu time.
+</p>
+
+<p>
+Instagram: @imperio_das_camisas1
+</p>
+
+<p>
+©️ 2026 Império das Camisas
+</p>
+
 </footer>
 
-<aside class="cart-panel" id="cartPanel">
-  <div class="cart-head">
-    <h2>Seu carrinho</h2>
-    <button class="close" onclick="closeCart()">×</button>
-  </div>
-  <div id="cartItems">Seu carrinho está vazio.</div>
-  <div class="cart-total">Total: <span id="cartTotal">R$ 0,00</span></div>
-  <button class="go-checkout" onclick="goCheckout()">IR PARA FINALIZAÇÃO</button>
-</aside>
+
+<!-- =========================
+     CARRINHO
+========================= -->
+
+<div id="carrinho" class="carrinho">
+
+<div class="carrinho-topo">
+
+<h2>
+Seu carrinho
+</h2>
+
+<button
+class="fechar"
+onclick="fecharCarrinho()">
+
+✕
+
+</button>
+
+</div>
+
+
+<div id="itensCarrinho">
+
+<p>
+Seu carrinho está vazio.
+</p>
+
+</div>
+
+
+<div class="total">
+
+<span>
+Total:
+</span>
+
+<strong id="totalCarrinho">
+R$ 0,00
+</strong>
+
+</div>
+
+
+<button
+class="finalizar"
+onclick="abrirCheckout()">
+
+FINALIZAR COMPRA
+
+</button>
+
+</div>
+
+
+<div
+id="fundo"
+class="fundo"
+onclick="fecharCarrinho()">
+</div>
+
 
 <script>
-  const products = {
-    1:{name:'Flamengo — Modelo 1',price:120},
-    2:{name:'Flamengo — Modelo 2',price:120}
-  };
 
-  const selectedSize = {1:'P',2:'P'};
-  const quantities = {1:1,2:1};
-  let cart = [];
+/* =========================
+   CONFIGURAÇÃO
+========================= */
 
-  function money(v){
-    return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-  }
+let carrinho = [];
 
-  function selectSize(id,size,button){
-    selectedSize[id]=size;
-    document.querySelectorAll('#sizes'+id+' .size').forEach(b=>b.classList.remove('active'));
-    button.classList.add('active');
-  }
+let tamanhosSelecionados = {
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
+    8: null
+};
 
-  function changeQty(id,delta){
-    quantities[id]=Math.max(1,quantities[id]+delta);
-    document.getElementById('qty'+id).textContent=quantities[id];
-  }
+let quantidades = {
+    1: 1,
+    2: 1,
+    3: 1,
+    4: 1,
+    5: 1,
+    6: 1,
+    7: 1,
+    8: 1
+};
 
-  function addToCart(id){
-    const item={id,size:selectedSize[id],qty:quantities[id]};
-    const existing=cart.find(x=>x.id===id && x.size===item.size);
-    if(existing) existing.qty+=item.qty;
-    else cart.push(item);
-    renderCart();
-    openCart();
-  }
 
-  function removeCart(index){
-    cart.splice(index,1);
-    renderCart();
-  }
+/* =========================
+   SELECIONAR TAMANHO
+========================= */
 
-  function renderCart(){
-    const count=cart.reduce((s,i)=>s+i.qty,0);
-    document.getElementById('cartCount').textContent=count;
+function selecionarTamanho(id, tamanho, botao) {
 
-    if(!cart.length){
-      document.getElementById('cartItems').innerHTML='Seu carrinho está vazio.';
-      document.getElementById('cartTotal').textContent=money(0);
-      updateCheckout();
-      return;
+    tamanhosSelecionados[id] = tamanho;
+
+    const botoes =
+        botao.parentElement.querySelectorAll(".tamanho");
+
+    botoes.forEach(function(item) {
+
+        item.classList.remove("selecionado");
+
+    });
+
+    botao.classList.add("selecionado");
+}
+
+
+/* =========================
+   QUANTIDADE
+========================= */
+
+function alterarQuantidade(id, valor) {
+
+    quantidades[id] += valor;
+
+    if (quantidades[id] < 1) {
+        quantidades[id] = 1;
     }
 
-    let total=0;
-    document.getElementById('cartItems').innerHTML=cart.map((i,index)=>{
-      const subtotal=products[i.id].price*i.qty;
-      total+=subtotal;
-      return `
-        <div class="cart-item">
-          <div class="cart-item-top">
-            <strong>${products[i.id].name}</strong>
-            <button class="remove" onclick="removeCart(${index})">Remover</button>
-          </div>
-          <div>Tamanho: ${i.size} • Quantidade: ${i.qty}</div>
-          <div>${money(subtotal)}</div>
-        </div>`;
-    }).join('');
-    document.getElementById('cartTotal').textContent=money(total);
-    updateCheckout();
-  }
+    document.getElementById(
+        "quantidade" + id
+    ).innerText = quantidades[id];
+}
 
-  function updateCheckout(){
-    const box=document.getElementById('checkoutItems');
-    const total=cart.reduce((s,i)=>s+products[i.id].price*i.qty,0);
-    document.getElementById('summaryProducts').textContent=money(total);
-    document.getElementById('summaryTotal').textContent=money(total);
 
-    if(!cart.length){
-      box.textContent='Seu carrinho está vazio.';
-      return;
-    }
+/* =========================
+   ADICIONAR PRODUTO
+========================= */
 
-    box.innerHTML=cart.map(i=>
-      `<div class="summary-line"><span>${products[i.id].name} — ${i.size} × ${i.qty}</span><span>${money(products[i.id].price*i.qty)}</span></div>`
-    ).join('');
-  }
+function adicionarProduto(id, nome, preco) {
 
-  function openCart(){document.getElementById('cartPanel').classList.add('open')}
-  function closeCart(){document.getElementById('cartPanel').classList.remove('open')}
+    const tamanho =
+        tamanhosSelecionados[id];
 
-  function goCheckout(){
-    closeCart();
-    document.getElementById('checkout').scrollIntoView({behavior:'smooth'});
-  }
+    if (!tamanho) {
 
-  function finishOrder(){
-    if(!cart.length){
-      alert('Adicione pelo menos uma camisa ao carrinho.');
-      return;
-    }
+        alert(
+            "Escolha o tamanho da camisa."
+        );
 
-    const required=[
-      ['nome','Nome'],['telefone','Telefone'],['cep','CEP'],
-      ['rua','Rua'],['numero','Número'],['bairro','Bairro'],
-      ['cidade','Cidade'],['estado','Estado'],['pagamento','Pagamento']
-    ];
-
-    for(const [id,label] of required){
-      if(!document.getElementById(id).value.trim()){
-        alert('Preencha o campo: '+label);
-        document.getElementById(id).focus();
         return;
-      }
     }
 
-    const order='IMP-'+Date.now().toString().slice(-8);
-    const notice=document.getElementById('notice');
-    notice.style.display='block';
-    notice.innerHTML=`<strong>Pedido ${order} criado!</strong><br>
-      Recebemos seus dados. A próxima etapa será conectar este botão ao pagamento real e ao sistema de pedidos.`;
-    notice.scrollIntoView({behavior:'smooth',block:'center'});
-  }
+    const quantidade =
+        quantidades[id];
 
-  renderCart();
+    carrinho.push({
+
+        id: id,
+        nome: nome,
+        preco: preco,
+        tamanho: tamanho,
+        quantidade: quantidade
+
+    });
+
+    atualizarCarrinho();
+
+    abrirCarrinho();
+}
+
+
+/* =========================
+   ATUALIZAR CARRINHO
+========================= */
+
+function atualizarCarrinho() {
+
+    const lista =
+        document.getElementById(
+            "itensCarrinho"
+        );
+
+    const contador =
+        document.getElementById(
+            "contador"
+        );
+
+    const totalElemento =
+        document.getElementById(
+            "totalCarrinho"
+        );
+
+    const quantidadeTotal =
+        carrinho.reduce(
+            function(total, item) {
+
+                return total + item.quantidade;
+
+            },
+            0
+        );
+
+    contador.innerText =
+        quantidadeTotal;
+
+
+    lista.innerHTML = "";
+
+
+    if (carrinho.length === 0) {
+
+        lista.innerHTML =
+            "<p>Seu carrinho está vazio.</p>";
+
+        totalElemento.innerText =
+            "R$ 0,00";
+
+        return;
+    }
+
+
+    let total = 0;
+
+
+    carrinho.forEach(
+        function(produto, index) {
+
+            const subtotal =
+                produto.preco *
+                produto.quantidade;
+
+            total += subtotal;
+
+
+            lista.innerHTML += `
+
+            <div class="item">
+
+                <strong>
+                    ${produto.nome}
+                </strong>
+
+                <small>
+
+                    Tamanho:
+                    ${produto.tamanho}
+
+                    <br>
+
+                    Quantidade:
+                    ${produto.quantidade}
+
+                </small>
+
+                <span class="preco-item">
+
+                    R$
+                    ${subtotal
+                        .toFixed(2)
+                        .replace(".", ",")}
+
+                </span>
+
+                <button
+                    onclick="removerProduto(${index})">
+
+                    REMOVER
+
+                </button>
+
+            </div>
+
+            `;
+        }
+    );
+
+
+    totalElemento.innerText =
+        "R$ " +
+        total
+            .toFixed(2)
+            .replace(".", ",");
+}
+
+
+/* =========================
+   REMOVER
+========================= */
+
+function removerProduto(index) {
+
+    carrinho.splice(index, 1);
+
+    atualizarCarrinho();
+}
+
+
+/* =========================
+   ABRIR CARRINHO
+========================= */
+
+function abrirCarrinho() {
+
+    document
+        .getElementById("carrinho")
+        .classList.add("aberto");
+
+    document
+        .getElementById("fundo")
+        .classList.add("ativo");
+}
+
+
+/* =========================
+   FECHAR CARRINHO
+========================= */
+
+function fecharCarrinho() {
+
+    document
+        .getElementById("carrinho")
+        .classList.remove("aberto");
+
+    document
+        .getElementById("fundo")
+        .classList.remove("ativo");
+}
+
+
+/* =========================
+   ABRIR CHECKOUT
+========================= */
+
+function abrirCheckout() {
+
+    if (carrinho.length === 0) {
+
+        alert(
+            "Seu carrinho está vazio!"
+        );
+
+        return;
+    }
+
+
+    fecharCarrinho();
+
+
+    document
+        .getElementById("checkout")
+        .classList.add("ativo");
+
+
+    atualizarResumo();
+
+
+    document
+        .getElementById("checkout")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+}
+
+
+/* =========================
+   RESUMO
+========================= */
+
+function atualizarResumo() {
+
+    let total = 0;
+
+
+    carrinho.forEach(
+        function(produto) {
+
+            total +=
+                produto.preco *
+                produto.quantidade;
+
+        }
+    );
+
+
+    document.getElementById(
+        "resumoProdutos"
+    ).innerText =
+
+        "R$ " +
+        total
+            .toFixed(2)
+            .replace(".", ",");
+
+
+    document.getElementById(
+        "totalCheckout"
+    ).innerText =
+
+        "R$ " +
+        total
+            .toFixed(2)
+            .replace(".", ",");
+}
+
+
+/* =========================
+   VOLTAR
+========================= */
+
+function voltarParaCarrinho() {
+
+    document
+        .getElementById("checkout")
+        .classList.remove("ativo");
+
+    abrirCarrinho();
+}
+
+
+/* =========================
+   CONFIRMAR PEDIDO
+========================= */
+
+function confirmarPedido() {
+
+    const nome =
+        document
+            .getElementById("nome")
+            .value
+            .trim();
+
+    const telefone =
+        document
+            .getElementById("telefone")
+            .value
+            .trim();
+
+    const cep =
+        document
+            .getElementById("cep")
+            .value
+            .trim();
+
+    const rua =
+        document
+            .getElementById("rua")
+            .value
+            .trim();
+
+    const numero =
+        document
+            .getElementById("numero")
+            .value
+            .trim();
+
+    const bairro =
+        document
+            .getElementById("bairro")
+            .value
+            .trim();
+
+    const cidade =
+        document
+            .getElementById("cidade")
+            .value
+            .trim();
+
+    const estado =
+        document
+            .getElementById("estado")
+            .value;
+
+
+    if (
+        !nome ||
+        !telefone ||
+        !cep ||
+        !rua ||
+        !numero ||
+        !bairro ||
+        !cidade ||
+        !estado
+    ) {
+
+        alert(
+            "Preencha todos os campos obrigatórios."
+        );
+
+        return;
+    }
+
+
+    const numeroPedido =
+        Math.floor(
+            1000 +
+            Math.random() * 9000
+        );
+
+
+    document
+        .getElementById("checkout")
+        .classList.remove("ativo");
+
+
+    document
+        .getElementById("sucesso")
+        .classList.add("ativo");
+
+
+    document.getElementById(
+        "numeroPedido"
+    ).innerText =
+
+        "Pedido #" +
+        numeroPedido;
+
+
+    document
+        .getElementById("sucesso")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+}
+
 </script>
+
 </body>
 </html>
