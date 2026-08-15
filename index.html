@@ -7,6 +7,7 @@
 <title>Império das Camisas</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -18,47 +19,52 @@ html {
 body {
     margin: 0;
     background: #080808;
-    color: white;
-    font-family: Arial, sans-serif;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* CABEÇALHO */
+/* =========================
+   CABEÇALHO
+========================= */
+
 header {
     height: 75px;
     background: #050505;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0 22px;
     border-bottom: 1px solid #292929;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .logo {
     color: #d4af37;
-    font-size: 17px;
+    font-size: 18px;
     font-weight: bold;
     letter-spacing: 2px;
 }
 
 .logo span {
     display: block;
-    color: white;
+    color: #fff;
     font-size: 8px;
     letter-spacing: 4px;
+    margin-top: 2px;
 }
 
 nav {
     display: flex;
-    gap: 20px;
+    gap: 25px;
 }
 
 nav a {
-    color: white;
+    color: #fff;
     text-decoration: none;
     font-size: 13px;
+    transition: .2s;
 }
 
 nav a:hover {
@@ -69,10 +75,11 @@ nav a:hover {
     background: transparent;
     border: 1px solid #d4af37;
     color: #d4af37;
-    padding: 9px 13px;
+    padding: 10px 14px;
     border-radius: 5px;
     cursor: pointer;
     position: relative;
+    font-size: 17px;
 }
 
 #contador {
@@ -81,50 +88,65 @@ nav a:hover {
     right: -8px;
     background: #d4af37;
     color: #000;
-    width: 19px;
-    height: 19px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     font-size: 11px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: bold;
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
+
 .hero {
     min-height: 520px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 30px;
+    padding: 40px 20px;
+    background:
+        radial-gradient(circle at center, #171717 0%, #080808 60%);
 }
 
 .hero h1 {
-    font-size: 45px;
+    font-size: clamp(34px, 6vw, 55px);
     letter-spacing: 3px;
     color: #d4af37;
+    margin-bottom: 20px;
 }
 
 .hero p {
-    color: #ddd;
+    color: #ccc;
     font-size: 17px;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
 }
 
 .button {
     display: inline-block;
     background: #d4af37;
     color: #000;
-    padding: 15px 30px;
+    padding: 15px 32px;
     border-radius: 4px;
     text-decoration: none;
     font-weight: bold;
+    transition: .2s;
 }
 
-/* CATEGORIAS */
+.button:hover {
+    transform: translateY(-2px);
+}
+
+/* =========================
+   CATEGORIAS
+========================= */
+
 .categorias {
-    padding: 60px 20px;
+    padding: 65px 20px;
     text-align: center;
 }
 
@@ -135,131 +157,178 @@ nav a:hover {
 
 .categorias-grid {
     max-width: 900px;
-    margin: 30px auto;
+    margin: 30px auto 0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
+    gap: 14px;
 }
 
 .categoria {
     background: #111;
     border: 1px solid #292929;
-    padding: 25px 10px;
-    border-radius: 5px;
+    padding: 28px 10px;
+    border-radius: 6px;
+    transition: .2s;
 }
 
-/* PRODUTOS */
+.categoria:hover {
+    border-color: #d4af37;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   PRODUTOS
+========================= */
+
 .produtos {
-    padding: 70px 20px;
+    padding: 75px 20px;
 }
 
 .titulo {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 45px;
 }
 
 .titulo p {
     color: #d4af37;
     font-size: 12px;
     letter-spacing: 4px;
+    margin-bottom: 8px;
 }
 
 .titulo h2 {
     font-size: 30px;
+    margin: 0;
 }
 
 .produtos-grid {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
+    gap: 28px;
 }
 
 .produto {
     background: #111;
     border: 1px solid #292929;
-    border-radius: 7px;
+    border-radius: 8px;
     overflow: hidden;
+    transition: .25s;
 }
 
+.produto:hover {
+    border-color: #d4af37;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   FOTO DOS PRODUTOS
+========================= */
+
 .foto-produto {
-    height: 400px;
-    background: #181818;
+    width: 100%;
+    height: 500px;
+    background: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    padding: 8px;
 }
 
 .foto-produto img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    object-position: center;
     display: block;
+    transform: scale(1.05);
+    transition: transform .3s;
 }
 
+.produto:hover .foto-produto img {
+    transform: scale(1.08);
+}
+
+/* =========================
+   INFORMAÇÕES
+========================= */
+
 .produto-info {
-    padding: 22px;
+    padding: 23px;
 }
 
 .produto-info h3 {
-    margin: 0;
+    margin: 0 0 7px;
+    font-size: 19px;
 }
 
 .produto-info p {
     color: #999;
+    line-height: 1.5;
 }
 
 .produto-info strong {
     display: block;
     color: #d4af37;
-    font-size: 24px;
-    margin: 15px 0;
+    font-size: 25px;
+    margin: 17px 0;
 }
 
-/* TAMANHOS */
+/* =========================
+   TAMANHOS
+========================= */
+
 .tamanho-titulo {
     color: #ddd;
     font-size: 14px;
-    margin-bottom: 8px;
+    margin-bottom: 9px;
 }
 
 .tamanhos {
     display: flex;
-    gap: 7px;
-    margin-bottom: 15px;
+    gap: 8px;
+    margin-bottom: 18px;
 }
 
 .tamanho {
-    width: 43px;
-    height: 38px;
+    width: 45px;
+    height: 40px;
     background: #080808;
-    color: white;
+    color: #fff;
     border: 1px solid #555;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.tamanho:hover {
+    border-color: #d4af37;
 }
 
 .tamanho.selecionado {
     background: #d4af37;
     color: #000;
     border-color: #d4af37;
+    font-weight: bold;
 }
 
-/* QUANTIDADE */
+/* =========================
+   QUANTIDADE
+========================= */
+
 .quantidade-area {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
 .quantidade-area button {
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
     background: #080808;
-    color: white;
+    color: #fff;
     border: 1px solid #555;
     border-radius: 4px;
     font-size: 18px;
@@ -267,39 +336,71 @@ nav a:hover {
 }
 
 .quantidade {
-    min-width: 25px;
+    min-width: 28px;
     text-align: center;
+    font-weight: bold;
 }
 
-/* COMPRAR */
+/* =========================
+   BOTÃO COMPRAR
+========================= */
+
 .comprar {
     width: 100%;
-    padding: 14px;
+    padding: 15px;
     background: #d4af37;
     border: none;
     color: #000;
     font-weight: bold;
     cursor: pointer;
     border-radius: 4px;
+    transition: .2s;
 }
 
 .comprar:hover {
-    opacity: .9;
+    opacity: .88;
 }
 
-/* CARRINHO */
+/* =========================
+   OFERTA
+========================= */
+
+.oferta {
+    margin: 50px 20px;
+    padding: 55px 20px;
+    text-align: center;
+    background: #111;
+    border: 1px solid #292929;
+}
+
+.oferta h2 {
+    color: #d4af37;
+}
+
+.oferta strong {
+    display: block;
+    font-size: 30px;
+    color: #fff;
+    margin: 15px 0;
+}
+
+/* =========================
+   CARRINHO
+========================= */
+
 .carrinho {
     position: fixed;
     top: 0;
-    right: -400px;
-    width: 380px;
-    max-width: 90%;
+    right: -420px;
+    width: 400px;
+    max-width: 92%;
     height: 100vh;
     background: #111;
-    z-index: 1000;
+    z-index: 2000;
     padding: 25px;
     transition: .4s;
     overflow-y: auto;
+    box-shadow: -10px 0 30px rgba(0,0,0,.5);
 }
 
 .carrinho.aberto {
@@ -321,8 +422,8 @@ nav a:hover {
 .fechar {
     background: none;
     border: none;
-    color: white;
-    font-size: 22px;
+    color: #fff;
+    font-size: 23px;
     cursor: pointer;
 }
 
@@ -333,25 +434,27 @@ nav a:hover {
 
 .item strong {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
 }
 
 .item small {
     color: #999;
+    line-height: 1.5;
 }
 
 .item .preco-item {
     display: block;
     color: #d4af37;
-    margin-top: 8px;
+    margin-top: 9px;
+    font-weight: bold;
 }
 
 .item button {
     margin-top: 10px;
     background: transparent;
     border: 1px solid #555;
-    color: white;
-    padding: 6px 10px;
+    color: #fff;
+    padding: 7px 10px;
     cursor: pointer;
 }
 
@@ -377,12 +480,15 @@ nav a:hover {
     cursor: pointer;
 }
 
-/* FUNDO */
+/* =========================
+   FUNDO
+========================= */
+
 .fundo {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.7);
-    z-index: 999;
+    background: rgba(0,0,0,.72);
+    z-index: 1500;
     display: none;
 }
 
@@ -390,11 +496,14 @@ nav a:hover {
     display: block;
 }
 
-/* CHECKOUT */
+/* =========================
+   CHECKOUT
+========================= */
+
 .checkout {
     display: none;
-    padding: 60px 20px;
-    max-width: 700px;
+    padding: 70px 20px;
+    max-width: 720px;
     margin: auto;
 }
 
@@ -405,7 +514,6 @@ nav a:hover {
 .checkout h2 {
     text-align: center;
     color: #d4af37;
-    margin-bottom: 10px;
 }
 
 .checkout-subtitulo {
@@ -423,7 +531,7 @@ nav a:hover {
 
 .formulario h3 {
     color: #d4af37;
-    margin-top: 25px;
+    margin-top: 28px;
     border-bottom: 1px solid #292929;
     padding-bottom: 12px;
 }
@@ -449,7 +557,7 @@ nav a:hover {
     background: #080808;
     border: 1px solid #444;
     border-radius: 4px;
-    color: white;
+    color: #fff;
     font-size: 15px;
 }
 
@@ -530,12 +638,15 @@ nav a:hover {
     padding: 13px;
     background: transparent;
     border: 1px solid #444;
-    color: white;
+    color: #fff;
     border-radius: 4px;
     cursor: pointer;
 }
 
-/* SUCESSO */
+/* =========================
+   SUCESSO
+========================= */
+
 .sucesso {
     display: none;
     text-align: center;
@@ -554,28 +665,10 @@ nav a:hover {
     color: #d4af37;
 }
 
-.sucesso p {
-    color: #aaa;
-}
+/* =========================
+   RODAPÉ
+========================= */
 
-/* OFERTA */
-.oferta {
-    margin: 50px 20px;
-    padding: 50px 20px;
-    text-align: center;
-    background: #111;
-    border: 1px solid #292929;
-}
-
-.oferta h2 {
-    color: #d4af37;
-}
-
-.oferta strong {
-    font-size: 28px;
-}
-
-/* RODAPÉ */
 footer {
     text-align: center;
     padding: 50px 20px;
@@ -590,37 +683,57 @@ footer p {
     color: #888;
 }
 
-/* CELULAR */
-@media(max-width:700px) {
+/* =========================
+   CELULAR
+========================= */
+
+@media(max-width: 700px) {
+
+    header {
+        padding: 0 15px;
+    }
 
     nav {
         display: none;
     }
 
+    .hero {
+        min-height: 450px;
+    }
+
     .hero h1 {
-        font-size: 36px;
+        font-size: 34px;
     }
 
     .categorias-grid {
-        grid-template-columns: repeat(2,1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .produtos-grid {
         grid-template-columns: 1fr;
     }
 
+    .foto-produto {
+        height: 430px;
+    }
+
     .linha {
         grid-template-columns: 1fr;
     }
 
-    .foto-produto {
-        height: 360px;
+    .produto-info {
+        padding: 20px;
     }
 }
+
 </style>
 </head>
 
 <body>
+
+<!-- =========================
+     CABEÇALHO
+========================= -->
 
 <header>
 
@@ -643,7 +756,13 @@ IMPÉRIO
 
 </header>
 
+
+<!-- =========================
+     HERO
+========================= -->
+
 <section class="hero" id="inicio">
+
 <div>
 
 <h1>
@@ -662,7 +781,13 @@ VER CAMISAS
 </a>
 
 </div>
+
 </section>
+
+
+<!-- =========================
+     CATEGORIAS
+========================= -->
 
 <section class="categorias">
 
@@ -695,7 +820,13 @@ VER CAMISAS
 </div>
 
 </div>
+
 </section>
+
+
+<!-- =========================
+     PRODUTOS
+========================= -->
 
 <section class="produtos" id="produtos">
 
@@ -707,164 +838,228 @@ VER CAMISAS
 
 </div>
 
+
 <div class="produtos-grid">
+
 
 <!-- PRODUTO 1 -->
 
 <div class="produto">
 
 <div class="foto-produto">
+
 <img
 src="camisa-do-flamengo-1.jpeg"
-alt="Flamengo Modelo 1">
+alt="Camisa do Flamengo Modelo 1">
+
 </div>
+
 
 <div class="produto-info">
 
-<h3>Flamengo — Modelo 1</h3>
+<h3>
+Flamengo — Modelo 1
+</h3>
 
-<p>Camisa masculina branca com detalhes vermelhos e pretos.</p>
+<p>
+Camisa branca com detalhes
+vermelhos e pretos.
+</p>
 
-<strong>R$ 120,00</strong>
+<strong>
+R$ 120,00
+</strong>
+
 
 <div class="tamanho-titulo">
 Tamanho:
 </div>
 
+
 <div class="tamanhos">
 
-<button class="tamanho"
+<button
+class="tamanho"
 onclick="selecionarTamanho(1,'P',this)">
 P
 </button>
 
-<button class="tamanho"
+<button
+class="tamanho"
 onclick="selecionarTamanho(1,'M',this)">
 M
 </button>
 
-<button class="tamanho"
+<button
+class="tamanho"
 onclick="selecionarTamanho(1,'G',this)">
 G
 </button>
 
-<button class="tamanho"
+<button
+class="tamanho"
 onclick="selecionarTamanho(1,'GG',this)">
 GG
 </button>
 
 </div>
 
+
 <div class="tamanho-titulo">
 Quantidade:
 </div>
 
+
 <div class="quantidade-area">
 
-<button onclick="alterarQuantidade(1,-1)">
+<button
+onclick="alterarQuantidade(1,-1)">
 −
 </button>
 
-<span id="quantidade1" class="quantidade">
+<span
+id="quantidade1"
+class="quantidade">
 1
 </span>
 
-<button onclick="alterarQuantidade(1,1)">
+<button
+onclick="alterarQuantidade(1,1)">
 +
 </button>
 
 </div>
 
+
 <button
 class="comprar"
 onclick="adicionarProduto(1,'Flamengo — Modelo 1',120)">
+
 ADICIONAR AO CARRINHO
+
 </button>
 
 </div>
+
 </div>
+
 
 <!-- PRODUTO 2 -->
 
 <div class="produto">
 
 <div class="foto-produto">
+
 <img
 src="camisa-do-flamengo-2.jpeg"
-alt="Flamengo Modelo 2">
+alt="Camisa do Flamengo Modelo 2">
+
 </div>
+
 
 <div class="produto-info">
 
-<h3>Flamengo — Modelo 2</h3>
+<h3>
+Flamengo — Modelo 2
+</h3>
 
-<p>Camisa masculina branca com detalhes dourados.</p>
+<p>
+Camisa branca com detalhes
+dourados.
+</p>
 
-<strong>R$ 120,00</strong>
+<strong>
+R$ 120,00
+</strong>
+
 
 <div class="tamanho-titulo">
 Tamanho:
 </div>
 
+
 <div class="tamanhos">
 
-<button class="tamanho"
+<button
+class="tamanho"
 onclick="selecionarTamanho(2,'P',this)">
 P
 </button>
 
-<button class="tamanho"
+<button
+class="tamanho"
 onclick="selecionarTamanho(2,'M',this)">
 M
 </button>
 
-<button class="tamanho"
+<button
+class="tamanho"
 onclick="selecionarTamanho(2,'G',this)">
 G
 </button>
 
-<button class="tamanho"
+<button
+class="tamanho"
 onclick="selecionarTamanho(2,'GG',this)">
 GG
 </button>
 
 </div>
 
+
 <div class="tamanho-titulo">
 Quantidade:
 </div>
 
+
 <div class="quantidade-area">
 
-<button onclick="alterarQuantidade(2,-1)">
+<button
+onclick="alterarQuantidade(2,-1)">
 −
 </button>
 
-<span id="quantidade2" class="quantidade">
+<span
+id="quantidade2"
+class="quantidade">
 1
 </span>
 
-<button onclick="alterarQuantidade(2,1)">
+<button
+onclick="alterarQuantidade(2,1)">
 +
 </button>
 
 </div>
 
+
 <button
 class="comprar"
 onclick="adicionarProduto(2,'Flamengo — Modelo 2',120)">
+
 ADICIONAR AO CARRINHO
+
 </button>
 
 </div>
-</div>
 
 </div>
+
+
+</div>
+
 </section>
+
+
+<!-- =========================
+     OFERTA
+========================= -->
 
 <section class="oferta" id="ofertas">
 
-<h2>OFERTA ESPECIAL</h2>
+<h2>
+OFERTA ESPECIAL
+</h2>
 
 <p>
 Camisas de qualidade pelo melhor preço.
@@ -880,23 +1075,37 @@ R$ 130,00 a prazo • Até 2x no cartão
 
 </section>
 
-<!-- CHECKOUT -->
 
-<section id="checkout" class="checkout">
+<!-- =========================
+     CHECKOUT
+========================= -->
 
-<h2>FINALIZAR COMPRA</h2>
+<section
+id="checkout"
+class="checkout">
+
+<h2>
+FINALIZAR COMPRA
+</h2>
 
 <p class="checkout-subtitulo">
 Preencha seus dados para continuar.
 </p>
 
+
 <div class="formulario">
 
-<h3>👤 Seus dados</h3>
+
+<h3>
+👤 Seus dados
+</h3>
+
 
 <div class="campo">
 
-<label>Nome completo</label>
+<label>
+Nome completo
+</label>
 
 <input
 type="text"
@@ -905,9 +1114,12 @@ placeholder="Digite seu nome">
 
 </div>
 
+
 <div class="campo">
 
-<label>Telefone</label>
+<label>
+Telefone
+</label>
 
 <input
 type="tel"
@@ -916,29 +1128,44 @@ placeholder="(00) 00000-0000">
 
 </div>
 
-<h3>📍 Endereço de entrega</h3>
+
+<h3>
+📍 Endereço de entrega
+</h3>
+
 
 <div class="campo">
 
-<label>CEP</label>
+<label>
+CEP
+</label>
 
 <input
 type="text"
 id="cep"
 placeholder="00000-000">
 
-<button class="calcular-frete"
+<button
+class="calcular-frete"
 onclick="calcularFrete()">
+
 CALCULAR FRETE
+
 </button>
 
-<div id="resultadoFrete" class="resultado-frete"></div>
+<div
+id="resultadoFrete"
+class="resultado-frete">
+</div>
 
 </div>
 
+
 <div class="campo">
 
-<label>Rua</label>
+<label>
+Rua
+</label>
 
 <input
 type="text"
@@ -947,11 +1174,15 @@ placeholder="Nome da rua">
 
 </div>
 
+
 <div class="linha">
+
 
 <div class="campo">
 
-<label>Número</label>
+<label>
+Número
+</label>
 
 <input
 type="text"
@@ -960,9 +1191,12 @@ placeholder="123">
 
 </div>
 
+
 <div class="campo">
 
-<label>Complemento</label>
+<label>
+Complemento
+</label>
 
 <input
 type="text"
@@ -973,9 +1207,12 @@ placeholder="Opcional">
 
 </div>
 
+
 <div class="campo">
 
-<label>Bairro</label>
+<label>
+Bairro
+</label>
 
 <input
 type="text"
@@ -984,11 +1221,15 @@ placeholder="Seu bairro">
 
 </div>
 
+
 <div class="linha">
+
 
 <div class="campo">
 
-<label>Cidade</label>
+<label>
+Cidade
+</label>
 
 <input
 type="text"
@@ -997,13 +1238,18 @@ placeholder="Sua cidade">
 
 </div>
 
+
 <div class="campo">
 
-<label>Estado</label>
+<label>
+Estado
+</label>
 
 <select id="estado">
 
-<option value="">Selecione</option>
+<option value="">
+Selecione
+</option>
 
 <option>ES</option>
 <option>RJ</option>
@@ -1022,57 +1268,83 @@ placeholder="Sua cidade">
 
 </div>
 
-<h3>📦 Entrega</h3>
+
+<h3>
+📦 Entrega
+</h3>
+
 
 <div class="pagamento">
 
 <label>
+
 <input
 type="radio"
 name="entrega"
 value="normal"
 checked>
+
 Entrega normal
+
 </label>
 
+
 <label>
+
 <input
 type="radio"
 name="entrega"
 value="expressa">
+
 Entrega expressa
+
 </label>
 
 </div>
 
-<h3>💳 Forma de pagamento</h3>
+
+<h3>
+💳 Forma de pagamento
+</h3>
+
 
 <div class="pagamento">
 
 <label>
+
 <input
 type="radio"
 name="pagamento"
 value="pix"
 checked>
+
 PIX
+
 </label>
 
+
 <label>
+
 <input
 type="radio"
 name="pagamento"
 value="cartao">
+
 Cartão de crédito/débito
+
 </label>
 
 </div>
 
+
 <div class="resumo-checkout">
+
 
 <div>
 
-<span>Produtos</span>
+<span>
+Produtos
+</span>
 
 <strong id="resumoProdutos">
 R$ 0,00
@@ -1080,19 +1352,25 @@ R$ 0,00
 
 </div>
 
+
 <div>
 
-<span>Frete</span>
+<span>
+Frete
+</span>
 
 <strong id="resumoFrete">
-R$ 0,00
+A calcular
 </strong>
 
 </div>
 
+
 <div class="total-final">
 
-<span>Total</span>
+<span>
+Total
+</span>
 
 <strong id="totalCheckout">
 R$ 0,00
@@ -1100,40 +1378,62 @@ R$ 0,00
 
 </div>
 
+
 </div>
+
 
 <button
 class="confirmar"
 onclick="confirmarPedido()">
+
 CONFIRMAR PEDIDO
+
 </button>
+
 
 <button
 class="voltar"
 onclick="voltarParaCarrinho()">
+
 VOLTAR AO CARRINHO
+
 </button>
 
+
 </div>
+
 </section>
 
-<!-- SUCESSO -->
 
-<section id="sucesso" class="sucesso">
+<!-- =========================
+     SUCESSO
+========================= -->
+
+<section
+id="sucesso"
+class="sucesso">
 
 <div class="sucesso-icon">
 ✅
 </div>
 
-<h2>PEDIDO RECEBIDO!</h2>
+<h2>
+PEDIDO RECEBIDO!
+</h2>
 
 <p>
 Seu pedido foi registrado com sucesso.
 </p>
 
-<p id="numeroPedido"></p>
+<p id="numeroPedido">
+</p>
 
 </section>
+
+
+<!-- =========================
+     RODAPÉ
+========================= -->
 
 <footer id="contato">
 
@@ -1155,21 +1455,32 @@ Instagram: @imperio_das_camisas1
 
 </footer>
 
-<!-- CARRINHO -->
 
-<div id="carrinho" class="carrinho">
+<!-- =========================
+     CARRINHO
+========================= -->
+
+<div
+id="carrinho"
+class="carrinho">
+
 
 <div class="carrinho-topo">
 
-<h2>Seu carrinho</h2>
+<h2>
+Seu carrinho
+</h2>
 
 <button
 class="fechar"
 onclick="fecharCarrinho()">
+
 ✕
+
 </button>
 
 </div>
+
 
 <div id="itensCarrinho">
 
@@ -1179,29 +1490,45 @@ Seu carrinho está vazio.
 
 </div>
 
+
 <div class="total">
 
-<span>Total:</span>
+<span>
+Total:
+</span>
 
-<strong id="totalCarrinho">
+<strong
+id="totalCarrinho">
+
 R$ 0,00
+
 </strong>
 
 </div>
 
+
 <button
 class="finalizar"
 onclick="abrirCheckout()">
+
 FINALIZAR COMPRA
+
 </button>
 
+
 </div>
+
 
 <div
 id="fundo"
 class="fundo"
 onclick="fecharCarrinho()">
 </div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
 
 <script>
 
@@ -1217,7 +1544,12 @@ let quantidades = {
     2: 1
 };
 
-let frete = 0;
+let frete = null;
+
+
+/* =========================
+   TAMANHO
+========================= */
 
 function selecionarTamanho(id, tamanho, botao) {
 
@@ -1227,18 +1559,27 @@ function selecionarTamanho(id, tamanho, botao) {
         botao.parentElement.querySelectorAll(".tamanho");
 
     botoes.forEach(function(item) {
+
         item.classList.remove("selecionado");
+
     });
 
     botao.classList.add("selecionado");
 }
+
+
+/* =========================
+   QUANTIDADE
+========================= */
 
 function alterarQuantidade(id, valor) {
 
     quantidades[id] += valor;
 
     if (quantidades[id] < 1) {
+
         quantidades[id] = 1;
+
     }
 
     document.getElementById(
@@ -1246,43 +1587,73 @@ function alterarQuantidade(id, valor) {
     ).innerText = quantidades[id];
 }
 
+
+/* =========================
+   ADICIONAR
+========================= */
+
 function adicionarProduto(id, nome, preco) {
 
-    const tamanho = tamanhosSelecionados[id];
+    const tamanho =
+        tamanhosSelecionados[id];
 
     if (!tamanho) {
-        alert("Escolha o tamanho da camisa.");
+
+        alert(
+            "Escolha o tamanho da camisa."
+        );
+
         return;
     }
 
-    const quantidade = quantidades[id];
+    const quantidade =
+        quantidades[id];
 
     carrinho.push({
+
         nome: nome,
         preco: preco,
         tamanho: tamanho,
         quantidade: quantidade
+
     });
 
     atualizarCarrinho();
+
     abrirCarrinho();
 }
+
+
+/* =========================
+   CARRINHO
+========================= */
 
 function atualizarCarrinho() {
 
     const lista =
-        document.getElementById("itensCarrinho");
+        document.getElementById(
+            "itensCarrinho"
+        );
 
     const contador =
-        document.getElementById("contador");
+        document.getElementById(
+            "contador"
+        );
 
     const total =
-        document.getElementById("totalCarrinho");
+        document.getElementById(
+            "totalCarrinho"
+        );
 
     contador.innerText =
-        carrinho.reduce(function(total, item) {
-            return total + item.quantidade;
-        }, 0);
+        carrinho.reduce(
+            function(total, item) {
+
+                return total + item.quantidade;
+
+            },
+            0
+        );
 
     lista.innerHTML = "";
 
@@ -1291,54 +1662,71 @@ function atualizarCarrinho() {
         lista.innerHTML =
             "<p>Seu carrinho está vazio.</p>";
 
-        total.innerText = "R$ 0,00";
+        total.innerText =
+            "R$ 0,00";
 
         return;
     }
 
     let soma = 0;
 
-    carrinho.forEach(function(produto, index) {
+    carrinho.forEach(
+        function(produto, index) {
 
-        const subtotal =
-            produto.preco * produto.quantidade;
+            const subtotal =
+                produto.preco *
+                produto.quantidade;
 
-        soma += subtotal;
+            soma += subtotal;
 
-        lista.innerHTML += `
+            lista.innerHTML += `
 
-        <div class="item">
+            <div class="item">
 
-            <strong>
-                ${produto.nome}
-            </strong>
+                <strong>
+                    ${produto.nome}
+                </strong>
 
-            <small>
-                Tamanho: ${produto.tamanho}
+                <small>
+                    Tamanho: ${produto.tamanho}
+                    <br>
+                    Quantidade: ${produto.quantidade}
+                </small>
+
+                <span class="preco-item">
+
+                    R$ ${subtotal
+                        .toFixed(2)
+                        .replace(".", ",")}
+
+                </span>
+
                 <br>
-                Quantidade: ${produto.quantidade}
-            </small>
 
-            <span class="preco-item">
-                R$ ${subtotal.toFixed(2).replace(".",",")}
-            </span>
+                <button
+                    onclick="removerProduto(${index})">
 
-            <br>
+                    REMOVER
 
-            <button
-                onclick="removerProduto(${index})">
-                REMOVER
-            </button>
+                </button>
 
-        </div>
+            </div>
 
-        `;
-    });
+            `;
+        }
+    );
 
     total.innerText =
         "R$ " +
-        soma.toFixed(2).replace(".",",");
+        soma
+            .toFixed(2)
+            .replace(".", ",");
 }
+
+
+/* =========================
+   REMOVER
+========================= */
 
 function removerProduto(index) {
 
@@ -1346,6 +1734,11 @@ function removerProduto(index) {
 
     atualizarCarrinho();
 }
+
+
+/* =========================
+   ABRIR CARRINHO
+========================= */
 
 function abrirCarrinho() {
 
@@ -1358,6 +1751,11 @@ function abrirCarrinho() {
         .classList.add("ativo");
 }
 
+
+/* =========================
+   FECHAR CARRINHO
+========================= */
+
 function fecharCarrinho() {
 
     document
@@ -1369,11 +1767,18 @@ function fecharCarrinho() {
         .classList.remove("ativo");
 }
 
+
+/* =========================
+   CHECKOUT
+========================= */
+
 function abrirCheckout() {
 
     if (carrinho.length === 0) {
 
-        alert("Seu carrinho está vazio!");
+        alert(
+            "Seu carrinho está vazio!"
+        );
 
         return;
     }
@@ -1393,65 +1798,122 @@ function abrirCheckout() {
         });
 }
 
+
+/* =========================
+   FRETE
+========================= */
+
 function calcularFrete() {
 
     const cep =
-        document.getElementById("cep").value.trim();
+        document.getElementById(
+            "cep"
+        ).value.trim();
 
     if (!cep) {
 
-        alert("Digite seu CEP.");
+        alert(
+            "Digite seu CEP."
+        );
 
         return;
     }
 
     /*
-       Valor provisório para teste.
-       Depois podemos integrar um cálculo
-       real de frete.
+       O cálculo real de frete será
+       integrado posteriormente.
+
+       Por enquanto mostramos que
+       o frete precisa ser calculado.
     */
 
-    frete = 15;
+    frete = null;
 
     document.getElementById(
         "resultadoFrete"
     ).innerText =
-        "Frete calculado: R$ 15,00";
+        "Frete será calculado após confirmar o endereço.";
 
     atualizarResumo();
 }
+
+
+/* =========================
+   RESUMO
+========================= */
 
 function atualizarResumo() {
 
     let soma = 0;
 
-    carrinho.forEach(function(produto) {
+    carrinho.forEach(
+        function(produto) {
 
-        soma +=
-            produto.preco *
-            produto.quantidade;
-    });
+            soma +=
+                produto.preco *
+                produto.quantidade;
 
-    const total = soma + frete;
+        }
+    );
 
     document.getElementById(
         "resumoProdutos"
     ).innerText =
+
         "R$ " +
-        soma.toFixed(2).replace(".",",");
+        soma
+            .toFixed(2)
+            .replace(".", ",");
+
+
+    if (frete === null) {
+
+        document.getElementById(
+            "resumoFrete"
+        ).innerText =
+            "A calcular";
+
+        document.getElementById(
+            "totalCheckout"
+        ).innerText =
+
+            "R$ " +
+            soma
+                .toFixed(2)
+                .replace(".", ",");
+
+        return;
+    }
+
+
+    const total =
+        soma + frete;
+
 
     document.getElementById(
         "resumoFrete"
     ).innerText =
+
         "R$ " +
-        frete.toFixed(2).replace(".",",");
+        frete
+            .toFixed(2)
+            .replace(".", ",");
+
 
     document.getElementById(
         "totalCheckout"
     ).innerText =
+
         "R$ " +
-        total.toFixed(2).replace(".",",");
+        total
+            .toFixed(2)
+            .replace(".", ",");
 }
+
+
+/* =========================
+   VOLTAR
+========================= */
 
 function voltarParaCarrinho() {
 
@@ -1462,31 +1924,53 @@ function voltarParaCarrinho() {
     abrirCarrinho();
 }
 
+
+/* =========================
+   CONFIRMAR PEDIDO
+========================= */
+
 function confirmarPedido() {
 
     const nome =
-        document.getElementById("nome").value.trim();
+        document.getElementById(
+            "nome"
+        ).value.trim();
 
     const telefone =
-        document.getElementById("telefone").value.trim();
+        document.getElementById(
+            "telefone"
+        ).value.trim();
 
     const cep =
-        document.getElementById("cep").value.trim();
+        document.getElementById(
+            "cep"
+        ).value.trim();
 
     const rua =
-        document.getElementById("rua").value.trim();
+        document.getElementById(
+            "rua"
+        ).value.trim();
 
     const numero =
-        document.getElementById("numero").value.trim();
+        document.getElementById(
+            "numero"
+        ).value.trim();
 
     const bairro =
-        document.getElementById("bairro").value.trim();
+        document.getElementById(
+            "bairro"
+        ).value.trim();
 
     const cidade =
-        document.getElementById("cidade").value.trim();
+        document.getElementById(
+            "cidade"
+        ).value.trim();
 
     const estado =
-        document.getElementById("estado").value;
+        document.getElementById(
+            "estado"
+        ).value;
+
 
     if (
         !nome ||
@@ -1506,24 +1990,31 @@ function confirmarPedido() {
         return;
     }
 
+
     const pedido =
         Math.floor(
             1000 +
             Math.random() * 9000
         );
 
+
     document
         .getElementById("checkout")
         .classList.remove("ativo");
+
 
     document
         .getElementById("sucesso")
         .classList.add("ativo");
 
+
     document.getElementById(
         "numeroPedido"
     ).innerText =
-        "Pedido #" + pedido;
+
+        "Pedido #" +
+        pedido;
+
 
     document
         .getElementById("sucesso")
