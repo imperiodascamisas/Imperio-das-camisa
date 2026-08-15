@@ -1,0 +1,43 @@
+body {
+    margin: 0;
+    background: #080808;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+h1 {
+    margin-top: 100px;
+    font-size: 42px;
+    letter-spacing: 3px;
+    color: #d4af37;
+}
+
+p {
+    font-size: 20px;
+    color: #dddddd;
+}
+.calcular-frete {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 15px;
+    background: #d4af37;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.resultado-frete {
+    display: none;
+    background: #080808;
+    border: 1px solid #292929;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    color: #ddd;
+}
+
+.resultado-frete strong {
+    color: #d4af37;
+}
