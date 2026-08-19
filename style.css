@@ -688,3 +688,35 @@ footer {
     font-size: 17px;
   }
 }
+/* AJUSTE FINAL DAS FOTOS */
+
+.produto-imagem,
+.produto-img,
+.imagem-produto {
+  background: #0f0f0f;
+}
+
+.produto > img,
+.produto-card > img,
+.card-produto > img,
+.produto-imagem img,
+.produto-img img,
+.imagem-produto img {
+  width: 100%;
+  height: 470px;
+  object-fit: cover;
+  object-position: center;
+  background: #0f0f0f;
+}
+
+/* celular */
+@media (max-width: 600px) {
+  .produto > img,
+  .produto-card > img,
+  .card-produto > img,
+  .produto-imagem img,
+  .produto-img img,
+  .imagem-produto img {
+    height: 245px;
+  }
+}
