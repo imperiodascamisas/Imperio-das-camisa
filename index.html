@@ -2,2137 +2,1148 @@
 <html lang="pt-BR">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
 
-<title>Império das Camisas</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-<style>
+  <title>Império das Camisas</title>
 
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    background: #080808;
-    color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-/* =========================
-   HEADER
-========================= */
-
-header {
-    height: 75px;
-    background: #050505;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 25px;
-    border-bottom: 1px solid #292929;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.logo {
-    color: #d4af37;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-
-.logo span {
-    display: block;
-    color: white;
-    font-size: 8px;
-    letter-spacing: 4px;
-    margin-top: 3px;
-}
-
-nav {
-    display: flex;
-    gap: 25px;
-}
-
-nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-    transition: .2s;
-}
-
-nav a:hover {
-    color: #d4af37;
-}
-
-.cart {
-    background: transparent;
-    border: 1px solid #d4af37;
-    color: #d4af37;
-    padding: 10px 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    position: relative;
-    font-size: 17px;
-}
-
-#contador {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 20px;
-    height: 20px;
-    background: #d4af37;
-    color: #000;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: bold;
-}
-
-/* =========================
-   HERO
-========================= */
-
-.hero {
-    min-height: 520px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 40px 20px;
-    background:
-        radial-gradient(circle at center, #191919 0%, #080808 65%);
-}
-
-.hero h1 {
-    color: #d4af37;
-    font-size: clamp(35px, 6vw, 58px);
-    letter-spacing: 3px;
-    line-height: 1.15;
-}
-
-.hero p {
-    color: #ccc;
-    font-size: 17px;
-    margin: 25px 0 32px;
-}
-
-.button {
-    display: inline-block;
-    background: #d4af37;
-    color: #000;
-    padding: 15px 32px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* =========================
-   CATEGORIAS
-========================= */
-
-.categorias {
-    padding: 70px 20px;
-    text-align: center;
-}
-
-.categorias h2 {
-    color: #d4af37;
-    letter-spacing: 2px;
-}
-
-.categorias-grid {
-    max-width: 950px;
-    margin: 35px auto 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-}
-
-.categoria {
-    background: #111;
-    border: 1px solid #292929;
-    padding: 30px 10px;
-    border-radius: 6px;
-    transition: .2s;
-}
-
-.categoria:hover {
-    border-color: #d4af37;
-    transform: translateY(-3px);
-}
-
-/* =========================
-   PRODUTOS
-========================= */
-
-.produtos {
-    padding: 75px 20px;
-}
-
-.titulo {
-    text-align: center;
-    margin-bottom: 45px;
-}
-
-.titulo p {
-    color: #d4af37;
-    font-size: 12px;
-    letter-spacing: 4px;
-}
-
-.titulo h2 {
-    font-size: 32px;
-    margin: 10px 0;
-}
-
-.produtos-grid {
-    max-width: 1200px;
-    margin: auto;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-}
-
-/* =========================
-   CARD
-========================= */
-
-.produto {
-    background: #111;
-    border: 1px solid #292929;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: .25s;
-}
-
-.produto:hover {
-    border-color: #d4af37;
-    transform: translateY(-3px);
-}
-
-/* =========================
-   IMAGEM
-========================= */
-
-.foto-produto {
-    width: 100%;
-    height: 470px;
-    background: #f3f3f3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    padding: 10px;
-}
-
-.foto-produto img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-    display: block;
-}
-
-/* =========================
-   INFORMAÇÕES
-========================= */
-
-.produto-info {
-    padding: 23px;
-}
-
-.produto-info h3 {
-    margin: 0 0 8px;
-    font-size: 19px;
-}
-
-.produto-info p {
-    color: #999;
-    min-height: 40px;
-}
-
-.preco {
-    color: #d4af37;
-    display: block;
-    font-size: 25px;
-    margin: 17px 0;
-}
-
-/* =========================
-   TAMANHOS
-========================= */
-
-.tamanho-titulo {
-    color: #ddd;
-    font-size: 14px;
-    margin-bottom: 9px;
-}
-
-.tamanhos {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 18px;
-}
-
-.tamanho {
-    width: 45px;
-    height: 40px;
-    background: #080808;
-    color: white;
-    border: 1px solid #555;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.tamanho:hover {
-    border-color: #d4af37;
-}
-
-.tamanho.selecionado {
-    background: #d4af37;
-    color: #000;
-    border-color: #d4af37;
-    font-weight: bold;
-}
-
-/* =========================
-   QUANTIDADE
-========================= */
-
-.quantidade-area {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.quantidade-area button {
-    width: 36px;
-    height: 36px;
-    background: #080808;
-    color: white;
-    border: 1px solid #555;
-    border-radius: 4px;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-.quantidade {
-    min-width: 25px;
-    text-align: center;
-}
-
-/* =========================
-   COMPRAR
-========================= */
-
-.comprar {
-    width: 100%;
-    padding: 15px;
-    background: #d4af37;
-    border: none;
-    color: #000;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.comprar:hover {
-    opacity: .85;
-}
-
-/* =========================
-   OFERTA
-========================= */
-
-.oferta {
-    margin: 50px 20px;
-    padding: 55px 20px;
-    text-align: center;
-    background: #111;
-    border: 1px solid #292929;
-}
-
-.oferta h2 {
-    color: #d4af37;
-}
-
-.oferta strong {
-    display: block;
-    font-size: 30px;
-    margin: 15px 0;
-}
-
-/* =========================
-   CARRINHO
-========================= */
-
-.carrinho {
-    position: fixed;
-    top: 0;
-    right: -420px;
-    width: 400px;
-    max-width: 92%;
-    height: 100vh;
-    background: #111;
-    z-index: 2000;
-    padding: 25px;
-    transition: .4s;
-    overflow-y: auto;
-    box-shadow: -10px 0 30px rgba(0,0,0,.5);
-}
-
-.carrinho.aberto {
-    right: 0;
-}
-
-.carrinho-topo {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #333;
-    padding-bottom: 15px;
-}
-
-.carrinho-topo h2 {
-    color: #d4af37;
-}
-
-.fechar {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 23px;
-    cursor: pointer;
-}
-
-.item {
-    padding: 18px 0;
-    border-bottom: 1px solid #292929;
-}
-
-.item strong {
-    display: block;
-    margin-bottom: 7px;
-}
-
-.item small {
-    color: #999;
-    line-height: 1.6;
-}
-
-.preco-item {
-    display: block;
-    color: #d4af37;
-    margin-top: 8px;
-    font-weight: bold;
-}
-
-.item button {
-    margin-top: 10px;
-    background: transparent;
-    border: 1px solid #555;
-    color: white;
-    padding: 7px 10px;
-    cursor: pointer;
-}
-
-.total {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
-    font-size: 20px;
-}
-
-.total strong {
-    color: #d4af37;
-}
-
-.finalizar {
-    width: 100%;
-    margin-top: 25px;
-    padding: 16px;
-    background: #d4af37;
-    border: none;
-    color: #000;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* =========================
-   FUNDO
-========================= */
-
-.fundo {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.75);
-    z-index: 1500;
-    display: none;
-}
-
-.fundo.ativo {
-    display: block;
-}
-
-/* =========================
-   CHECKOUT
-========================= */
-
-.checkout {
-    display: none;
-    padding: 70px 20px;
-    max-width: 720px;
-    margin: auto;
-}
-
-.checkout.ativo {
-    display: block;
-}
-
-.checkout h2 {
-    text-align: center;
-    color: #d4af37;
-}
-
-.checkout-subtitulo {
-    text-align: center;
-    color: #999;
-    margin-bottom: 35px;
-}
-
-.formulario {
-    background: #111;
-    border: 1px solid #292929;
-    padding: 25px;
-    border-radius: 7px;
-}
-
-.formulario h3 {
-    color: #d4af37;
-    margin-top: 28px;
-    border-bottom: 1px solid #292929;
-    padding-bottom: 12px;
-}
-
-.formulario h3:first-child {
-    margin-top: 0;
-}
-
-.campo {
-    margin-bottom: 18px;
-}
-
-.campo label {
-    display: block;
-    margin-bottom: 7px;
-    font-size: 14px;
-}
-
-.campo input,
-.campo select {
-    width: 100%;
-    padding: 13px;
-    background: #080808;
-    border: 1px solid #444;
-    border-radius: 4px;
-    color: white;
-    font-size: 15px;
-}
-
-.linha {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.pagamento {
-    display: grid;
-    gap: 10px;
-}
-
-.pagamento label {
-    background: #080808;
-    border: 1px solid #444;
-    padding: 15px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.pagamento input {
-    margin-right: 8px;
-}
-
-.resumo-checkout {
-    margin-top: 25px;
-    padding: 20px;
-    background: #080808;
-    border: 1px solid #292929;
-}
-
-.resumo-checkout div {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-
-.total-final {
-    border-top: 1px solid #333;
-    padding-top: 15px;
-    font-size: 21px;
-    color: #d4af37;
-}
-
-.confirmar {
-    width: 100%;
-    margin-top: 25px;
-    padding: 17px;
-    background: #d4af37;
-    border: none;
-    color: #000;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.voltar {
-    width: 100%;
-    margin-top: 10px;
-    padding: 13px;
-    background: transparent;
-    border: 1px solid #444;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* =========================
-   SUCESSO
-========================= */
-
-.sucesso {
-    display: none;
-    text-align: center;
-    padding: 100px 20px;
-}
-
-.sucesso.ativo {
-    display: block;
-}
-
-.sucesso-icon {
-    font-size: 60px;
-}
-
-.sucesso h2 {
-    color: #d4af37;
-}
-
-/* =========================
-   RODAPÉ
-========================= */
-
-footer {
-    text-align: center;
-    padding: 50px 20px;
-    border-top: 1px solid #292929;
-}
-
-footer strong {
-    color: #d4af37;
-}
-
-footer p {
-    color: #888;
-}
-
-/* =========================
-   CELULAR
-========================= */
-
-@media (max-width: 700px) {
-
-    header {
-        padding: 0 15px;
-    }
-
-    nav {
-        display: none;
-    }
-
-    .hero {
-        min-height: 450px;
-    }
-
-    .hero h1 {
-        font-size: 34px;
-    }
-
-    .categorias-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .produtos-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .foto-produto {
-        height: 430px;
-    }
-
-    .linha {
-        grid-template-columns: 1fr;
-    }
-}
-
-</style>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
-
-<!-- =========================
-     HEADER
-========================= -->
+<!-- =====================================================
+     CABEÇALHO
+===================================================== -->
 
 <header>
 
-<div class="logo">
-IMPÉRIO
-<span>DAS CAMISAS</span>
-</div>
+  <div class="logo">
+    IMPÉRIO DAS CAMISAS
+  </div>
 
-<nav>
-<a href="#inicio">Início</a>
-<a href="#produtos">Camisas</a>
-<a href="#ofertas">Ofertas</a>
-<a href="#contato">Contato</a>
-</nav>
+  <nav>
+    <a href="#inicio">INÍCIO</a>
+    <a href="#categorias">CATEGORIAS</a>
+    <a href="#produtos">CAMISAS</a>
+  </nav>
 
-<button class="cart" onclick="abrirCarrinho()">
-🛒
-<span id="contador">0</span>
-</button>
+  <button
+    class="btn-carrinho"
+    onclick="abrirCarrinho()"
+  >
+    🛒 CARRINHO
+    (<span id="contadorCarrinho">0</span>)
+  </button>
 
 </header>
 
 
-<!-- =========================
-     HERO
-========================= -->
+<!-- =====================================================
+     BANNER
+===================================================== -->
 
-<section class="hero" id="inicio">
+<section
+  class="hero"
+  id="inicio"
+>
 
-<div>
+  <h1>
+    VISTA SUA PAIXÃO.<br>
+    <span>VISTA SEU TIME.</span>
+  </h1>
 
-<h1>
-VISTA SUA PAIXÃO.
-<br>
-VISTA SEU TIME.
-</h1>
+  <p>
+    Camisas dos maiores clubes do Brasil e do mundo.
+  </p>
 
-<p>
-Camisas dos maiores clubes
-do Brasil e do mundo.
-</p>
-
-<a href="#produtos" class="button">
-VER CAMISAS
-</a>
-
-</div>
+  <a
+    href="#produtos"
+    class="btn"
+  >
+    VER CAMISAS
+  </a>
 
 </section>
 
 
-<!-- =========================
+<!-- =====================================================
      CATEGORIAS
-========================= -->
+===================================================== -->
 
-<section class="categorias">
+<section id="categorias">
 
-<h2>ENCONTRE SEU TIME</h2>
+  <h2>ENCONTRE SEU TIME</h2>
 
-<div class="categorias-grid">
+  <div class="categorias">
 
-<div class="categoria">
-🇧🇷
-<br><br>
-<strong>BRASILEIROS</strong>
-</div>
+    <button
+      class="categoria"
+      onclick="filtrarProdutos('brasileiros', this)"
+    >
+      <span>🇧🇷</span>
 
-<div class="categoria">
-🌎
-<br><br>
-<strong>EUROPEUS</strong>
-</div>
+      <h3>BRASILEIROS</h3>
+    </button>
 
-<div class="categoria">
-👕
-<br><br>
-<strong>MASCULINAS</strong>
-</div>
 
-<div class="categoria">
-🧒
-<br><br>
-<strong>INFANTIS</strong>
-</div>
+    <button
+      class="categoria"
+      onclick="filtrarProdutos('europeus', this)"
+    >
+      <span>🌍</span>
 
-</div>
+      <h3>EUROPEUS</h3>
+    </button>
+
+
+    <button
+      class="categoria"
+      onclick="filtrarProdutos('masculinas', this)"
+    >
+      <span>👕</span>
+
+      <h3>MASCULINAS</h3>
+    </button>
+
+
+    <button
+      class="categoria"
+      onclick="filtrarProdutos('infantis', this)"
+    >
+      <span>👦</span>
+
+      <h3>INFANTIS</h3>
+    </button>
+
+  </div>
 
 </section>
 
 
-<!-- =========================
+<!-- =====================================================
      PRODUTOS
-========================= -->
+===================================================== -->
 
-<section class="produtos" id="produtos">
+<section id="produtos">
 
-<div class="titulo">
+  <h2 id="tituloProdutos">
+    COLEÇÃO 2026
+  </h2>
 
-<p>COLEÇÃO 2026</p>
+  <div
+    id="mensagemFiltro"
+    style="
+      display:none;
+      text-align:center;
+      margin-bottom:30px;
+      color:#aaa;
+    "
+  >
+  </div>
 
-<h2>CAMISAS</h2>
 
-</div>
-
-
-<div class="produtos-grid">
-
-
-<!-- 1 FLAMENGO -->
-
-<div class="produto">
-
-<div class="foto-produto">
-
-<img
-src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-flamengo1.jpeg"
-alt="Camisa do Flamengo Modelo 1">
-
-</div>
-
-<div class="produto-info">
-
-<h3>Flamengo — Modelo 1</h3>
-
-<p>
-Camisa branca com detalhes vermelhos e pretos.
-</p>
-
-<strong class="preco">
-R$ 120,00
-</strong>
-
-<div class="tamanho-titulo">
-Tamanho:
-</div>
-
-<div class="tamanhos">
-
-<button class="tamanho" onclick="selecionarTamanho(1,'P',this)">P</button>
-<button class="tamanho" onclick="selecionarTamanho(1,'M',this)">M</button>
-<button class="tamanho" onclick="selecionarTamanho(1,'G',this)">G</button>
-<button class="tamanho" onclick="selecionarTamanho(1,'GG',this)">GG</button>
-
-</div>
-
-<div class="tamanho-titulo">
-Quantidade:
-</div>
-
-<div class="quantidade-area">
-
-<button onclick="alterarQuantidade(1,-1)">−</button>
-
-<span id="quantidade1" class="quantidade">1</span>
-
-<button onclick="alterarQuantidade(1,1)">+</button>
-
-</div>
-
-<button class="comprar"
-onclick="adicionarProduto(1,'Flamengo — Modelo 1',120)">
-
-ADICIONAR AO CARRINHO
-
-</button>
-
-</div>
-</div>
-
-
-<!-- 2 FLAMENGO -->
-
-<div class="produto">
-
-<div class="foto-produto">
-
-<img
-src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-flamengo%202.jpeg"
-alt="Camisa do Flamengo Modelo 2">
-
-</div>
-
-<div class="produto-info">
-
-<h3>Flamengo — Modelo 2</h3>
-
-<p>
-Camisa branca com detalhes dourados.
-</p>
-
-<strong class="preco">
-R$ 120,00
-</strong>
-
-<div class="tamanho-titulo">
-Tamanho:
-</div>
-
-<div class="tamanhos">
-
-<button class="tamanho" onclick="selecionarTamanho(2,'P',this)">P</button>
-<button class="tamanho" onclick="selecionarTamanho(2,'M',this)">M</button>
-<button class="tamanho" onclick="selecionarTamanho(2,'G',this)">G</button>
-<button class="tamanho" onclick="selecionarTamanho(2,'GG',this)">GG</button>
-
-</div>
-
-<div class="tamanho-titulo">
-Quantidade:
-</div>
-
-<div class="quantidade-area">
-
-<button onclick="alterarQuantidade(2,-1)">−</button>
-
-<span id="quantidade2" class="quantidade">1</span>
-
-<button onclick="alterarQuantidade(2,1)">+</button>
-
-</div>
-
-<button class="comprar"
-onclick="adicionarProduto(2,'Flamengo — Modelo 2',120)">
-
-ADICIONAR AO CARRINHO
-
-</button>
-
-</div>
-</div>
-
-
-<!-- 3 VASCO -->
-
-<div class="produto">
-
-<div class="foto-produto">
-
-<img
-src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/vasco-da-gama%201.jpeg"
-alt="Camisa do Vasco da Gama Modelo 1">
-
-</div>
-
-<div class="produto-info">
-
-<h3>Vasco da Gama — Modelo 1</h3>
-
-<p>
-Camisa oficial de torcida.
-</p>
-
-<strong class="preco">
-R$ 120,00
-</strong>
-
-<div class="tamanho-titulo">
-Tamanho:
-</div>
-
-<div class="tamanhos">
-
-<button class="tamanho" onclick="selecionarTamanho(3,'P',this)">P</button>
-<button class="tamanho" onclick="selecionarTamanho(3,'M',this)">M</button>
-<button class="tamanho" onclick="selecionarTamanho(3,'G',this)">G</button>
-<button class="tamanho" onclick="selecionarTamanho(3,'GG',this)">GG</button>
-
-</div>
-
-<div class="tamanho-titulo">
-Quantidade:
-</div>
-
-<div class="quantidade-area">
-
-<button onclick="alterarQuantidade(3,-1)">−</button>
-
-<span id="quantidade3" class="quantidade">1</span>
-
-<button onclick="alterarQuantidade(3,1)">+</button>
-
-</div>
-
-<button class="comprar"
-onclick="adicionarProduto(3,'Vasco da Gama — Modelo 1',120)">
-
-ADICIONAR AO CARRINHO
-
-</button>
-
-</div>
-</div>
-
-
-<!-- 4 VASCO -->
-
-<div class="produto">
-
-<div class="foto-produto">
-
-<img
-src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/vasco-da-gama%202.jpeg"
-alt="Camisa do Vasco da Gama Modelo 2">
+  <div class="produtos">
 
-</div>
-
-<div class="produto-info">
-
-<h3>Vasco da Gama — Modelo 2</h3>
-
-<p>
-Camisa do Vasco da Gama.
-</p>
-
-<strong class="preco">
-R$ 120,00
-</strong>
-
-<div class="tamanho-titulo">
-Tamanho:
-</div>
-
-<div class="tamanhos">
-
-<button class="tamanho" onclick="selecionarTamanho(4,'P',this)">P</button>
-<button class="tamanho" onclick="selecionarTamanho(4,'M',this)">M</button>
-<button class="tamanho" onclick="selecionarTamanho(4,'G',this)">G</button>
-<button class="tamanho" onclick="selecionarTamanho(4,'GG',this)">GG</button>
-
-</div>
-
-<div class="tamanho-titulo">
-Quantidade:
-</div>
-
-<div class="quantidade-area">
-
-<button onclick="alterarQuantidade(4,-1)">−</button>
-
-<span id="quantidade4" class="quantidade">1</span>
-
-<button onclick="alterarQuantidade(4,1)">+</button>
-
-</div>
-
-<button class="comprar"
-onclick="adicionarProduto(4,'Vasco da Gama — Modelo 2',120)">
-
-ADICIONAR AO CARRINHO
-
-</button>
-
-</div>
-</div>
 
+<!-- =====================================================
+     FLAMENGO MODELO 1
+===================================================== -->
 
-<!-- 5 CORINTHIANS -->
+<div
+  class="produto"
+  data-categoria="brasileiros masculinas"
+  data-nome="Flamengo — Modelo 1"
+  data-preco="120"
+>
 
-<div class="produto">
+  <div class="produto-imagem">
 
-<div class="foto-produto">
+    <img
+      src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-flamengo1.jpeg"
+      alt="Camisa do Flamengo Modelo 1"
+    >
 
-<img
-src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/corinthians%20preta.jpeg"
-alt="Camisa preta do Corinthians">
+  </div>
 
-</div>
-
-<div class="produto-info">
-
-<h3>Corinthians — Modelo 1</h3>
-
-<p>
-Camisa preta do Corinthians.
-</p>
-
-<strong class="preco">
-R$ 120,00
-</strong>
-
-<div class="tamanho-titulo">
-Tamanho:
-</div>
-
-<div class="tamanhos">
-
-<button class="tamanho" onclick="selecionarTamanho(5,'P',this)">P</button>
-<button class="tamanho" onclick="selecionarTamanho(5,'M',this)">M</button>
-<button class="tamanho" onclick="selecionarTamanho(5,'G',this)">G</button>
-<button class="tamanho" onclick="selecionarTamanho(5,'GG',this)">GG</button>
-
-</div>
-
-<div class="tamanho-titulo">
-Quantidade:
-</div>
+  <div class="produto-info">
 
-<div class="quantidade-area">
+    <h3>
+      Flamengo — Modelo 1
+    </h3>
 
-<button onclick="alterarQuantidade(5,-1)">−</button>
+    <p>
+      Camisa do Flamengo.
+    </p>
 
-<span id="quantidade5" class="quantidade">1</span>
+    <strong class="preco">
+      R$ 120,00
+    </strong>
 
-<button onclick="alterarQuantidade(5,1)">+</button>
+    <div class="tamanho-titulo">
+      Tamanho:
+    </div>
 
-</div>
-
-<button class="comprar"
-onclick="adicionarProduto(5,'Corinthians — Modelo 1',120)">
-
-ADICIONAR AO CARRINHO
-
-</button>
-
-</div>
-</div>
-
-
-<!-- 6 CORINTHIANS -->
+    <div class="tamanhos">
 
-<div class="produto">
+      <button onclick="selecionarTamanho(this)">
+        P
+      </button>
 
-<div class="foto-produto">
+      <button onclick="selecionarTamanho(this)">
+        M
+      </button>
 
-<img
-src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/corinthians%203.jpeg"
-alt="Camisa do Corinthians Modelo 2">
+      <button onclick="selecionarTamanho(this)">
+        G
+      </button>
 
-</div>
+      <button onclick="selecionarTamanho(this)">
+        GG
+      </button>
 
-<div class="produto-info">
+    </div>
 
-<h3>Corinthians — Modelo 2</h3>
+    <div class="quantidade">
 
-<p>
-Camisa do Corinthians.
-</p>
+      <button onclick="alterarQuantidade(this,-1)">
+        −
+      </button>
 
-<strong class="preco">
-R$ 120,00
-</strong>
+      <span>1</span>
 
-<div class="tamanho-titulo">
-Tamanho:
-</div>
+      <button onclick="alterarQuantidade(this,1)">
+        +
+      </button>
 
-<div class="tamanhos">
+    </div>
 
-<button class="tamanho" onclick="selecionarTamanho(6,'P',this)">P</button>
-<button class="tamanho" onclick="selecionarTamanho(6,'M',this)">M</button>
-<button class="tamanho" onclick="selecionarTamanho(6,'G',this)">G</button>
-<button class="tamanho" onclick="selecionarTamanho(6,'GG',this)">GG</button>
+    <button
+      class="adicionar-carrinho"
+      onclick="adicionarAoCarrinho(this)"
+    >
+      ADICIONAR AO CARRINHO
+    </button>
 
-</div>
+  </div>
 
-<div class="tamanho-titulo">
-Quantidade:
 </div>
-
-<div class="quantidade-area">
 
-<button onclick="alterarQuantidade(6,-1)">−</button>
 
-<span id="quantidade6" class="quantidade">1</span>
+<!-- =====================================================
+     FLAMENGO MODELO 2
+===================================================== -->
 
-<button onclick="alterarQuantidade(6,1)">+</button>
+<div
+  class="produto"
+  data-categoria="brasileiros masculinas"
+  data-nome="Flamengo — Modelo 2"
+  data-preco="120"
+>
 
-</div>
+  <div class="produto-imagem">
 
-<button class="comprar"
-onclick="adicionarProduto(6,'Corinthians — Modelo 2',120)">
+    <img
+      src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-flamengo%202.jpeg"
+      alt="Camisa do Flamengo Modelo 2"
+    >
 
-ADICIONAR AO CARRINHO
+  </div>
 
-</button>
-
-</div>
-</div>
+  <div class="produto-info">
 
+    <h3>
+      Flamengo — Modelo 2
+    </h3>
 
-<!-- 7 CORINTHIANS -->
+    <p>
+      Camisa do Flamengo.
+    </p>
 
-<div class="produto">
+    <strong class="preco">
+      R$ 120,00
+    </strong>
 
-<div class="foto-produto">
+    <div class="tamanho-titulo">
+      Tamanho:
+    </div>
 
-<img
-src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-corinthians2.jpeg"
-alt="Camisa do Corinthians Modelo 3">
+    <div class="tamanhos">
 
-</div>
+      <button onclick="selecionarTamanho(this)">P</button>
+      <button onclick="selecionarTamanho(this)">M</button>
+      <button onclick="selecionarTamanho(this)">G</button>
+      <button onclick="selecionarTamanho(this)">GG</button>
 
-<div class="produto-info">
+    </div>
 
-<h3>Corinthians — Modelo 3</h3>
+    <div class="quantidade">
 
-<p>
-Camisa do Corinthians.
-</p>
+      <button onclick="alterarQuantidade(this,-1)">
+        −
+      </button>
 
-<strong class="preco">
-R$ 120,00
-</strong>
+      <span>1</span>
 
-<div class="tamanho-titulo">
-Tamanho:
-</div>
+      <button onclick="alterarQuantidade(this,1)">
+        +
+      </button>
 
-<div class="tamanhos">
+    </div>
 
-<button class="tamanho" onclick="selecionarTamanho(7,'P',this)">P</button>
-<button class="tamanho" onclick="selecionarTamanho(7,'M',this)">M</button>
-<button class="tamanho" onclick="selecionarTamanho(7,'G',this)">G</button>
-<button class="tamanho" onclick="selecionarTamanho(7,'GG',this)">GG</button>
+    <button
+      class="adicionar-carrinho"
+      onclick="adicionarAoCarrinho(this)"
+    >
+      ADICIONAR AO CARRINHO
+    </button>
 
-</div>
+  </div>
 
-<div class="tamanho-titulo">
-Quantidade:
 </div>
-
-<div class="quantidade-area">
-
-<button onclick="alterarQuantidade(7,-1)">−</button>
 
-<span id="quantidade7" class="quantidade">1</span>
 
-<button onclick="alterarQuantidade(7,1)">+</button>
+<!-- =====================================================
+     VASCO MODELO 1
+===================================================== -->
 
-</div>
+<div
+  class="produto"
+  data-categoria="brasileiros masculinas"
+  data-nome="Vasco da Gama — Modelo 1"
+  data-preco="120"
+>
 
-<button class="comprar"
-onclick="adicionarProduto(7,'Corinthians — Modelo 3',120)">
+  <div class="produto-imagem">
 
-ADICIONAR AO CARRINHO
+    <img
+      src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/vasco-da-gama%201.jpeg"
+      alt="Camisa do Vasco da Gama Modelo 1"
+    >
 
-</button>
+  </div>
 
-</div>
-</div>
+  <div class="produto-info">
 
+    <h3>
+      Vasco da Gama — Modelo 1
+    </h3>
 
-<!-- 8 ARSENAL -->
+    <p>
+      Camisa do Vasco da Gama.
+    </p>
 
-<div class="produto">
+    <strong class="preco">
+      R$ 120,00
+    </strong>
 
-<div class="foto-produto">
+    <div class="tamanho-titulo">
+      Tamanho:
+    </div>
 
-<img
-src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-arsenal%201.jpeg"
-alt="Camisa do Arsenal">
+    <div class="tamanhos">
 
-</div>
+      <button onclick="selecionarTamanho(this)">P</button>
+      <button onclick="selecionarTamanho(this)">M</button>
+      <button onclick="selecionarTamanho(this)">G</button>
+      <button onclick="selecionarTamanho(this)">GG</button>
 
-<div class="produto-info">
+    </div>
 
-<h3>Arsenal — Modelo 1</h3>
+    <div class="quantidade">
 
-<p>
-Camisa do Arsenal.
-</p>
+      <button onclick="alterarQuantidade(this,-1)">
+        −
+      </button>
 
-<strong class="preco">
-R$ 120,00
-</strong>
+      <span>1</span>
 
-<div class="tamanho-titulo">
-Tamanho:
-</div>
+      <button onclick="alterarQuantidade(this,1)">
+        +
+      </button>
 
-<div class="tamanhos">
+    </div>
 
-<button class="tamanho" onclick="selecionarTamanho(8,'P',this)">P</button>
-<button class="tamanho" onclick="selecionarTamanho(8,'M',this)">M</button>
-<button class="tamanho" onclick="selecionarTamanho(8,'G',this)">G</button>
-<button class="tamanho" onclick="selecionarTamanho(8,'GG',this)">GG</button>
+    <button
+      class="adicionar-carrinho"
+      onclick="adicionarAoCarrinho(this)"
+    >
+      ADICIONAR AO CARRINHO
+    </button>
 
-</div>
+  </div>
 
-<div class="tamanho-titulo">
-Quantidade:
 </div>
-
-<div class="quantidade-area">
-
-<button onclick="alterarQuantidade(8,-1)">−</button>
-
-<span id="quantidade8" class="quantidade">1</span>
 
-<button onclick="alterarQuantidade(8,1)">+</button>
 
-</div>
+<!-- =====================================================
+     VASCO MODELO 2
+===================================================== -->
 
-<button class="comprar"
-onclick="adicionarProduto(8,'Arsenal — Modelo 1',120)">
+<div
+  class="produto"
+  data-categoria="brasileiros masculinas"
+  data-nome="Vasco da Gama — Modelo 2"
+  data-preco="120"
+>
 
-ADICIONAR AO CARRINHO
+  <div class="produto-imagem">
 
-</button>
-
-</div>
-</div>
+    <img
+      src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/vasco-da-gama%202.jpeg"
+      alt="Camisa do Vasco da Gama Modelo 2"
+    >
 
+  </div>
 
-</div>
+  <div class="produto-info">
 
-</section>
-<!-- =========================
-     CHECKOUT
-========================= -->
+    <h3>
+      Vasco da Gama — Modelo 2
+    </h3>
 
-<section id="checkout" class="checkout">
+    <p>
+      Camisa do Vasco da Gama.
+    </p>
 
-<h2>FINALIZAR COMPRA</h2>
+    <strong class="preco">
+      R$ 120,00
+    </strong>
 
-<p class="checkout-subtitulo">
-Preencha seus dados para continuar.
-</p>
+    <div class="tamanho-titulo">
+      Tamanho:
+    </div>
 
-<div class="formulario">
+    <div class="tamanhos">
 
-<h3>👤 Seus dados</h3>
+      <button onclick="selecionarTamanho(this)">P</button>
+      <button onclick="selecionarTamanho(this)">M</button>
+      <button onclick="selecionarTamanho(this)">G</button>
+      <button onclick="selecionarTamanho(this)">GG</button>
 
-<div class="campo">
+    </div>
 
-<label>Nome completo</label>
+    <div class="quantidade">
 
-<input
-type="text"
-id="nome"
-placeholder="Digite seu nome">
+      <button onclick="alterarQuantidade(this,-1)">
+        −
+      </button>
 
-</div>
+      <span>1</span>
 
+      <button onclick="alterarQuantidade(this,1)">
+        +
+      </button>
 
-<div class="campo">
+    </div>
 
-<label>Telefone</label>
+    <button
+      class="adicionar-carrinho"
+      onclick="adicionarAoCarrinho(this)"
+    >
+      ADICIONAR AO CARRINHO
+    </button>
 
-<input
-type="tel"
-id="telefone"
-placeholder="(00) 00000-0000">
+  </div>
 
 </div>
-
 
-<h3>📍 Endereço de entrega</h3>
 
+<!-- =====================================================
+     CORINTHIANS MODELO 2
+===================================================== -->
 
-<div class="campo">
+<div
+  class="produto"
+  data-categoria="brasileiros masculinas"
+  data-nome="Corinthians — Modelo 2"
+  data-preco="120"
+>
 
-<label>CEP</label>
+  <div class="produto-imagem">
 
-<input
-type="text"
-id="cep"
-placeholder="00000-000">
+    <img
+      src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-corinthians2.jpeg"
+      alt="Camisa do Corinthians Modelo 2"
+    >
 
-</div>
+  </div>
 
+  <div class="produto-info">
 
-<div class="campo">
+    <h3>
+      Corinthians — Modelo 2
+    </h3>
 
-<label>Rua</label>
+    <p>
+      Camisa do Corinthians.
+    </p>
 
-<input
-type="text"
-id="rua"
-placeholder="Nome da rua">
-
-</div>
+    <strong class="preco">
+      R$ 120,00
+    </strong>
 
+    <div class="tamanho-titulo">
+      Tamanho:
+    </div>
 
-<div class="linha">
+    <div class="tamanhos">
 
-<div class="campo">
+      <button onclick="selecionarTamanho(this)">P</button>
+      <button onclick="selecionarTamanho(this)">M</button>
+      <button onclick="selecionarTamanho(this)">G</button>
+      <button onclick="selecionarTamanho(this)">GG</button>
 
-<label>Número</label>
+    </div>
 
-<input
-type="text"
-id="numero"
-placeholder="123">
+    <div class="quantidade">
 
-</div>
+      <button onclick="alterarQuantidade(this,-1)">−</button>
 
+      <span>1</span>
 
-<div class="campo">
+      <button onclick="alterarQuantidade(this,1)">+</button>
 
-<label>Complemento</label>
+    </div>
 
-<input
-type="text"
-id="complemento"
-placeholder="Opcional">
+    <button
+      class="adicionar-carrinho"
+      onclick="adicionarAoCarrinho(this)"
+    >
+      ADICIONAR AO CARRINHO
+    </button>
 
-</div>
+  </div>
 
 </div>
-
 
-<div class="campo">
 
-<label>Bairro</label>
+<!-- =====================================================
+     CORINTHIANS MODELO 3
+===================================================== -->
 
-<input
-type="text"
-id="bairro"
-placeholder="Seu bairro">
+<div
+  class="produto"
+  data-categoria="brasileiros masculinas"
+  data-nome="Corinthians — Modelo 3"
+  data-preco="120"
+>
 
-</div>
-
-
-<div class="linha">
+  <div class="produto-imagem">
 
-<div class="campo">
+    <img
+      src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/corinthians%203.jpeg"
+      alt="Camisa do Corinthians Modelo 3"
+    >
 
-<label>Cidade</label>
+  </div>
 
-<input
-type="text"
-id="cidade"
-placeholder="Sua cidade">
+  <div class="produto-info">
 
-</div>
-
+    <h3>
+      Corinthians — Modelo 3
+    </h3>
 
-<div class="campo">
+    <p>
+      Camisa do Corinthians.
+    </p>
 
-<label>Estado</label>
+    <strong class="preco">
+      R$ 120,00
+    </strong>
 
-<select id="estado">
+    <div class="tamanho-titulo">
+      Tamanho:
+    </div>
 
-<option value="">
-Selecione
-</option>
+    <div class="tamanhos">
 
-<option>ES</option>
-<option>RJ</option>
-<option>SP</option>
-<option>MG</option>
-<option>BA</option>
-<option>PR</option>
-<option>SC</option>
-<option>RS</option>
-<option>GO</option>
-<option>DF</option>
+      <button onclick="selecionarTamanho(this)">P</button>
+      <button onclick="selecionarTamanho(this)">M</button>
+      <button onclick="selecionarTamanho(this)">G</button>
+      <button onclick="selecionarTamanho(this)">GG</button>
 
-</select>
+    </div>
 
-</div>
+    <div class="quantidade">
 
-</div>
+      <button onclick="alterarQuantidade(this,-1)">−</button>
 
+      <span>1</span>
 
-<h3>📦 Entrega</h3>
+      <button onclick="alterarQuantidade(this,1)">+</button>
 
-<div class="pagamento">
+    </div>
 
-<label>
-<input type="radio" name="entrega" value="normal" checked>
-Entrega normal
-</label>
+    <button
+      class="adicionar-carrinho"
+      onclick="adicionarAoCarrinho(this)"
+    >
+      ADICIONAR AO CARRINHO
+    </button>
 
-<label>
-<input type="radio" name="entrega" value="expressa">
-Entrega expressa
-</label>
+  </div>
 
 </div>
 
 
-<h3>💳 Forma de pagamento</h3>
+<!-- =====================================================
+     ARSENAL
+===================================================== -->
 
-<div class="pagamento">
+<div
+  class="produto"
+  data-categoria="europeus masculinas"
+  data-nome="Arsenal — Modelo 1"
+  data-preco="120"
+>
 
-<label>
-<input type="radio" name="pagamento" value="pix" checked>
-PIX
-</label>
+  <div class="produto-imagem">
 
-<label>
-<input type="radio" name="pagamento" value="cartao">
-Cartão de crédito/débito
-</label>
+    <img
+      src="https://raw.githubusercontent.com/imperiodascamisas/Imperio-das-camisa/main/camisa-do-arsenal%201.jpeg"
+      alt="Camisa do Arsenal"
+    >
 
-</div>
+  </div>
 
+  <div class="produto-info">
 
-<div class="resumo-checkout">
+    <h3>
+      Arsenal — Modelo 1
+    </h3>
 
-<div>
+    <p>
+      Camisa do Arsenal.
+    </p>
 
-<span>
-Produtos
-</span>
+    <strong class="preco">
+      R$ 120,00
+    </strong>
 
-<strong id="resumoProdutos">
-R$ 0,00
-</strong>
-
-</div>
+    <div class="tamanho-titulo">
+      Tamanho:
+    </div>
 
+    <div class="tamanhos">
 
-<div>
+      <button onclick="selecionarTamanho(this)">P</button>
+      <button onclick="selecionarTamanho(this)">M</button>
+      <button onclick="selecionarTamanho(this)">G</button>
+      <button onclick="selecionarTamanho(this)">GG</button>
 
-<span>
-Frete
-</span>
+    </div>
 
-<strong>
-A calcular
-</strong>
+    <div class="quantidade">
 
-</div>
+      <button onclick="alterarQuantidade(this,-1)">−</button>
 
+      <span>1</span>
 
-<div class="total-final">
+      <button onclick="alterarQuantidade(this,1)">+</button>
 
-<span>
-Total
-</span>
+    </div>
 
-<strong id="totalCheckout">
-R$ 0,00
-</strong>
+    <button
+      class="adicionar-carrinho"
+      onclick="adicionarAoCarrinho(this)"
+    >
+      ADICIONAR AO CARRINHO
+    </button>
 
-</div>
+  </div>
 
 </div>
-
 
-<button
-class="confirmar"
-onclick="confirmarPedido()">
 
-CONFIRMAR PEDIDO
-
-</button>
-
-
-<button
-class="voltar"
-onclick="voltarParaCarrinho()">
-
-VOLTAR AO CARRINHO
-
-</button>
-
-</div>
+  </div>
 
 </section>
 
 
-<!-- =========================
-     SUCESSO
-========================= -->
+<!-- =====================================================
+     CARRINHO
+===================================================== -->
 
-<section id="sucesso" class="sucesso">
+<div
+  id="carrinhoLateral"
+  style="
+    display:none;
+    position:fixed;
+    top:0;
+    right:0;
+    width:min(400px,100%);
+    height:100vh;
+    background:#101010;
+    z-index:9999;
+    padding:25px;
+    overflow-y:auto;
+    box-shadow:-5px 0 20px rgba(0,0,0,.5);
+  "
+>
 
-<div class="sucesso-icon">
-✅
+  <div
+    style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:25px;
+    "
+  >
+
+    <h2>
+      SEU CARRINHO
+    </h2>
+
+    <button
+      onclick="fecharCarrinho()"
+      style="
+        background:none;
+        border:none;
+        color:white;
+        font-size:28px;
+      "
+    >
+      ✕
+    </button>
+
+  </div>
+
+  <div id="itensCarrinho">
+
+    <p>
+      Seu carrinho está vazio.
+    </p>
+
+  </div>
+
+  <hr
+    style="
+      margin:25px 0;
+      border-color:#333;
+    "
+  >
+
+  <h3>
+    Total:
+    <span
+      id="totalCarrinho"
+      style="color:#d8b236;"
+    >
+      R$ 0,00
+    </span>
+  </h3>
+
 </div>
 
-<h2>
-PEDIDO RECEBIDO!
-</h2>
 
-<p>
-Seu pedido foi registrado com sucesso.
-</p>
-
-<p id="numeroPedido"></p>
-
-</section>
-
-
-<!-- =========================
+<!-- =====================================================
      RODAPÉ
-========================= -->
+===================================================== -->
 
-<footer id="contato">
+<footer>
 
-<strong>
-IMPÉRIO DAS CAMISAS
-</strong>
-
-<p>
-Vista sua paixão. Vista seu time.
-</p>
-
-<p>
-Instagram: @imperio_das_camisas1
-</p>
-
-<p>
-©️ 2026 Império das Camisas
-</p>
+  <p>
+    © 2026 Império das Camisas
+  </p>
 
 </footer>
 
 
-<!-- =========================
-     CARRINHO
-========================= -->
-
-<div id="carrinho" class="carrinho">
-
-<div class="carrinho-topo">
-
-<h2>
-Seu carrinho
-</h2>
-
-<button
-class="fechar"
-onclick="fecharCarrinho()">
-
-✕
-
-</button>
-
-</div>
-
-
-<div id="itensCarrinho">
-
-<p>
-Seu carrinho está vazio.
-</p>
-
-</div>
-
-
-<div class="total">
-
-<span>
-Total:
-</span>
-
-<strong id="totalCarrinho">
-R$ 0,00
-</strong>
-
-</div>
-
-
-<button
-class="finalizar"
-onclick="abrirCheckout()">
-
-FINALIZAR COMPRA
-
-</button>
-
-</div>
-
-
-<div
-id="fundo"
-class="fundo"
-onclick="fecharCarrinho()">
-</div>
-
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
 <script>
 
-/* =========================
-   CONFIGURAÇÃO
-========================= */
-
 let carrinho = [];
 
-let tamanhosSelecionados = {
-    1: null,
-    2: null,
-    3: null,
-    4: null,
-    5: null,
-    6: null,
-    7: null,
-    8: null
-};
 
-let quantidades = {
-    1: 1,
-    2: 1,
-    3: 1,
-    4: 1,
-    5: 1,
-    6: 1,
-    7: 1,
-    8: 1
-};
+/* =====================================================
+   FILTRO DAS CATEGORIAS
+===================================================== */
+
+function filtrarProdutos(categoria, botao) {
+
+  const produtos = document.querySelectorAll(".produto");
+
+  let quantidadeVisivel = 0;
 
 
-/* =========================
-   SELECIONAR TAMANHO
-========================= */
+  produtos.forEach(produto => {
 
-function selecionarTamanho(id, tamanho, botao) {
+    const categoriasProduto =
+      produto.dataset.categoria.split(" ");
 
-    tamanhosSelecionados[id] = tamanho;
 
-    const botoes =
-        botao.parentElement.querySelectorAll(".tamanho");
+    if (categoriasProduto.includes(categoria)) {
 
-    botoes.forEach(function(item) {
+      produto.style.display = "flex";
 
-        item.classList.remove("selecionado");
+      quantidadeVisivel++;
 
+    } else {
+
+      produto.style.display = "none";
+
+    }
+
+  });
+
+
+  const titulo = document.getElementById("tituloProdutos");
+
+  const mensagem = document.getElementById("mensagemFiltro");
+
+
+  const nomes = {
+
+    brasileiros: "CAMISAS BRASILEIRAS",
+
+    europeus: "CAMISAS EUROPEIAS",
+
+    masculinas: "CAMISAS MASCULINAS",
+
+    infantis: "CAMISAS INFANTIS"
+
+  };
+
+
+  titulo.textContent = nomes[categoria];
+
+
+  if (quantidadeVisivel === 0) {
+
+    mensagem.style.display = "block";
+
+    mensagem.textContent =
+      "Nenhum produto disponível nesta categoria no momento.";
+
+  } else {
+
+    mensagem.style.display = "none";
+
+  }
+
+
+  document
+    .getElementById("produtos")
+    .scrollIntoView({
+      behavior: "smooth"
     });
 
-    botao.classList.add("selecionado");
 }
 
 
-/* =========================
+/* =====================================================
+   TAMANHO
+===================================================== */
+
+function selecionarTamanho(botao) {
+
+  const grupo =
+    botao.closest(".tamanhos");
+
+
+  grupo
+    .querySelectorAll("button")
+    .forEach(item => {
+
+      item.classList.remove("ativo");
+
+    });
+
+
+  botao.classList.add("ativo");
+
+}
+
+
+/* =====================================================
    QUANTIDADE
-========================= */
+===================================================== */
 
-function alterarQuantidade(id, valor) {
+function alterarQuantidade(botao, valor) {
 
-    quantidades[id] += valor;
+  const quantidade =
+    botao.parentElement.querySelector("span");
 
-    if (quantidades[id] < 1) {
-        quantidades[id] = 1;
-    }
 
-    document.getElementById(
-        "quantidade" + id
-    ).innerText = quantidades[id];
+  let numero =
+    parseInt(quantidade.textContent);
+
+
+  numero += valor;
+
+
+  if (numero < 1) {
+
+    numero = 1;
+
+  }
+
+
+  quantidade.textContent = numero;
+
 }
 
 
-/* =========================
-   ADICIONAR PRODUTO
-========================= */
+/* =====================================================
+   ADICIONAR AO CARRINHO
+===================================================== */
 
-function adicionarProduto(id, nome, preco) {
+function adicionarAoCarrinho(botao) {
 
-    const tamanho =
-        tamanhosSelecionados[id];
+  const produto =
+    botao.closest(".produto");
 
-    if (!tamanho) {
 
-        alert(
-            "Escolha o tamanho da camisa."
-        );
+  const nome =
+    produto.dataset.nome;
 
-        return;
-    }
 
-    const quantidade =
-        quantidades[id];
+  const preco =
+    Number(produto.dataset.preco);
 
-    carrinho.push({
 
-        id: id,
-        nome: nome,
-        preco: preco,
-        tamanho: tamanho,
-        quantidade: quantidade
+  const tamanhoSelecionado =
+    produto.querySelector(".tamanho.ativo, .tamanhos button.ativo");
 
-    });
 
-    atualizarCarrinho();
+  if (!tamanhoSelecionado) {
 
-    abrirCarrinho();
+    alert("Escolha um tamanho antes de adicionar ao carrinho.");
+
+    return;
+
+  }
+
+
+  const tamanho =
+    tamanhoSelecionado.textContent.trim();
+
+
+  const quantidade =
+    Number(
+      produto.querySelector(".quantidade span").textContent
+    );
+
+
+  const imagem =
+    produto.querySelector("img").src;
+
+
+  const item = {
+
+    id: Date.now(),
+
+    nome: nome,
+
+    preco: preco,
+
+    tamanho: tamanho,
+
+    quantidade: quantidade,
+
+    imagem: imagem
+
+  };
+
+
+  carrinho.push(item);
+
+
+  atualizarCarrinho();
+
+
+  abrirCarrinho();
+
 }
 
 
-/* =========================
+/* =====================================================
    ATUALIZAR CARRINHO
-========================= */
+===================================================== */
 
 function atualizarCarrinho() {
 
-    const lista =
-        document.getElementById(
-            "itensCarrinho"
-        );
-
-    const contador =
-        document.getElementById(
-            "contador"
-        );
-
-    const totalElemento =
-        document.getElementById(
-            "totalCarrinho"
-        );
-
-    const quantidadeTotal =
-        carrinho.reduce(
-            function(total, item) {
-
-                return total + item.quantidade;
-
-            },
-            0
-        );
-
-    contador.innerText =
-        quantidadeTotal;
+  const area =
+    document.getElementById("itensCarrinho");
 
 
-    lista.innerHTML = "";
+  const contador =
+    document.getElementById("contadorCarrinho");
 
 
-    if (carrinho.length === 0) {
-
-        lista.innerHTML =
-            "<p>Seu carrinho está vazio.</p>";
-
-        totalElemento.innerText =
-            "R$ 0,00";
-
-        return;
-    }
+  const totalElemento =
+    document.getElementById("totalCarrinho");
 
 
-    let total = 0;
+  area.innerHTML = "";
 
 
-    carrinho.forEach(
-        function(produto, index) {
+  let totalItens = 0;
 
-            const subtotal =
-                produto.preco *
-                produto.quantidade;
-
-            total += subtotal;
+  let total = 0;
 
 
-            lista.innerHTML += `
+  if (carrinho.length === 0) {
 
-            <div class="item">
+    area.innerHTML =
+      "<p>Seu carrinho está vazio.</p>";
 
-                <strong>
-                    ${produto.nome}
-                </strong>
+  }
 
-                <small>
 
-                    Tamanho:
-                    ${produto.tamanho}
+  carrinho.forEach(item => {
 
-                    <br>
+    totalItens += item.quantidade;
 
-                    Quantidade:
-                    ${produto.quantidade}
+    total += item.preco * item.quantidade;
 
-                </small>
 
-                <span class="preco-item">
+    const div =
+      document.createElement("div");
 
-                    R$
-                    ${subtotal
-                        .toFixed(2)
-                        .replace(".", ",")}
 
-                </span>
+    div.style.borderBottom =
+      "1px solid #333";
 
-                <button
-                    onclick="removerProduto(${index})">
 
-                    REMOVER
+    div.style.padding =
+      "15px 0";
 
-                </button>
 
-            </div>
+    div.innerHTML = `
 
-            `;
-        }
+      <div
+        style="
+          display:flex;
+          gap:15px;
+          align-items:center;
+        "
+      >
+
+        <img
+          src="${item.imagem}"
+          alt="${item.nome}"
+
+          style="
+            width:70px;
+            height:70px;
+            object-fit:cover;
+            border-radius:5px;
+          "
+        >
+
+        <div style="flex:1">
+
+          <strong>
+            ${item.nome}
+          </strong>
+
+          <p>
+            Tamanho: ${item.tamanho}
+          </p>
+
+          <p>
+            Quantidade: ${item.quantidade}
+          </p>
+
+          <p style="color:#d8b236">
+
+            R$
+            ${(item.preco * item.quantidade)
+            .toFixed(2)
+            .replace(".", ",")}
+
+          </p>
+
+        </div>
+
+        <button
+
+          onclick="removerCarrinho(${item.id})"
+
+          style="
+            background:none;
+            color:#fff;
+            border:none;
+            font-size:20px;
+          "
+
+        >
+          ✕
+        </button>
+
+      </div>
+
+    `;
+
+
+    area.appendChild(div);
+
+  });
+
+
+  contador.textContent =
+    totalItens;
+
+
+  totalElemento.textContent =
+    "R$ " +
+    total
+      .toFixed(2)
+      .replace(".", ",");
+
+}
+
+
+/* =====================================================
+   REMOVER PRODUTO
+===================================================== */
+
+function removerCarrinho(id) {
+
+  carrinho =
+    carrinho.filter(
+      item => item.id !== id
     );
 
 
-    totalElemento.innerText =
-        "R$ " +
-        total
-            .toFixed(2)
-            .replace(".", ",");
+  atualizarCarrinho();
+
 }
 
 
-/* =========================
-   REMOVER
-========================= */
-
-function removerProduto(index) {
-
-    carrinho.splice(index, 1);
-
-    atualizarCarrinho();
-}
-
-
-/* =========================
-   ABRIR CARRINHO
-========================= */
+/* =====================================================
+   ABRIR / FECHAR CARRINHO
+===================================================== */
 
 function abrirCarrinho() {
 
-    document
-        .getElementById("carrinho")
-        .classList.add("aberto");
+  document
+    .getElementById("carrinhoLateral")
+    .style.display = "block";
 
-    document
-        .getElementById("fundo")
-        .classList.add("ativo");
 }
 
-
-/* =========================
-   FECHAR CARRINHO
-========================= */
 
 function fecharCarrinho() {
 
-    document
-        .getElementById("carrinho")
-        .classList.remove("aberto");
+  document
+    .getElementById("carrinhoLateral")
+    .style.display = "none";
 
-    document
-        .getElementById("fundo")
-        .classList.remove("ativo");
-}
-
-
-/* =========================
-   ABRIR CHECKOUT
-========================= */
-
-function abrirCheckout() {
-
-    if (carrinho.length === 0) {
-
-        alert(
-            "Seu carrinho está vazio!"
-        );
-
-        return;
-    }
-
-
-    fecharCarrinho();
-
-
-    document
-        .getElementById("checkout")
-        .classList.add("ativo");
-
-
-    atualizarResumo();
-
-
-    document
-        .getElementById("checkout")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
-}
-
-
-/* =========================
-   RESUMO
-========================= */
-
-function atualizarResumo() {
-
-    let total = 0;
-
-
-    carrinho.forEach(
-        function(produto) {
-
-            total +=
-                produto.preco *
-                produto.quantidade;
-
-        }
-    );
-
-
-    document.getElementById(
-        "resumoProdutos"
-    ).innerText =
-
-        "R$ " +
-        total
-            .toFixed(2)
-            .replace(".", ",");
-
-
-    document.getElementById(
-        "totalCheckout"
-    ).innerText =
-
-        "R$ " +
-        total
-            .toFixed(2)
-            .replace(".", ",");
-}
-
-
-/* =========================
-   VOLTAR
-========================= */
-
-function voltarParaCarrinho() {
-
-    document
-        .getElementById("checkout")
-        .classList.remove("ativo");
-
-    abrirCarrinho();
-}
-
-
-/* =========================
-   CONFIRMAR PEDIDO
-========================= */
-
-function confirmarPedido() {
-
-    const nome =
-        document
-            .getElementById("nome")
-            .value
-            .trim();
-
-    const telefone =
-        document
-            .getElementById("telefone")
-            .value
-            .trim();
-
-    const cep =
-        document
-            .getElementById("cep")
-            .value
-            .trim();
-
-    const rua =
-        document
-            .getElementById("rua")
-            .value
-            .trim();
-
-    const numero =
-        document
-            .getElementById("numero")
-            .value
-            .trim();
-
-    const bairro =
-        document
-            .getElementById("bairro")
-            .value
-            .trim();
-
-    const cidade =
-        document
-            .getElementById("cidade")
-            .value
-            .trim();
-
-    const estado =
-        document
-            .getElementById("estado")
-            .value;
-
-
-    if (
-        !nome ||
-        !telefone ||
-        !cep ||
-        !rua ||
-        !numero ||
-        !bairro ||
-        !cidade ||
-        !estado
-    ) {
-
-        alert(
-            "Preencha todos os campos obrigatórios."
-        );
-
-        return;
-    }
-
-
-    const numeroPedido =
-        Math.floor(
-            1000 +
-            Math.random() * 9000
-        );
-
-
-    document
-        .getElementById("checkout")
-        .classList.remove("ativo");
-
-
-    document
-        .getElementById("sucesso")
-        .classList.add("ativo");
-
-
-    document.getElementById(
-        "numeroPedido"
-    ).innerText =
-
-        "Pedido #" +
-        numeroPedido;
-
-
-    document
-        .getElementById("sucesso")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
 }
 
 </script>
 
+
 </body>
+
 </html>
