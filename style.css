@@ -850,3 +850,59 @@ footer {
     font-size: 17px;
   }
 }
+/* REMOVE AS BORDAS BRANCAS DAS FOTOS */
+
+.produto-imagem,
+.produto-img,
+.imagem-produto {
+  width: 100%;
+  height: 460px;
+  overflow: hidden;
+  background: #111;
+}
+
+.produto img,
+.produto-card img,
+.card-produto img,
+.produto-imagem img,
+.produto-img img,
+.imagem-produto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+
+  /* zoom para eliminar as margens brancas */
+  transform: scale(1.18);
+
+  display: block;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .produto-imagem,
+  .produto-img,
+  .imagem-produto {
+    height: 380px;
+  }
+}
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+  .produto-imagem,
+  .produto-img,
+  .imagem-produto {
+    height: 250px;
+  }
+
+  .produto img,
+  .produto-card img,
+  .card-produto img,
+  .produto-imagem img,
+  .produto-img img,
+  .imagem-produto img {
+    transform: scale(1.18);
+  }
+}
