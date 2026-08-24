@@ -55,7 +55,46 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
 }
 @media(max-width:370px){.produto-imagem{height:210px}.produto-info{padding:8px}.produto-info h3{font-size:11px}.produto-info p{font-size:8px}.preco{font-size:15px}.tamanhos button{min-width:26px;height:27px}}
 
-  </style>
+  
+/* ===== CHECKOUT ===== */
+.btn-finalizar{
+  width:100%;margin-top:18px;padding:14px 16px;border:0;border-radius:8px;
+  background:linear-gradient(135deg,var(--ouro2),var(--ouro));color:#070707;
+  font-weight:900;letter-spacing:.5px
+}
+.checkout-overlay{
+  display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.82);
+  padding:20px;overflow-y:auto
+}
+.checkout-box{
+  width:min(720px,100%);margin:20px auto;background:#101010;border:1px solid rgba(201,162,39,.25);
+  border-radius:14px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.65)
+}
+.checkout-topo{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:22px}
+.checkout-topo h2{margin:0;color:var(--ouro2)}
+.checkout-fechar{background:none;border:0;color:#fff;font-size:28px}
+.checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.checkout-campo{margin-bottom:14px}
+.checkout-campo label{display:block;font-size:11px;font-weight:900;color:#c7c7c7;margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px}
+.checkout-campo input,.checkout-campo select{
+  width:100%;padding:12px;border-radius:7px;border:1px solid #3b3b3b;
+  background:#080808;color:#fff;outline:none
+}
+.checkout-campo input:focus,.checkout-campo select:focus{border-color:var(--ouro)}
+.checkout-resumo{
+  margin-top:18px;padding:16px;border-radius:9px;background:#080808;border:1px solid #292929
+}
+.checkout-resumo-linha{display:flex;justify-content:space-between;gap:15px;margin:7px 0}
+.checkout-resumo-total{border-top:1px solid #333;padding-top:12px;margin-top:12px;font-size:20px}
+.checkout-resumo-total strong{color:var(--ouro2)}
+.btn-confirmar{
+  width:100%;margin-top:18px;padding:15px;border:0;border-radius:8px;
+  background:linear-gradient(135deg,var(--ouro2),var(--ouro));color:#070707;font-weight:900
+}
+.checkout-obs{margin-top:10px;color:#8f8f8f;font-size:11px;text-align:center}
+@media(max-width:600px){.checkout-grid{grid-template-columns:1fr}.checkout-box{padding:18px}}
+
+</style>
 </head>
 <body>
 <header>
@@ -978,7 +1017,111 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
 <div id="itensCarrinho"><p>Seu carrinho está vazio.</p></div>
 <hr style="margin:24px 0;border-color:#333"/>
 <h3>Total: <span id="totalCarrinho">R$ 0,00</span></h3>
+<button class="btn-finalizar" onclick="abrirCheckout()" type="button">FINALIZAR COMPRA</button>
 </aside>
+
+<div id="checkoutOverlay" class="checkout-overlay">
+  <div class="checkout-box">
+    <div class="checkout-topo">
+      <h2>FINALIZAR COMPRA</h2>
+      <button class="checkout-fechar" onclick="fecharCheckout()" type="button">✕</button>
+    </div>
+
+    <div class="checkout-grid">
+      <div class="checkout-campo">
+        <label for="checkoutNome">Nome completo</label>
+        <input id="checkoutNome" type="text" placeholder="Seu nome">
+      </div>
+      <div class="checkout-campo">
+        <label for="checkoutTelefone">Telefone</label>
+        <input id="checkoutTelefone" type="tel" placeholder="(00) 00000-0000">
+      </div>
+    </div>
+
+    <div class="checkout-grid">
+      <div class="checkout-campo">
+        <label for="checkoutCep">CEP</label>
+        <input id="checkoutCep" type="text" placeholder="00000-000">
+      </div>
+      <div class="checkout-campo">
+        <label for="checkoutEstado">Estado</label>
+        <select id="checkoutEstado">
+          <option value="">Selecione</option>
+          <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+          <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+          <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+          <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+          <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+          <option>SP</option><option>SE</option><option>TO</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="checkout-campo">
+      <label for="checkoutRua">Rua</label>
+      <input id="checkoutRua" type="text" placeholder="Nome da rua">
+    </div>
+
+    <div class="checkout-grid">
+      <div class="checkout-campo">
+        <label for="checkoutNumero">Número</label>
+        <input id="checkoutNumero" type="text" placeholder="123">
+      </div>
+      <div class="checkout-campo">
+        <label for="checkoutComplemento">Complemento</label>
+        <input id="checkoutComplemento" type="text" placeholder="Opcional">
+      </div>
+    </div>
+
+    <div class="checkout-grid">
+      <div class="checkout-campo">
+        <label for="checkoutBairro">Bairro</label>
+        <input id="checkoutBairro" type="text" placeholder="Seu bairro">
+      </div>
+      <div class="checkout-campo">
+        <label for="checkoutCidade">Cidade</label>
+        <input id="checkoutCidade" type="text" placeholder="Sua cidade">
+      </div>
+    </div>
+
+    <div class="checkout-grid">
+      <div class="checkout-campo">
+        <label for="checkoutEntrega">Entrega</label>
+        <select id="checkoutEntrega">
+          <option value="normal">Entrega normal</option>
+          <option value="expressa">Entrega expressa</option>
+        </select>
+      </div>
+      <div class="checkout-campo">
+        <label for="checkoutPagamento">Pagamento</label>
+        <select id="checkoutPagamento">
+          <option value="pix">PIX</option>
+          <option value="cartao">Cartão</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="checkout-resumo">
+      <div class="checkout-resumo-linha">
+        <span>Produtos</span>
+        <strong id="checkoutSubtotal">R$ 0,00</strong>
+      </div>
+      <div class="checkout-resumo-linha">
+        <span>Frete</span>
+        <strong>A calcular</strong>
+      </div>
+      <div class="checkout-resumo-linha checkout-resumo-total">
+        <span>Total</span>
+        <strong id="checkoutTotal">R$ 0,00</strong>
+      </div>
+    </div>
+
+    <button class="btn-confirmar" onclick="confirmarPedidoCheckout()" type="button">CONFIRMAR PEDIDO</button>
+    <p class="checkout-obs">O frete será confirmado antes do pagamento.</p>
+  </div>
+</div>
+
 <footer><p>© 2026 Império das Camisas</p></footer>
 <script>
 
@@ -1118,6 +1261,60 @@ function atualizarCarrinho(){
 
 function abrirCarrinho(){ document.getElementById("carrinhoLateral").style.display = "block"; }
 function fecharCarrinho(){ document.getElementById("carrinhoLateral").style.display = "none"; }
+
+
+function totalCarrinhoNumero(){
+  return carrinho.reduce((soma,item) => soma + (Number(item.preco) * Number(item.quantidade)), 0);
+}
+
+function abrirCheckout(){
+  if(!carrinho.length){
+    alert("Seu carrinho está vazio.");
+    return;
+  }
+  fecharCarrinho();
+  const total = totalCarrinhoNumero();
+  document.getElementById("checkoutSubtotal").textContent = "R$ " + total.toFixed(2).replace(".",",");
+  document.getElementById("checkoutTotal").textContent = "R$ " + total.toFixed(2).replace(".",",");
+  document.getElementById("checkoutOverlay").style.display = "block";
+  document.body.style.overflow = "hidden";
+}
+
+function fecharCheckout(){
+  document.getElementById("checkoutOverlay").style.display = "none";
+  document.body.style.overflow = "";
+}
+
+function confirmarPedidoCheckout(){
+  const camposObrigatorios = [
+    ["checkoutNome","nome"],
+    ["checkoutTelefone","telefone"],
+    ["checkoutCep","CEP"],
+    ["checkoutEstado","estado"],
+    ["checkoutRua","rua"],
+    ["checkoutNumero","número"],
+    ["checkoutBairro","bairro"],
+    ["checkoutCidade","cidade"]
+  ];
+
+  for(const [id,nomeCampo] of camposObrigatorios){
+    if(!document.getElementById(id).value.trim()){
+      alert("Preencha o campo " + nomeCampo + ".");
+      document.getElementById(id).focus();
+      return;
+    }
+  }
+
+  const numeroPedido = Math.floor(1000 + Math.random()*9000);
+
+  alert("Pedido #" + numeroPedido + " confirmado! Agora vamos conectar esta etapa ao painel de pedidos.");
+
+  carrinho = [];
+  salvarCarrinho();
+  atualizarCarrinho();
+  fecharCheckout();
+}
+
 
 document.addEventListener("DOMContentLoaded", atualizarCarrinho);
 
