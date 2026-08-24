@@ -1044,7 +1044,8 @@ function adicionarAoCarrinho(botao){
     return;
   }
 
-  const nome = produto.dataset.nome;\n  const produtoId = produto.dataset.produtoId || produto.querySelector("img").src;
+  const nome = produto.dataset.nome;
+  const produtoId = produto.dataset.produtoId || produto.querySelector("img").src;
   const preco = Number(produto.dataset.preco);
   const tamanho = tamanhoBtn.textContent.trim();
   const quantidade = Number(produto.querySelector(".quantidade span").textContent);
