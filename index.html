@@ -1328,6 +1328,8 @@ async function buscarCepCheckout(){
 }
 
 
+let urlPedidoWhatsApp = "";
+
 function abrirPedidoSucesso(){
   const overlay = document.getElementById("pedidoSucessoOverlay");
   if(overlay) overlay.style.display = "flex";
@@ -1336,6 +1338,14 @@ function abrirPedidoSucesso(){
 function fecharPedidoSucesso(){
   const overlay = document.getElementById("pedidoSucessoOverlay");
   if(overlay) overlay.style.display = "none";
+}
+
+function enviarPedidoWhatsApp(){
+  if(!urlPedidoWhatsApp){
+    alert("Não foi possível preparar o WhatsApp. Tente confirmar o pedido novamente.");
+    return;
+  }
+  window.location.href = urlPedidoWhatsApp;
 }
 
 function confirmarPedidoCheckout(){
@@ -1425,12 +1435,10 @@ ${endereco}
 Olá! Gostaria de confirmar este pedido.`;
 
   const whatsappLoja = "5527997683655";
-  const url = "https://wa.me/" + whatsappLoja + "?text=" + encodeURIComponent(mensagem);
+  urlPedidoWhatsApp = "https://wa.me/" + whatsappLoja + "?text=" + encodeURIComponent(mensagem);
 
-  window.open(url, "_blank");
-  setTimeout(() => {
-    abrirPedidoSucesso();
-  }, 300);
+  fecharCheckout();
+  abrirPedidoSucesso();
 }
 
 
@@ -1439,23 +1447,25 @@ document.addEventListener("DOMContentLoaded", atualizarCarrinho);
 </script>
 
 <div id="pedidoSucessoOverlay" style="
-  display:none; position:fixed; inset:0; z-index:99999;
-  background:rgba(0,0,0,.86); align-items:center; justify-content:center; padding:20px;">
+  display:none; position:fixed; inset:0; z-index:999999;
+  background:rgba(0,0,0,.92); align-items:center; justify-content:center; padding:20px;">
   <div style="
     width:100%; max-width:430px; background:#111; color:#fff;
-    border:1px solid #2b2b2b; border-radius:14px; padding:30px 24px;
-    text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.45);">
+    border:1px solid #3a3a3a; border-radius:16px; padding:30px 24px;
+    text-align:center; box-shadow:0 20px 70px rgba(0,0,0,.65);">
     <div style="font-size:54px; margin-bottom:12px;">✅</div>
     <h2 style="margin:0 0 10px; color:#d4af37;">Pedido preparado!</h2>
-    <p style="margin:0 0 8px; color:#ddd; line-height:1.5;">
-      Seu pedido foi montado com sucesso.
+    <p style="margin:0 0 20px; color:#ddd; line-height:1.5;">
+      Agora envie o pedido para a Império das Camisas pelo WhatsApp.
     </p>
-    <p style="margin:0 0 22px; color:#999; line-height:1.5;">
-      Agora é só concluir o envio pelo WhatsApp para a Império das Camisas.
-    </p>
+    <button type="button" onclick="enviarPedidoWhatsApp()" style="
+      width:100%; padding:15px; border:0; border-radius:8px;
+      background:#d4af37; color:#000; font-weight:900; cursor:pointer; margin-bottom:10px;">
+      ENVIAR NO WHATSAPP
+    </button>
     <button type="button" onclick="fecharPedidoSucesso()" style="
-      width:100%; padding:14px; border:0; border-radius:7px;
-      background:#d4af37; color:#000; font-weight:800; cursor:pointer;">
+      width:100%; padding:13px; border:1px solid #444; border-radius:8px;
+      background:#181818; color:#fff; font-weight:700; cursor:pointer;">
       VOLTAR À LOJA
     </button>
   </div>
