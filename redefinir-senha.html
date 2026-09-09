@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redefinir senha — Império das Camisas</title>
+<style>
+body{margin:0;background:#080808;color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.box{width:100%;max-width:420px;background:#111;border:1px solid #292929;border-radius:10px;padding:28px}
+h1{color:#d4af37;margin-top:0;text-align:center}
+p{color:#999;text-align:center}
+label{display:block;margin:15px 0 7px;font-size:13px}
+input{width:100%;box-sizing:border-box;padding:13px;background:#080808;border:1px solid #444;border-radius:5px;color:#fff}
+button{width:100%;margin-top:18px;padding:14px;border:0;border-radius:5px;background:#d4af37;color:#000;font-weight:bold;cursor:pointer}
+.msg{margin-top:15px;text-align:center;font-size:13px}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Nova senha</h1>
+  <p>Digite e confirme sua nova senha de administrador.</p>
+  <label>Nova senha</label>
+  <input id="senha1" type="password" minlength="8">
+  <label>Confirmar nova senha</label>
+  <input id="senha2" type="password" minlength="8">
+  <button onclick="alterarSenha()">SALVAR NOVA SENHA</button>
+  <div id="msg" class="msg"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://ezptdkqgeijhwatcbazu.supabase.co";
+const SUPABASE_KEY = "sb_publishable_s3eson_YIFJZsbRhy2LCQg_jNbnLfWe";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+async function alterarSenha(){
+  const msg = document.getElementById("msg");
+  const s1 = document.getElementById("senha1").value;
+  const s2 = document.getElementById("senha2").value;
+  msg.textContent = "";
+
+  if(s1.length < 8){ msg.textContent = "Use pelo menos 8 caracteres."; return; }
+  if(s1 !== s2){ msg.textContent = "As senhas não são iguais."; return; }
+  if(SUPABASE_KEY.includes("COLE_SUA_PUBLISHABLE_KEY_AQUI")){
+    msg.textContent = "Falta configurar a Publishable Key.";
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.updateUser({ password: s1 });
+  if(error){
+    console.error(error);
+    msg.textContent = "Não foi possível alterar a senha. Abra novamente o link de recuperação mais recente.";
+    return;
+  }
+
+  msg.textContent = "Senha alterada com sucesso. Você já pode entrar no painel de pedidos.";
+  setTimeout(() => {
+    window.location.href = "./pedidos.html";
+  }, 1800);
+}
+</script>
+</body>
+</html>
