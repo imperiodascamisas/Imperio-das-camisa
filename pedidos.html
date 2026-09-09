@@ -52,12 +52,27 @@
     .products-list{min-width:240px}
     .product-line{padding:3px 0;color:#ddd}
     .status-select{min-width:145px;padding:8px}
+    .acoes-pedido{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+    .btn-acao{border:1px solid #383838;background:#151515;color:#fff;padding:7px 9px;border-radius:7px;font-size:10px;font-weight:900}
+    .btn-acao:hover{border-color:var(--gold);color:var(--gold2)}
+    .modal-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.82);display:grid;place-items:center;padding:20px}
+    .modal-card{width:min(760px,100%);max-height:90vh;overflow:auto;background:#0d0d0d;border:1px solid rgba(201,162,39,.45);border-radius:18px;box-shadow:0 30px 90px #000;padding:24px}
+    .modal-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;border-bottom:1px solid #282828;padding-bottom:15px;margin-bottom:18px}
+    .modal-top h2{margin:0;color:var(--gold2);font-size:22px}
+    .modal-close{border:1px solid #383838;background:#151515;color:#fff;border-radius:8px;padding:8px 11px}
+    .detalhes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .detalhe-box{background:#131313;border:1px solid #252525;border-radius:12px;padding:14px}
+    .detalhe-box.full{grid-column:1/-1}
+    .detalhe-box h3{margin:0 0 10px;color:var(--gold2);font-size:12px;text-transform:uppercase}
+    .detalhe-box p{margin:5px 0;color:#ddd;font-size:13px;line-height:1.5}
+    .modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .modal-actions button{flex:1;min-width:180px}
     .empty,.loading{text-align:center;padding:50px;color:#999}
     .badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#1a1a1a;border:1px solid #333;font-size:10px}
     .errorbox{display:none;margin-bottom:18px;padding:13px;border:1px solid rgba(255,107,107,.35);background:rgba(255,107,107,.08);
       color:#ffc1c1;border-radius:10px;font-size:13px}
     @media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.filters{grid-template-columns:1fr}.topbar{align-items:flex-start}}
-    @media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.stat strong{font-size:20px}.topbar h1{font-size:16px}}
+    @media(max-width:520px){.stats{grid-template-columns:1fr 1fr}.stat strong{font-size:20px}.topbar h1{font-size:16px}.detalhes-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -123,7 +138,7 @@
             <th>Total</th>
             <th>Endereço</th>
             <th>Entrega / Pagamento</th>
-            <th>Status</th>
+            <th>Status / Ações</th>
           </tr>
         </thead>
         <tbody id="tbodyPedidos"></tbody>
@@ -132,6 +147,25 @@
     </div>
   </main>
 </section>
+
+
+<div id="modalPedido" class="modal-overlay hidden" onclick="fecharDetalhesFora(event)">
+  <div class="modal-card">
+    <div class="modal-top">
+      <div>
+        <div class="muted">DETALHES DO PEDIDO</div>
+        <h2 id="modalNumero">Pedido</h2>
+        <div id="modalData" class="muted"></div>
+      </div>
+      <button class="modal-close" type="button" onclick="fecharDetalhes()">✕</button>
+    </div>
+    <div id="modalConteudo"></div>
+    <div class="modal-actions">
+      <button class="btn-primary" type="button" onclick="whatsAppPedidoAberto()">CHAMAR CLIENTE NO WHATSAPP</button>
+      <button class="btn-small" type="button" onclick="fecharDetalhes()">FECHAR</button>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -341,9 +375,102 @@ function renderizarPedidos(){
               `<option value="${s}" ${(p.status || "Pendente")===s ? "selected":""}>${s}</option>`
             ).join("")}
           </select>
+          <div class="acoes-pedido">
+            <button class="btn-acao" type="button" onclick="abrirDetalhes(${Number(p.id)})">VER DETALHES</button>
+            <button class="btn-acao" type="button" onclick="chamarWhatsApp(${Number(p.id)})">WHATSAPP</button>
+          </div>
         </td>
       </tr>`;
   }).join("");
+}
+
+
+let pedidoAbertoId = null;
+
+function telefoneWhatsApp(valor){
+  let n = String(valor || "").replace(/\D/g,"");
+  if(!n) return "";
+  if(n.length === 10 || n.length === 11) n = "55" + n;
+  return n;
+}
+
+function chamarWhatsApp(id){
+  const p = pedidos.find(x => Number(x.id) === Number(id));
+  if(!p) return;
+  const tel = telefoneWhatsApp(p.telefone);
+  if(!tel){
+    alert("Este pedido não possui telefone.");
+    return;
+  }
+  const msg = `Olá, ${p.nome || "cliente"}! Aqui é da Império das Camisas. Estou entrando em contato sobre o pedido #${p.numero_pedido || p.id}.`;
+  window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`,"_blank","noopener");
+}
+
+function abrirDetalhes(id){
+  const p = pedidos.find(x => Number(x.id) === Number(id));
+  if(!p) return;
+  pedidoAbertoId = id;
+
+  const prods = Array.isArray(p.produtos) ? p.produtos : [];
+  const produtos = prods.length ? prods.map(item => `
+    <p><strong>${escapar(item.nome || "Produto")}</strong><br>
+    Tamanho: ${escapar(item.tamanho || "—")} · Quantidade: ${Number(item.quantidade || 1)}
+    ${item.preco != null ? ` · ${dinheiro(item.preco)}` : ""}</p>`).join("") : "<p>Sem detalhes dos produtos.</p>";
+
+  const endereco = [
+    p.rua,
+    p.numero ? "nº " + p.numero : "",
+    p.complemento,
+    p.bairro,
+    [p.cidade,p.estado].filter(Boolean).join(" - "),
+    p.cep ? "CEP " + p.cep : ""
+  ].filter(Boolean).map(escapar).join("<br>");
+
+  document.getElementById("modalNumero").textContent = "Pedido #" + (p.numero_pedido || p.id);
+  document.getElementById("modalData").textContent = dataBR(p.created_at);
+  document.getElementById("modalConteudo").innerHTML = `
+    <div class="detalhes-grid">
+      <div class="detalhe-box">
+        <h3>Cliente</h3>
+        <p><strong>${escapar(p.nome || "—")}</strong></p>
+        <p>Telefone: ${escapar(p.telefone || "—")}</p>
+        <p>E-mail: ${escapar(p.email || "—")}</p>
+      </div>
+      <div class="detalhe-box">
+        <h3>Pedido</h3>
+        <p>Status: <strong>${escapar(p.status || "Pendente")}</strong></p>
+        <p>Entrega: ${escapar(p.entrega || "—")}</p>
+        <p>Pagamento: ${escapar(p.pagamento || "—")}</p>
+      </div>
+      <div class="detalhe-box full">
+        <h3>Produtos</h3>
+        ${produtos}
+      </div>
+      <div class="detalhe-box">
+        <h3>Valores</h3>
+        <p>Subtotal: ${dinheiro(p.subtotal)}</p>
+        <p>Frete: ${dinheiro(p.frete)}</p>
+        <p><strong>Total: ${dinheiro(p.total)}</strong></p>
+      </div>
+      <div class="detalhe-box">
+        <h3>Endereço</h3>
+        <p>${endereco || "—"}</p>
+      </div>
+    </div>`;
+  document.getElementById("modalPedido").classList.remove("hidden");
+}
+
+function fecharDetalhes(){
+  document.getElementById("modalPedido").classList.add("hidden");
+  pedidoAbertoId = null;
+}
+
+function fecharDetalhesFora(event){
+  if(event.target.id === "modalPedido") fecharDetalhes();
+}
+
+function whatsAppPedidoAberto(){
+  if(pedidoAbertoId != null) chamarWhatsApp(pedidoAbertoId);
 }
 
 async function alterarStatus(id,status){
