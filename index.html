@@ -1125,6 +1125,12 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
 <footer><p>© 2026 Império das Camisas</p></footer>
 <script>
 
+const SUPABASE_URL = "https://ezptdkqgeijhwatcbazu.supabase.co";
+const SUPABASE_KEY = "COLE_SUA_PUBLISHABLE_KEY_AQUI";
+const supabaseClient = (window.supabase && !SUPABASE_KEY.includes("COLE_SUA_PUBLISHABLE_KEY_AQUI"))
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+  : null;
+
 const STORAGE_KEY = "imperioCarrinhoV2";
 let carrinho = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
 
@@ -1348,7 +1354,31 @@ function enviarPedidoWhatsApp(){
   window.location.href = urlPedidoWhatsApp;
 }
 
-function confirmarPedidoCheckout(){
+
+async function salvarPedidoNoSupabase(pedido){
+  if(!supabaseClient){
+    console.warn("Supabase ainda não configurado. O pedido seguirá normalmente pelo WhatsApp.");
+    return { salvo:false, motivo:"nao_configurado" };
+  }
+
+  try{
+    const { error } = await supabaseClient
+      .from("pedidos")
+      .insert([pedido]);
+
+    if(error){
+      console.error("Erro ao salvar pedido no Supabase:", error);
+      return { salvo:false, motivo:"erro", erro:error };
+    }
+
+    return { salvo:true };
+  }catch(error){
+    console.error("Falha de conexão com o Supabase:", error);
+    return { salvo:false, motivo:"erro", erro:error };
+  }
+}
+
+async function confirmarPedidoCheckout(){
   const camposObrigatorios = [
     ["checkoutNome","nome"],
     ["checkoutTelefone","telefone"],
@@ -1436,6 +1466,53 @@ Olá! Gostaria de confirmar este pedido.`;
 
   const whatsappLoja = "5527997683655";
   urlPedidoWhatsApp = "https://wa.me/" + whatsappLoja + "?text=" + encodeURIComponent(mensagem);
+
+  const pedidoBanco = {
+    numero_pedido: numeroPedido,
+    nome: nome,
+    telefone: telefone,
+    produtos: carrinho.map(item => ({
+      produtoId: item.produtoId || null,
+      nome: item.nome,
+      preco: Number(item.preco),
+      tamanho: item.tamanho,
+      quantidade: Number(item.quantidade),
+      imagem: item.imagem || ""
+    })),
+    subtotal: subtotal,
+    frete: 0,
+    total: subtotal,
+    cep: cep,
+    rua: rua,
+    numero: numero,
+    complemento: complemento,
+    bairro: bairro,
+    cidade: cidade,
+    estado: estado,
+    entrega: entrega,
+    pagamento: pagamento,
+    status: "Pendente"
+  };
+
+  const botaoConfirmar = document.querySelector(".btn-confirmar");
+  const textoAnterior = botaoConfirmar ? botaoConfirmar.textContent : "";
+  if(botaoConfirmar){
+    botaoConfirmar.disabled = true;
+    botaoConfirmar.textContent = "PREPARANDO PEDIDO...";
+  }
+
+  const resultadoBanco = await salvarPedidoNoSupabase(pedidoBanco);
+
+  if(resultadoBanco.salvo){
+    console.log("Pedido salvo no painel:", numeroPedido);
+  }else{
+    console.warn("Pedido não foi salvo no painel, mas seguirá pelo WhatsApp.");
+  }
+
+  if(botaoConfirmar){
+    botaoConfirmar.disabled = false;
+    botaoConfirmar.textContent = textoAnterior;
+  }
 
   fecharCheckout();
   abrirPedidoSucesso();
