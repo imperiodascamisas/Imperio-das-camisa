@@ -92,6 +92,28 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
   background:linear-gradient(135deg,var(--ouro2),var(--ouro));color:#070707;font-weight:900
 }
 .checkout-obs{margin-top:10px;color:#8f8f8f;font-size:11px;text-align:center}
+
+.pagamento-seguro{
+  margin:14px 0;padding:14px;border:1px solid #343434;border-radius:10px;
+  background:#111;color:#ddd;font-size:13px;line-height:1.5
+}
+.pagamento-seguro strong{color:var(--ouro2)}
+#mercadoPagoArea{display:none;margin-top:18px;border-top:1px solid #333;padding-top:18px}
+#mercadoPagoArea h3{margin:0 0 8px;color:var(--ouro2)}
+#mercadoPagoArea .mp-ajuda{color:#aaa;font-size:12px;margin:0 0 14px}
+.btn-voltar-dados{
+  width:100%;margin-top:10px;padding:12px;border-radius:8px;border:1px solid #444;
+  background:#171717;color:#fff;font-weight:800;cursor:pointer
+}
+.pix-box{
+  margin-top:18px;padding:16px;border:1px solid #3b3b3b;border-radius:12px;background:#0f0f0f
+}
+.pix-box img{width:220px;max-width:100%;background:#fff;padding:10px;border-radius:10px;margin:10px auto;display:block}
+.pix-copia{
+  width:100%;min-height:95px;background:#090909;color:#ddd;border:1px solid #3b3b3b;
+  border-radius:8px;padding:10px;resize:none
+}
+
 @media(max-width:600px){.checkout-grid{grid-template-columns:1fr}.checkout-box{padding:18px}}
 
 </style>
@@ -1099,11 +1121,11 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
         </select>
       </div>
       <div class="checkout-campo">
-        <label for="checkoutPagamento">Pagamento</label>
-        <select id="checkoutPagamento">
-          <option value="pix">PIX</option>
-          <option value="cartao">Cartão</option>
-        </select>
+        <label>Pagamento</label>
+        <div class="pagamento-seguro">
+          <strong>Mercado Pago</strong><br>
+          PIX ou cartão com processamento seguro dentro da loja.
+        </div>
       </div>
     </div>
 
@@ -1122,13 +1144,21 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
       </div>
     </div>
 
-    <button class="btn-confirmar" onclick="confirmarPedidoCheckout()" type="button">CONFIRMAR PELO WHATSAPP</button>
-    <p class="checkout-obs">Ao confirmar, seu pedido será enviado para o WhatsApp da Império das Camisas.</p>
+    <button class="btn-confirmar" onclick="confirmarPedidoCheckout()" type="button">CONTINUAR PARA PAGAMENTO</button>
+    <p class="checkout-obs">Você ainda não será cobrado. Na próxima etapa escolha PIX ou cartão.</p>
+
+    <div id="mercadoPagoArea">
+      <h3>Pagamento seguro</h3>
+      <p class="mp-ajuda">Escolha PIX ou cartão e conclua o pagamento pelo Mercado Pago.</p>
+      <div id="paymentBrick_container"></div>
+      <button class="btn-voltar-dados" onclick="voltarDadosCheckout()" type="button">VOLTAR AOS DADOS</button>
+    </div>
   </div>
 </div>
 
 <footer><p>© 2026 Império das Camisas</p></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 
 const SUPABASE_URL = "https://ezptdkqgeijhwatcbazu.supabase.co";
@@ -1136,6 +1166,14 @@ const SUPABASE_KEY = "sb_publishable_s3eson_YIFJZsbRhy2LCQg_jNbnLfWe";
 const supabaseClient = (window.supabase && !SUPABASE_KEY.includes("COLE_SUA_PUBLISHABLE_KEY_AQUI"))
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
   : null;
+
+const MERCADO_PAGO_PUBLIC_KEY = "TEST-7fa2217a-7a3a-4a58-9227-430a9e15b1fa";
+const MERCADO_PAGO_FUNCTION_URL = SUPABASE_URL + "/functions/v1/criar-pagamento";
+const mercadoPago = new MercadoPago(MERCADO_PAGO_PUBLIC_KEY, { locale: "pt-BR" });
+const bricksBuilder = mercadoPago.bricks();
+
+let paymentBrickController = null;
+let dadosCheckoutAtual = null;
 
 const STORAGE_KEY = "imperioCarrinhoV2";
 let carrinho = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
@@ -1418,76 +1456,159 @@ async function confirmarPedidoCheckout(){
     return;
   }
 
-  const nome = document.getElementById("checkoutNome").value.trim();
-  const telefone = document.getElementById("checkoutTelefone").value.trim();
-  const email = document.getElementById("checkoutEmail").value.trim();
-  const cep = document.getElementById("checkoutCep").value.trim();
-  const estado = document.getElementById("checkoutEstado").value;
-  const rua = document.getElementById("checkoutRua").value.trim();
-  const numero = document.getElementById("checkoutNumero").value.trim();
-  const complemento = document.getElementById("checkoutComplemento").value.trim();
-  const bairro = document.getElementById("checkoutBairro").value.trim();
-  const cidade = document.getElementById("checkoutCidade").value.trim();
-  const entrega = document.getElementById("checkoutEntrega").value;
-  const pagamento = document.getElementById("checkoutPagamento").value;
-
-  const numeroPedido = String(Math.floor(100000 + Math.random() * 900000));
-  const subtotal = totalCarrinhoNumero();
-
-  const nomesEntrega = {
-    normal: "Entrega normal",
-    expressa: "Entrega expressa"
+  dadosCheckoutAtual = {
+    numeroPedido: String(Math.floor(100000 + Math.random() * 900000)),
+    nome: document.getElementById("checkoutNome").value.trim(),
+    telefone: document.getElementById("checkoutTelefone").value.trim(),
+    email: document.getElementById("checkoutEmail").value.trim(),
+    cep: document.getElementById("checkoutCep").value.trim(),
+    estado: document.getElementById("checkoutEstado").value,
+    rua: document.getElementById("checkoutRua").value.trim(),
+    numero: document.getElementById("checkoutNumero").value.trim(),
+    complemento: document.getElementById("checkoutComplemento").value.trim(),
+    bairro: document.getElementById("checkoutBairro").value.trim(),
+    cidade: document.getElementById("checkoutCidade").value.trim(),
+    entrega: document.getElementById("checkoutEntrega").value,
+    subtotal: totalCarrinhoNumero()
   };
 
-  const nomesPagamento = {
-    pix: "PIX",
-    cartao: "Cartão"
+  await abrirPagamentoMercadoPago();
+}
+
+async function abrirPagamentoMercadoPago(){
+  const area = document.getElementById("mercadoPagoArea");
+  const botao = document.querySelector(".btn-confirmar");
+
+  if(!dadosCheckoutAtual) return;
+
+  if(botao) botao.style.display = "none";
+  area.style.display = "block";
+
+  if(paymentBrickController){
+    try{ await paymentBrickController.unmount(); }catch(e){}
+    paymentBrickController = null;
+  }
+
+  document.getElementById("paymentBrick_container").innerHTML = "";
+
+  const settings = {
+    initialization: {
+      amount: Number(dadosCheckoutAtual.subtotal),
+      payer: {
+        email: dadosCheckoutAtual.email
+      }
+    },
+    customization: {
+      visual: {
+        style: {
+          theme: "dark"
+        }
+      },
+      paymentMethods: {
+        bankTransfer: ["pix"],
+        creditCard: "all",
+        debitCard: "all",
+        prepaidCard: "all",
+        minInstallments: 1,
+        maxInstallments: 2
+      }
+    },
+    callbacks: {
+      onReady: () => {
+        console.log("Mercado Pago Brick pronto");
+      },
+
+      onSubmit: ({ selectedPaymentMethod, formData }) => {
+        return new Promise(async (resolve, reject) => {
+          try{
+            const payload = {
+              ...formData,
+              produtos: carrinho.map(item => ({
+                produtoId: item.produtoId || null,
+                nome: item.nome,
+                tamanho: item.tamanho,
+                quantidade: Number(item.quantidade)
+              })),
+              external_reference: dadosCheckoutAtual.numeroPedido,
+              description: "Pedido #" + dadosCheckoutAtual.numeroPedido + " - Império das Camisas",
+              idempotency_key: crypto.randomUUID()
+            };
+
+            const response = await fetch(MERCADO_PAGO_FUNCTION_URL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(payload)
+            });
+
+            const resultado = await response.json();
+
+            if(!response.ok){
+              console.error("Erro no pagamento:", resultado);
+              alert("Não foi possível processar o pagamento. Confira os dados e tente novamente.");
+              reject();
+              return;
+            }
+
+            await registrarPedidoAposPagamento(resultado, selectedPaymentMethod);
+            mostrarResultadoPagamento(resultado);
+
+            resolve();
+          }catch(error){
+            console.error(error);
+            alert("Ocorreu um erro ao conectar com o pagamento. Tente novamente.");
+            reject();
+          }
+        });
+      },
+
+      onError: (error) => {
+        console.error("Mercado Pago Brick:", error);
+      }
+    }
   };
 
-  const produtosTexto = carrinho.map((item, index) => {
-    const subtotalItem = Number(item.preco) * Number(item.quantidade);
-    return `${index + 1}. ${item.nome}
-   Tamanho: ${item.tamanho}
-   Quantidade: ${item.quantidade}
-   Valor: R$ ${subtotalItem.toFixed(2).replace(".", ",")}`;
-  }).join("\n\n");
+  try{
+    paymentBrickController = await bricksBuilder.create(
+      "payment",
+      "paymentBrick_container",
+      settings
+    );
+    area.scrollIntoView({behavior:"smooth", block:"start"});
+  }catch(error){
+    console.error("Erro ao abrir Mercado Pago:", error);
+    alert("Não foi possível carregar o Mercado Pago. Atualize a página e tente novamente.");
+    voltarDadosCheckout();
+  }
+}
 
-  const endereco = `${rua}, ${numero}${complemento ? " - " + complemento : ""}
-${bairro}
-${cidade} / ${estado}
-CEP: ${cep}`;
+async function voltarDadosCheckout(){
+  if(paymentBrickController){
+    try{ await paymentBrickController.unmount(); }catch(e){}
+    paymentBrickController = null;
+  }
+  const area = document.getElementById("mercadoPagoArea");
+  const botao = document.querySelector(".btn-confirmar");
+  if(area) area.style.display = "none";
+  if(botao) botao.style.display = "block";
+}
 
-  const mensagem = `🛍️ *NOVO PEDIDO — IMPÉRIO DAS CAMISAS*
+function statusPedidoPorPagamento(resultado){
+  if(resultado.status === "approved") return "Em andamento";
+  if(resultado.status === "rejected" || resultado.status === "cancelled") return "Cancelado";
+  return "Pendente";
+}
 
-📦 *Pedido #${numeroPedido}*
-
-👤 *Cliente*
-Nome: ${nome}
-Telefone: ${telefone}
-E-mail: ${email}
-
-👕 *Produtos*
-${produtosTexto}
-
-💰 *Subtotal: R$ ${subtotal.toFixed(2).replace(".", ",")}*
-🚚 Frete: a calcular
-
-📍 *Endereço*
-${endereco}
-
-🚚 *Entrega:* ${nomesEntrega[entrega] || entrega}
-💳 *Pagamento:* ${nomesPagamento[pagamento] || pagamento}
-
-Olá! Gostaria de confirmar este pedido.`;
-
-  const whatsappLoja = "5527997683655";
-  urlPedidoWhatsApp = "https://wa.me/" + whatsappLoja + "?text=" + encodeURIComponent(mensagem);
+async function registrarPedidoAposPagamento(resultado, selectedPaymentMethod){
+  const d = dadosCheckoutAtual;
+  if(!d) return;
 
   const pedidoBanco = {
-    numero_pedido: numeroPedido,
-    nome: nome,
-    telefone: telefone,
-    email: email,
+    numero_pedido: d.numeroPedido,
+    nome: d.nome,
+    telefone: d.telefone,
+    email: d.email,
     produtos: carrinho.map(item => ({
       produtoId: item.produtoId || null,
       nome: item.nome,
@@ -1496,43 +1617,83 @@ Olá! Gostaria de confirmar este pedido.`;
       quantidade: Number(item.quantidade),
       imagem: item.imagem || ""
     })),
-    subtotal: subtotal,
+    subtotal: Number(resultado.valor ?? d.subtotal),
     frete: 0,
-    total: subtotal,
-    cep: cep,
-    rua: rua,
-    numero: numero,
-    complemento: complemento,
-    bairro: bairro,
-    cidade: cidade,
-    estado: estado,
-    entrega: entrega,
-    pagamento: pagamento,
-    status: "Pendente"
+    total: Number(resultado.valor ?? d.subtotal),
+    cep: d.cep,
+    rua: d.rua,
+    numero: d.numero,
+    complemento: d.complemento,
+    bairro: d.bairro,
+    cidade: d.cidade,
+    estado: d.estado,
+    entrega: d.entrega,
+    pagamento: "Mercado Pago - " + (resultado.payment_method_id || selectedPaymentMethod || "online"),
+    status: statusPedidoPorPagamento(resultado)
   };
 
-  const botaoConfirmar = document.querySelector(".btn-confirmar");
-  const textoAnterior = botaoConfirmar ? botaoConfirmar.textContent : "";
-  if(botaoConfirmar){
-    botaoConfirmar.disabled = true;
-    botaoConfirmar.textContent = "PREPARANDO PEDIDO...";
+  const salvo = await salvarPedidoNoSupabase(pedidoBanco);
+  if(!salvo.salvo){
+    console.warn("Pagamento criado, mas o pedido não foi salvo no painel.", salvo);
   }
+}
 
-  const resultadoBanco = await salvarPedidoNoSupabase(pedidoBanco);
-
-  if(resultadoBanco.salvo){
-    console.log("Pedido salvo no painel:", numeroPedido);
-  }else{
-    console.warn("Pedido não foi salvo no painel, mas seguirá pelo WhatsApp.");
-  }
-
-  if(botaoConfirmar){
-    botaoConfirmar.disabled = false;
-    botaoConfirmar.textContent = textoAnterior;
-  }
-
+function mostrarResultadoPagamento(resultado){
   fecharCheckout();
-  abrirPedidoSucesso();
+
+  const overlay = document.getElementById("pedidoSucessoOverlay");
+  const titulo = document.getElementById("resultadoPagamentoTitulo");
+  const texto = document.getElementById("resultadoPagamentoTexto");
+  const pixBox = document.getElementById("pixResultadoBox");
+  const qrImg = document.getElementById("pixQrImagem");
+  const pixTexto = document.getElementById("pixCopiaCola");
+  const icone = document.getElementById("resultadoPagamentoIcone");
+
+  pixBox.style.display = "none";
+
+  if(resultado.status === "approved"){
+    icone.textContent = "✅";
+    titulo.textContent = "Pagamento aprovado!";
+    texto.textContent = "Pedido #" + dadosCheckoutAtual.numeroPedido + " confirmado com sucesso. Obrigado pela compra!";
+    carrinho = [];
+    salvarCarrinho();
+    atualizarCarrinho();
+  }else if(resultado.payment_method_id === "pix" && resultado.qr_code){
+    icone.textContent = "💠";
+    titulo.textContent = "PIX gerado!";
+    texto.textContent = "Pedido #" + dadosCheckoutAtual.numeroPedido + ". Escaneie o QR Code ou copie o código PIX abaixo para pagar.";
+    pixTexto.value = resultado.qr_code;
+    if(resultado.qr_code_base64){
+      qrImg.src = "data:image/png;base64," + resultado.qr_code_base64;
+      qrImg.style.display = "block";
+    }else{
+      qrImg.style.display = "none";
+    }
+    pixBox.style.display = "block";
+  }else if(resultado.status === "rejected"){
+    icone.textContent = "❌";
+    titulo.textContent = "Pagamento não aprovado";
+    texto.textContent = "O Mercado Pago não aprovou esse pagamento. Você pode voltar e tentar outra forma de pagamento.";
+  }else{
+    icone.textContent = "⏳";
+    titulo.textContent = "Pagamento em processamento";
+    texto.textContent = "Pedido #" + dadosCheckoutAtual.numeroPedido + " recebido. O pagamento está aguardando confirmação.";
+  }
+
+  overlay.style.display = "flex";
+}
+
+async function copiarCodigoPix(){
+  const campo = document.getElementById("pixCopiaCola");
+  if(!campo || !campo.value) return;
+  try{
+    await navigator.clipboard.writeText(campo.value);
+    alert("Código PIX copiado!");
+  }catch(e){
+    campo.select();
+    document.execCommand("copy");
+    alert("Código PIX copiado!");
+  }
 }
 
 
@@ -1544,22 +1705,27 @@ document.addEventListener("DOMContentLoaded", atualizarCarrinho);
   display:none; position:fixed; inset:0; z-index:999999;
   background:rgba(0,0,0,.92); align-items:center; justify-content:center; padding:20px;">
   <div style="
-    width:100%; max-width:430px; background:#111; color:#fff;
+    width:100%; max-width:460px; background:#111; color:#fff;
     border:1px solid #3a3a3a; border-radius:16px; padding:30px 24px;
-    text-align:center; box-shadow:0 20px 70px rgba(0,0,0,.65);">
-    <div style="font-size:54px; margin-bottom:12px;">✅</div>
-    <h2 style="margin:0 0 10px; color:#d4af37;">Pedido preparado!</h2>
-    <p style="margin:0 0 20px; color:#ddd; line-height:1.5;">
-      Agora envie o pedido para a Império das Camisas pelo WhatsApp.
-    </p>
-    <button type="button" onclick="enviarPedidoWhatsApp()" style="
-      width:100%; padding:15px; border:0; border-radius:8px;
-      background:#d4af37; color:#000; font-weight:900; cursor:pointer; margin-bottom:10px;">
-      ENVIAR NO WHATSAPP
-    </button>
+    text-align:center; box-shadow:0 20px 70px rgba(0,0,0,.65); max-height:90vh; overflow:auto;">
+    <div id="resultadoPagamentoIcone" style="font-size:54px; margin-bottom:12px;">✅</div>
+    <h2 id="resultadoPagamentoTitulo" style="margin:0 0 10px; color:#d4af37;">Pagamento</h2>
+    <p id="resultadoPagamentoTexto" style="margin:0 0 20px; color:#ddd; line-height:1.5;"></p>
+
+    <div id="pixResultadoBox" class="pix-box" style="display:none">
+      <strong style="color:#d4af37">PIX Copia e Cola</strong>
+      <img id="pixQrImagem" alt="QR Code PIX">
+      <textarea id="pixCopiaCola" class="pix-copia" readonly></textarea>
+      <button type="button" onclick="copiarCodigoPix()" style="
+        width:100%; padding:14px; border:0; border-radius:8px;
+        background:#d4af37; color:#000; font-weight:900; cursor:pointer; margin-top:10px;">
+        COPIAR CÓDIGO PIX
+      </button>
+    </div>
+
     <button type="button" onclick="fecharPedidoSucesso()" style="
       width:100%; padding:13px; border:1px solid #444; border-radius:8px;
-      background:#181818; color:#fff; font-weight:700; cursor:pointer;">
+      background:#181818; color:#fff; font-weight:700; cursor:pointer; margin-top:14px;">
       VOLTAR À LOJA
     </button>
   </div>
