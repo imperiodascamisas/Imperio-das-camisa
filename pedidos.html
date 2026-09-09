@@ -161,9 +161,10 @@
     </div>
     <div id="modalConteudo"></div>
     <div class="modal-actions">
-      <button class="btn-primary" type="button" onclick="whatsAppPedidoAberto()">CHAMAR CLIENTE NO WHATSAPP</button>
+      <button class="btn-primary" type="button" onclick="whatsAppPedidoAberto()">ENVIAR MENSAGEM PELO WHATSAPP</button>
       <button class="btn-small" type="button" onclick="fecharDetalhes()">FECHAR</button>
     </div>
+    <p class="muted" style="margin:10px 2px 0;font-size:11px">A mensagem é preparada automaticamente conforme o status atual do pedido.</p>
   </div>
 </div>
 
@@ -377,7 +378,7 @@ function renderizarPedidos(){
           </select>
           <div class="acoes-pedido">
             <button class="btn-acao" type="button" onclick="abrirDetalhes(${Number(p.id)})">VER DETALHES</button>
-            <button class="btn-acao" type="button" onclick="chamarWhatsApp(${Number(p.id)})">WHATSAPP</button>
+            <button class="btn-acao" type="button" title="Envia mensagem pronta conforme o status do pedido" onclick="chamarWhatsApp(${Number(p.id)})">WHATSAPP</button>
           </div>
         </td>
       </tr>`;
@@ -394,15 +395,33 @@ function telefoneWhatsApp(valor){
   return n;
 }
 
+function mensagemWhatsAppPorStatus(p){
+  const nome = p.nome || "cliente";
+  const numero = p.numero_pedido || p.id;
+  const status = p.status || "Pendente";
+
+  const mensagens = {
+    "Pendente": `Olá, ${nome}! 👋\n\nAqui é da Império das Camisas. Recebemos o seu pedido #${numero} e ele está aguardando confirmação.\n\nSe precisar de alguma informação, estou à disposição. 👑`,
+    "Em andamento": `Olá, ${nome}! 👋\n\nSeu pedido #${numero} da Império das Camisas já está em andamento. Estamos preparando tudo com cuidado para você. 👕✨`,
+    "Enviado": `Olá, ${nome}! 🚚💨\n\nBoa notícia! Seu pedido #${numero} da Império das Camisas foi enviado.\n\nEm breve ele estará com você. Obrigado pela preferência! 👑`,
+    "Concluído": `Olá, ${nome}! ✅\n\nSeu pedido #${numero} da Império das Camisas foi concluído.\n\nMuito obrigado pela compra! Esperamos que você curta muito o seu manto. 👕👑`,
+    "Cancelado": `Olá, ${nome}.\n\nEstamos entrando em contato sobre o pedido #${numero} da Império das Camisas, que foi marcado como cancelado.\n\nSe precisar de ajuda ou quiser fazer um novo pedido, estamos à disposição.`
+  };
+
+  return mensagens[status] || `Olá, ${nome}! Aqui é da Império das Camisas. Estou entrando em contato sobre o pedido #${numero}.`;
+}
+
 function chamarWhatsApp(id){
   const p = pedidos.find(x => Number(x.id) === Number(id));
   if(!p) return;
+
   const tel = telefoneWhatsApp(p.telefone);
   if(!tel){
     alert("Este pedido não possui telefone.");
     return;
   }
-  const msg = `Olá, ${p.nome || "cliente"}! Aqui é da Império das Camisas. Estou entrando em contato sobre o pedido #${p.numero_pedido || p.id}.`;
+
+  const msg = mensagemWhatsAppPorStatus(p);
   window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`,"_blank","noopener");
 }
 
