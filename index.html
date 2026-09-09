@@ -1117,8 +1117,8 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
       </div>
     </div>
 
-    <button class="btn-confirmar" onclick="confirmarPedidoCheckout()" type="button">CONFIRMAR PEDIDO</button>
-    <p class="checkout-obs">O frete será confirmado antes do pagamento.</p>
+    <button class="btn-confirmar" onclick="confirmarPedidoCheckout()" type="button">CONFIRMAR PELO WHATSAPP</button>
+    <p class="checkout-obs">Ao confirmar, seu pedido será enviado para o WhatsApp da Império das Camisas.</p>
   </div>
 </div>
 
@@ -1298,21 +1298,99 @@ function confirmarPedidoCheckout(){
   ];
 
   for(const [id,nomeCampo] of camposObrigatorios){
-    if(!document.getElementById(id).value.trim()){
+    const campo = document.getElementById(id);
+    if(!campo.value.trim()){
       alert("Preencha o campo " + nomeCampo + ".");
-      document.getElementById(id).focus();
+      campo.focus();
       return;
     }
   }
 
-  const numeroPedido = Math.floor(1000 + Math.random()*9000);
+  if(!carrinho.length){
+    alert("Seu carrinho está vazio.");
+    return;
+  }
 
-  alert("Pedido #" + numeroPedido + " confirmado! Agora vamos conectar esta etapa ao painel de pedidos.");
+  const nome = document.getElementById("checkoutNome").value.trim();
+  const telefone = document.getElementById("checkoutTelefone").value.trim();
+  const cep = document.getElementById("checkoutCep").value.trim();
+  const estado = document.getElementById("checkoutEstado").value;
+  const rua = document.getElementById("checkoutRua").value.trim();
+  const numero = document.getElementById("checkoutNumero").value.trim();
+  const complemento = document.getElementById("checkoutComplemento").value.trim();
+  const bairro = document.getElementById("checkoutBairro").value.trim();
+  const cidade = document.getElementById("checkoutCidade").value.trim();
+  const entrega = document.getElementById("checkoutEntrega").value;
+  const pagamento = document.getElementById("checkoutPagamento").value;
 
-  carrinho = [];
-  salvarCarrinho();
-  atualizarCarrinho();
-  fecharCheckout();
+  const numeroPedido = String(Math.floor(100000 + Math.random()*900000));
+  const subtotal = totalCarrinhoNumero();
+
+  const nomesEntrega = {
+    normal: "Entrega normal",
+    expressa: "Entrega expressa"
+  };
+
+  const nomesPagamento = {
+    pix: "PIX",
+    cartao: "Cartão"
+  };
+
+  let produtosTexto = "";
+
+  carrinho.forEach((item, index) => {
+    const subtotalItem = Number(item.preco) * Number(item.quantidade);
+
+    produtosTexto +=
+      "
+" +
+      (index + 1) + ". " + item.nome +
+      "
+   Tamanho: " + item.tamanho +
+      "
+   Quantidade: " + item.quantidade +
+      "
+   Valor: R$ " + subtotalItem.toFixed(2).replace(".",",") +
+      "
+";
+  });
+
+  const endereco =
+    rua + ", " + numero +
+    (complemento ? " - " + complemento : "") +
+    "
+" + bairro +
+    "
+" + cidade + " / " + estado +
+    "
+CEP: " + cep;
+
+  const mensagem =
+`🛍️ *NOVO PEDIDO — IMPÉRIO DAS CAMISAS*
+
+📦 *Pedido #${numeroPedido}*
+
+👤 *Cliente*
+Nome: ${nome}
+Telefone: ${telefone}
+
+👕 *Produtos*
+${produtosTexto}
+💰 *Subtotal: R$ ${subtotal.toFixed(2).replace(".",",")}*
+🚚 Frete: a calcular
+
+📍 *Endereço*
+${endereco}
+
+🚚 *Entrega:* ${nomesEntrega[entrega] || entrega}
+💳 *Pagamento:* ${nomesPagamento[pagamento] || pagamento}
+
+Olá! Gostaria de confirmar este pedido.`;
+
+  const whatsappLoja = "5527997683655";
+  const url = "https://wa.me/" + whatsappLoja + "?text=" + encodeURIComponent(mensagem);
+
+  window.open(url, "_blank");
 }
 
 
