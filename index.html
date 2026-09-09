@@ -1297,16 +1297,16 @@ function confirmarPedidoCheckout(){
     ["checkoutCidade","cidade"]
   ];
 
-  for(const [id,nomeCampo] of camposObrigatorios){
+  for (const [id, nomeCampo] of camposObrigatorios){
     const campo = document.getElementById(id);
-    if(!campo.value.trim()){
+    if (!campo || !campo.value.trim()){
       alert("Preencha o campo " + nomeCampo + ".");
-      campo.focus();
+      if (campo) campo.focus();
       return;
     }
   }
 
-  if(!carrinho.length){
+  if (!carrinho.length){
     alert("Seu carrinho está vazio.");
     return;
   }
@@ -1323,7 +1323,7 @@ function confirmarPedidoCheckout(){
   const entrega = document.getElementById("checkoutEntrega").value;
   const pagamento = document.getElementById("checkoutPagamento").value;
 
-  const numeroPedido = String(Math.floor(100000 + Math.random()*900000));
+  const numeroPedido = String(Math.floor(100000 + Math.random() * 900000));
   const subtotal = totalCarrinhoNumero();
 
   const nomesEntrega = {
@@ -1336,37 +1336,20 @@ function confirmarPedidoCheckout(){
     cartao: "Cartão"
   };
 
-  let produtosTexto = "";
-
-  carrinho.forEach((item, index) => {
+  const produtosTexto = carrinho.map((item, index) => {
     const subtotalItem = Number(item.preco) * Number(item.quantidade);
+    return `${index + 1}. ${item.nome}
+   Tamanho: ${item.tamanho}
+   Quantidade: ${item.quantidade}
+   Valor: R$ ${subtotalItem.toFixed(2).replace(".", ",")}`;
+  }).join("\n\n");
 
-    produtosTexto +=
-      "
-" +
-      (index + 1) + ". " + item.nome +
-      "
-   Tamanho: " + item.tamanho +
-      "
-   Quantidade: " + item.quantidade +
-      "
-   Valor: R$ " + subtotalItem.toFixed(2).replace(".",",") +
-      "
-";
-  });
+  const endereco = `${rua}, ${numero}${complemento ? " - " + complemento : ""}
+${bairro}
+${cidade} / ${estado}
+CEP: ${cep}`;
 
-  const endereco =
-    rua + ", " + numero +
-    (complemento ? " - " + complemento : "") +
-    "
-" + bairro +
-    "
-" + cidade + " / " + estado +
-    "
-CEP: " + cep;
-
-  const mensagem =
-`🛍️ *NOVO PEDIDO — IMPÉRIO DAS CAMISAS*
+  const mensagem = `🛍️ *NOVO PEDIDO — IMPÉRIO DAS CAMISAS*
 
 📦 *Pedido #${numeroPedido}*
 
@@ -1376,7 +1359,8 @@ Telefone: ${telefone}
 
 👕 *Produtos*
 ${produtosTexto}
-💰 *Subtotal: R$ ${subtotal.toFixed(2).replace(".",",")}*
+
+💰 *Subtotal: R$ ${subtotal.toFixed(2).replace(".", ",")}*
 🚚 Frete: a calcular
 
 📍 *Endereço*
