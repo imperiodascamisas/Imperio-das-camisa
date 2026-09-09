@@ -1041,7 +1041,7 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
     <div class="checkout-grid">
       <div class="checkout-campo">
         <label for="checkoutCep">CEP</label>
-        <input id="checkoutCep" type="text" placeholder="00000-000">
+        <input id="checkoutCep" onblur="buscarCepCheckout()" type="text" placeholder="00000-000"><small style="display:block;margin-top:6px;color:#888;">Digite o CEP e clique fora do campo para preencher o endereço automaticamente.</small>
       </div>
       <div class="checkout-campo">
         <label for="checkoutEstado">Estado</label>
@@ -1283,6 +1283,48 @@ function abrirCheckout(){
 function fecharCheckout(){
   document.getElementById("checkoutOverlay").style.display = "none";
   document.body.style.overflow = "";
+}
+
+
+async function buscarCepCheckout(){
+  const campoCep = document.getElementById("checkoutCep");
+  if(!campoCep) return;
+
+  const cep = campoCep.value.replace(/\D/g, "");
+
+  if(cep.length !== 8){
+    return;
+  }
+
+  try{
+    campoCep.disabled = true;
+
+    const resposta = await fetch("https://viacep.com.br/ws/" + cep + "/json/");
+    const dados = await resposta.json();
+
+    if(dados.erro){
+      alert("CEP não encontrado.");
+      return;
+    }
+
+    const rua = document.getElementById("checkoutRua");
+    const bairro = document.getElementById("checkoutBairro");
+    const cidade = document.getElementById("checkoutCidade");
+    const estado = document.getElementById("checkoutEstado");
+    const numero = document.getElementById("checkoutNumero");
+
+    if(rua) rua.value = dados.logradouro || "";
+    if(bairro) bairro.value = dados.bairro || "";
+    if(cidade) cidade.value = dados.localidade || "";
+    if(estado) estado.value = dados.uf || "";
+
+    if(numero) numero.focus();
+  }catch(error){
+    console.error(error);
+    alert("Não foi possível consultar o CEP agora. Você pode preencher o endereço manualmente.");
+  }finally{
+    campoCep.disabled = false;
+  }
 }
 
 function confirmarPedidoCheckout(){
