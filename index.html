@@ -1038,6 +1038,11 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
       </div>
     </div>
 
+    <div class="checkout-campo">
+      <label for="checkoutEmail">E-mail</label>
+      <input id="checkoutEmail" type="email" placeholder="seuemail@exemplo.com" autocomplete="email">
+    </div>
+
     <div class="checkout-grid">
       <div class="checkout-campo">
         <label for="checkoutCep">CEP</label>
@@ -1383,6 +1388,7 @@ async function confirmarPedidoCheckout(){
   const camposObrigatorios = [
     ["checkoutNome","nome"],
     ["checkoutTelefone","telefone"],
+    ["checkoutEmail","e-mail"],
     ["checkoutCep","CEP"],
     ["checkoutEstado","estado"],
     ["checkoutRua","rua"],
@@ -1405,8 +1411,16 @@ async function confirmarPedidoCheckout(){
     return;
   }
 
+  const emailCampo = document.getElementById("checkoutEmail");
+  if(emailCampo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailCampo.value.trim())){
+    alert("Digite um e-mail válido.");
+    emailCampo.focus();
+    return;
+  }
+
   const nome = document.getElementById("checkoutNome").value.trim();
   const telefone = document.getElementById("checkoutTelefone").value.trim();
+  const email = document.getElementById("checkoutEmail").value.trim();
   const cep = document.getElementById("checkoutCep").value.trim();
   const estado = document.getElementById("checkoutEstado").value;
   const rua = document.getElementById("checkoutRua").value.trim();
@@ -1450,6 +1464,7 @@ CEP: ${cep}`;
 👤 *Cliente*
 Nome: ${nome}
 Telefone: ${telefone}
+E-mail: ${email}
 
 👕 *Produtos*
 ${produtosTexto}
@@ -1472,6 +1487,7 @@ Olá! Gostaria de confirmar este pedido.`;
     numero_pedido: numeroPedido,
     nome: nome,
     telefone: telefone,
+    email: email,
     produtos: carrinho.map(item => ({
       produtoId: item.produtoId || null,
       nome: item.nome,
