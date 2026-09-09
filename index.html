@@ -1327,6 +1327,17 @@ async function buscarCepCheckout(){
   }
 }
 
+
+function abrirPedidoSucesso(){
+  const overlay = document.getElementById("pedidoSucessoOverlay");
+  if(overlay) overlay.style.display = "flex";
+}
+
+function fecharPedidoSucesso(){
+  const overlay = document.getElementById("pedidoSucessoOverlay");
+  if(overlay) overlay.style.display = "none";
+}
+
 function confirmarPedidoCheckout(){
   const camposObrigatorios = [
     ["checkoutNome","nome"],
@@ -1417,11 +1428,38 @@ Olá! Gostaria de confirmar este pedido.`;
   const url = "https://wa.me/" + whatsappLoja + "?text=" + encodeURIComponent(mensagem);
 
   window.open(url, "_blank");
+  setTimeout(() => {
+    abrirPedidoSucesso();
+  }, 300);
 }
 
 
 document.addEventListener("DOMContentLoaded", atualizarCarrinho);
 
 </script>
+
+<div id="pedidoSucessoOverlay" style="
+  display:none; position:fixed; inset:0; z-index:99999;
+  background:rgba(0,0,0,.86); align-items:center; justify-content:center; padding:20px;">
+  <div style="
+    width:100%; max-width:430px; background:#111; color:#fff;
+    border:1px solid #2b2b2b; border-radius:14px; padding:30px 24px;
+    text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.45);">
+    <div style="font-size:54px; margin-bottom:12px;">✅</div>
+    <h2 style="margin:0 0 10px; color:#d4af37;">Pedido preparado!</h2>
+    <p style="margin:0 0 8px; color:#ddd; line-height:1.5;">
+      Seu pedido foi montado com sucesso.
+    </p>
+    <p style="margin:0 0 22px; color:#999; line-height:1.5;">
+      Agora é só concluir o envio pelo WhatsApp para a Império das Camisas.
+    </p>
+    <button type="button" onclick="fecharPedidoSucesso()" style="
+      width:100%; padding:14px; border:0; border-radius:7px;
+      background:#d4af37; color:#000; font-weight:800; cursor:pointer;">
+      VOLTAR À LOJA
+    </button>
+  </div>
+</div>
+
 </body>
 </html>
