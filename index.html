@@ -1154,20 +1154,6 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
     <div id="mercadoPagoArea">
       <h3>Pagamento seguro</h3>
       <p class="mp-ajuda">Escolha PIX ou cartão e conclua o pagamento pelo Mercado Pago.</p>
-
-      <div id="parcelamentoLoja" style="margin:14px 0 18px;padding:14px;border:1px solid rgba(234,208,107,.35);border-radius:10px;background:#111;">
-        <label for="parcelasCartao" style="display:block;margin-bottom:8px;font-size:13px;font-weight:900;color:#ead06b;">
-          PARCELAMENTO NO CARTÃO
-        </label>
-        <select id="parcelasCartao" style="width:100%;padding:12px;border-radius:8px;border:1px solid #444;background:#171717;color:#fff;font-weight:700;">
-          <option value="1">1x no cartão</option>
-          <option value="2">2x no cartão</option>
-        </select>
-        <div style="margin-top:7px;color:#9d9d9d;font-size:11px;">
-          Esta escolha é usada somente para pagamento com cartão de crédito. No PIX, ela é ignorada.
-        </div>
-      </div>
-
       <div id="mpStatus" style="padding:12px 0;color:#bbb;">Carregando Mercado Pago...</div>
       <div id="paymentBrick_container"></div>
       <button class="btn-voltar-dados" onclick="voltarDadosCheckout()" type="button">VOLTAR AOS DADOS</button>
@@ -1571,19 +1557,7 @@ async function abrirPagamentoMercadoPago(){
               description: "Pedido #" + dadosCheckoutAtual.numeroPedido + " - Império das Camisas",
               idempotency_key: crypto.randomUUID()
             };
-
-            // O Payment Brick pode esconder o seletor de parcelas em alguns cenários.
-            // Mantemos a escolha da loja e enviamos explicitamente 1x ou 2x ao backend.
-            const seletorParcelas = document.getElementById("parcelasCartao");
-            const ehCartaoCredito =
-              payload.payment_type_id === "credit_card" ||
-              selectedPaymentMethod === "credit_card";
-
-            if(ehCartaoCredito && seletorParcelas){
-              payload.installments = Number(seletorParcelas.value || 1);
-            }
-
-            const response = await fetch(MERCADO_PAGO_FUNCTION_URL, {
+const response = await fetch(MERCADO_PAGO_FUNCTION_URL, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json"
