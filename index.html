@@ -1150,6 +1150,7 @@ footer{margin-top:45px;padding:34px 5%;text-align:center;background:#040404;colo
     <div id="mercadoPagoArea">
       <h3>Pagamento seguro</h3>
       <p class="mp-ajuda">Escolha PIX ou cartão e conclua o pagamento pelo Mercado Pago.</p>
+      <div id="mpStatus" style="padding:12px 0;color:#bbb;">Carregando Mercado Pago...</div>
       <div id="paymentBrick_container"></div>
       <button class="btn-voltar-dados" onclick="voltarDadosCheckout()" type="button">VOLTAR AOS DADOS</button>
     </div>
@@ -1169,8 +1170,8 @@ const supabaseClient = (window.supabase && !SUPABASE_KEY.includes("COLE_SUA_PUBL
 
 const MERCADO_PAGO_PUBLIC_KEY = "TEST-7fa2217a-7a3a-4a58-9227-430a9e15b1fa";
 const MERCADO_PAGO_FUNCTION_URL = SUPABASE_URL + "/functions/v1/criar-pagamento";
-const mercadoPago = new MercadoPago(MERCADO_PAGO_PUBLIC_KEY, { locale: "pt-BR" });
-const bricksBuilder = mercadoPago.bricks();
+let mercadoPago = null;
+let bricksBuilder = null;
 
 let paymentBrickController = null;
 let dadosCheckoutAtual = null;
@@ -1478,8 +1479,27 @@ async function confirmarPedidoCheckout(){
 async function abrirPagamentoMercadoPago(){
   const area = document.getElementById("mercadoPagoArea");
   const botao = document.querySelector(".btn-confirmar");
+  const statusMp = document.getElementById("mpStatus");
+
+  if(typeof MercadoPago === "undefined"){
+    if(area) area.style.display = "block";
+    if(statusMp) statusMp.innerHTML = "<strong style='color:#ff6b6b'>Não foi possível carregar o SDK do Mercado Pago.</strong><br>Atualize a página com Ctrl + F5 e tente novamente.";
+    return;
+  }
 
   if(!dadosCheckoutAtual) return;
+
+  try{
+    if(!mercadoPago){
+      mercadoPago = new MercadoPago(MERCADO_PAGO_PUBLIC_KEY, { locale: "pt-BR" });
+      bricksBuilder = mercadoPago.bricks();
+    }
+  }catch(error){
+    console.error("Erro ao iniciar Mercado Pago:", error);
+    if(area) area.style.display = "block";
+    if(statusMp) statusMp.innerHTML = "<strong style='color:#ff6b6b'>Erro ao iniciar o Mercado Pago.</strong><br>Atualize a página e tente novamente.";
+    return;
+  }
 
   if(botao) botao.style.display = "none";
   area.style.display = "block";
@@ -1505,10 +1525,8 @@ async function abrirPagamentoMercadoPago(){
         }
       },
       paymentMethods: {
-        bankTransfer: ["pix"],
+        bankTransfer: "pix",
         creditCard: "all",
-        debitCard: "all",
-        prepaidCard: "all",
         minInstallments: 1,
         maxInstallments: 2
       }
@@ -1516,6 +1534,8 @@ async function abrirPagamentoMercadoPago(){
     callbacks: {
       onReady: () => {
         console.log("Mercado Pago Brick pronto");
+        const statusMp = document.getElementById("mpStatus");
+        if(statusMp) statusMp.style.display = "none";
       },
 
       onSubmit: ({ selectedPaymentMethod, formData }) => {
@@ -1565,6 +1585,11 @@ async function abrirPagamentoMercadoPago(){
 
       onError: (error) => {
         console.error("Mercado Pago Brick:", error);
+        const statusMp = document.getElementById("mpStatus");
+        if(statusMp){
+          statusMp.style.display = "block";
+          statusMp.innerHTML = "<strong style='color:#ff6b6b'>O Mercado Pago não conseguiu abrir.</strong><br>Envie um print desta tela para o Atlas.";
+        }
       }
     }
   };
@@ -1578,8 +1603,11 @@ async function abrirPagamentoMercadoPago(){
     area.scrollIntoView({behavior:"smooth", block:"start"});
   }catch(error){
     console.error("Erro ao abrir Mercado Pago:", error);
-    alert("Não foi possível carregar o Mercado Pago. Atualize a página e tente novamente.");
-    voltarDadosCheckout();
+    const statusMp = document.getElementById("mpStatus");
+    if(statusMp){
+      statusMp.style.display = "block";
+      statusMp.innerHTML = "<strong style='color:#ff6b6b'>Não foi possível carregar o Mercado Pago.</strong><br>Envie um print desta tela para o Atlas.";
+    }
   }
 }
 
